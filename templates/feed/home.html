@@ -1,0 +1,331 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Innovator</title>
+
+    <!-- Boxicons -->
+    <link
+      href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'styles/home.css' %}" />
+  </head>
+  <body>
+    <nav>
+      <div class="nav-left">
+        <img src="{% static 'assets/img/newlogo.png' %}" class="logo" />
+        <ul>
+          <li><img src="{% static 'assets/img/notification.png' %}" /></li>
+          <li><img src="{% static 'assets/img/inbox.png' %}" /></li>
+          <li><img src="{% static 'assets/img/video.png' %}" /></li>
+        </ul>
+      </div>
+
+      <div class="nav-right">
+        <div class="search-box">
+          <img src="{% static 'assets/img/search.png' %}" />
+          <input type="text" placeholder="Pesquisar pesquisadores ou temas" />
+        </div>
+        <div class="nav-user-icon online" onclick="settingsMenuToggle()">
+          <img src="{% static 'assets/img/profile-pic.png' %}" />
+        </div>
+
+        <!-- Settings -->
+        <div class="settings-menu">
+          <div id="dark-btn"><span></span></div>
+          <div class="settings-menu-inner">
+            <div class="user-profile">
+              <img src="{% static 'assets/img/profile-pic.png' %}" />
+              <div>
+                <p>{{ request.user.fullname }}</p>
+                <a href="#">Ver Perfil</a>
+              </div>
+            </div>
+            <hr />
+            <div class="user-profile">
+              <img src="{% static 'assets/img/feedback.png' %}" />
+              <div>
+                <p>Nos dê seu feedback</p>
+                <a href="#">Ajude a melhorar nosso site</a>
+              </div>
+            </div>
+            <hr />
+            <div class="settings-links">
+              <img
+                src="{% static 'assets/img/setting.png' %}"
+                class="settings-icon"
+              />
+              <a href="#"
+                >Configuração & Privacidade
+                <img src="{% static 'assets/img/arrow.png' %}" width="10px"
+              /></a>
+            </div>
+            <div class="settings-links">
+              <img
+                src="{% static 'assets/img/help.png' %}"
+                class="settings-icon"
+              />
+              <a href="#"
+                >Ajuda
+                <img src="{% static 'assets/img/arrow.png' %}" width="10px"
+              /></a>
+            </div>
+            <div class="settings-links">
+              <img
+                src="{% static 'assets/img/logout.png' %}"
+                class="settings-icon"
+              />
+              <a href="{% url 'logout' %}">Sair <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <!-- Left Sidebar -->
+      <div class="left-sidebar">
+        <div class="imp-links">
+          <a href="#"
+            ><img src="{% static 'assets/img/newspaper.png' %}" /> Últimas
+            Atualizações</a
+          >
+          <a href="#"
+            ><img src="{% static 'assets/img/friends.png' %}" /> Conexões</a
+          >
+          <a href="#"
+            ><img src="{% static 'assets/img/people.png' %}" /> Comunidades</a
+          >
+          <a href="#">Ver Mais</a>
+        </div>
+        <div class="shortcut-links">
+          <p>Suas Áreas</p>
+          <a href="#"
+            ><img src="{% static 'assets/img/shortcut-1.png' %}" /> Inteligência
+            Artificial</a
+          >
+          <a href="#"
+            ><img src="{% static 'assets/img/shortcut-2.png' %}" />
+            Neurociência</a
+          >
+          <a href="#"
+            ><img src="{% static 'assets/img/shortcut-3.png' %}" /> Educação</a
+          >
+          <a href="#"
+            ><img src="{% static 'assets/img/shortcut-4.png' %}" /> Meio
+            Ambiente</a
+          >
+        </div>
+      </div>
+
+      <!-- Main Content -->
+       {% if request.user.user_type == 'In' %}
+      <div class="main-content">
+        <div class="create-post">
+          <div class="create-post-top">
+            <img
+              src="{% static 'assets/img/profile-pic.png' %}"
+              class="profile-pic"
+            />
+            
+            <div class="fake-placeholder" id="openPostModal">
+              Comece uma publicação
+              
+
+            </div>
+            
+            
+            
+          </div>
+          <div class="create-post-actions">
+            <div class="action">
+              <img src="{% static 'assets/img/play.png' %}" /><span>Vídeo</span>
+            </div>
+            <div class="action">
+              <img src="{% static 'assets/img/image.png' %}" /><span>Foto</span>
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <div class="create-post disabled-post">
+    <div class="create-post-top">
+      <img src="{% static 'assets/img/profile-pic.png' %}" class="profile-pic" />
+      <div class="fake-placeholder">
+        Apenas inovadores podem publicar. Acompanhe as últimas pesquisas abaixo!
+      </div>
+    </div>
+    <div class="create-post-actions">
+      <div class="action">
+        <img src="{% static 'assets/img/play.png' %}" /><span>Vídeos</span>
+      </div>
+      <div class="action">
+        <img src="{% static 'assets/img/image.png' %}" /><span>Fotos</span>
+      </div>
+    </div>
+            
+        {% endif %}
+
+
+        <!-- Post Modal -->
+        <!-- Modal de publicação (Form is now here) -->
+<div class="post-modal" id="postModal">
+  <div class="post-modal-content">
+    <span class="close-modal" id="closeModal">&times;</span>
+
+    <form method="POST" enctype="multipart/form-data" class="post-form">
+      {% csrf_token %}
+      <div class="user-profile">
+        <img src="{% static 'assets/img/profile-pic.png' %}">
+        <div>
+          <p>{{ request.user.fullname }}</p>
+          <small>Publicar em Todos</small>
+        </div>
+      </div>
+
+      {{ form.content }}
+      {{ form.media }}
+
+      <div class="modal-actions">
+        <img src="{% static 'assets/img/smile.png' %}" alt="Emoji">
+        <label for="id_media">
+          <img src="{% static 'assets/img/image.png' %}" alt="Imagem">
+        </label>
+      </div>
+
+      <button type="submit" class="publish-btn">Publicar</button>
+    </form>
+  </div>
+</div>
+
+
+        <!-- Post -->
+        <div class="post-container">
+          
+          
+            {% for post in posts %}
+  <div class="post-container">
+    <div class="post-row">
+      <div class="user-profile">
+        <img src="{% static 'assets/img/profile-pic.png' %}">
+        <div>
+          <p>{{ post.user.fullname }}</p>
+          <small>{{ post.created_at|date:"d M Y, H:i" }}</small>
+          <a href="#"><i class="bx bx-list"></i></a>
+        </div>
+      </div>
+    </div>
+    <p class="post-text">{{ post.content }}</p>
+
+    {% if post.media %}
+      {% if post.media.name|lower|slice:"-4:" == ".mp4" %}
+        <video controls width="100%" class="post-img">
+          <source src="{{ post.media.url }}" type="video/mp4">
+        </video>
+      {% else %}
+        <img src="{{ post.media.url }}" class="post-img" />
+      {% endif %}
+    {% endif %}
+  </div>
+{% empty %}
+  <p>No posts yet.</p>
+{% endfor %}
+
+
+          </p>
+          <img
+            src="{% static 'assets/img/post-artigo.png' %}"
+            class="post-img"
+          />
+
+          <div class="post-row">
+            <div class="activity-icons">
+              <div class="post-profile-icon">
+                <div><img src="{% static 'assets/img/like.png' %}" /> 120</div>
+                <div>
+                  <img src="{% static 'assets/img/bubble-chat.png' %}" /> 120
+                </div>
+                <div><img src="{% static 'assets/img/share.png' %}" /> 120</div>
+              </div>
+              <div class="post-profile-icon">
+                <img src="{% static 'assets/img/profile-pic.png' %}" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Repeat Post -->
+        <!-- (Omitted for brevity — follow same pattern as above if repeating) -->
+      </div>
+
+      <!-- Right Sidebar -->
+      <div class="right-sidebar">
+        <div class="sidebar-title">
+          <h4>Últimas Publicações</h4>
+          <a href="#">Ver todas</a>
+        </div>
+        <div class="event">
+          <div class="left-event">
+            <h3>10</h3>
+            <span>Jul</span>
+          </div>
+          <div class="right-event">
+            <h4>Redes Neurais Aplicadas</h4>
+            <p><i class="bx bx-location"></i> Universidade Federal do Sul</p>
+            <a href="#">Ver Publicação</a>
+          </div>
+        </div>
+        <div class="event">
+          <div class="left-event">
+            <h3>02</h3>
+            <span>Jul</span>
+          </div>
+          <div class="right-event">
+            <h4>Psicologia do Aprendizado</h4>
+            <p><i class="bx bx-location"></i> Revista Cognitiva</p>
+            <a href="#">Ver Publicação</a>
+          </div>
+        </div>
+        <div class="sidebar-title">
+          <h4>Destaques</h4>
+          <a href="#">Fechar</a>
+        </div>
+        <img src="{% static 'assets/img/profile3.jpg' %}" class="sidebar-ads" />
+        <div class="sidebar-title">
+          <h4>Conversas</h4>
+          <a href="#">Esconder conversa</a>
+        </div>
+        <div class="online-list">
+          <div class="online">
+            <img src="{% static 'assets/img/member-1.png' %}" />
+          </div>
+          <p>Diva Luna</p>
+        </div>
+        <div class="online-list">
+          <div class="online">
+            <img src="{% static 'assets/img/member-2.png' %}" />
+          </div>
+          <p>Lucas Brito</p>
+        </div>
+        <div class="online-list">
+          <div class="online">
+            <img src="{% static 'assets/img/member-3.png' %}" />
+          </div>
+          <p>Leila Tales</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Innovator 2025</p>
+    </div>
+
+    <script src="{% static 'js/home.js' %}"></script>
+  </body>
+</html>

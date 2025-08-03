@@ -25,6 +25,7 @@ ALLOWED_HOSTS = []
 
 
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -32,11 +33,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'pescasa.apps.PescasaConfig',
-    'pescasa_feed.apps.PescasaFeedConfig',
+    'innovator.apps.InnovatorConfig',
+    'feed.apps.FeedConfig',
 ]
 
-AUTH_USER_MODEL = 'pescasa.User'
+AUTH_USER_MODEL = 'innovator.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -118,15 +119,30 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / "setup" / "static"
+    BASE_DIR / "static"
 ]
 
-STATIC_ROOT = BASE_DIR / "static"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 #Media
 MEDIA_ROOT = BASE_DIR / "media"
 
 MEDIA_URL = "/media/"
+
+# Accept files up to 100MB for example
+DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600  # 100 * 1024 * 1024
+FILE_UPLOAD_MAX_MEMORY_SIZE = 104857600
+
+
+SESSION_COOKIE_AGE = 10000
+
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+SESSION_SAVE_EVERY_REQUEST = True
+
+# SESSION_COOKIE_SECURE =True
+
+
 
 
 # Default primary key field type
