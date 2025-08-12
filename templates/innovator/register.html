@@ -9,8 +9,50 @@
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
     />
-    <title>Document</title>
+    <!-- Toastr CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+    />
+
+    <title>Innovator</title>
+
+    <!-- jQuery (required for toastr) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Global CSRF setup for ALL jQuery AJAX calls on this page -->
+    <script>
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+          const cookies = document.cookie.split(";");
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === name + "=") {
+              cookieValue = decodeURIComponent(
+                cookie.substring(name.length + 1)
+              );
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+
+      $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+          const safeMethod = /^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type);
+          if (!safeMethod && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+          }
+        },
+      });
+    </script>
+
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   </head>
+
   <body>
     <div class="container">
       <div class="forms-container">
@@ -39,8 +81,6 @@
               value="Login"
               class="btn solid"
             />
-            <!-- {{ login_form.as_p }}
-            <button type="submit" name="action" value="login">Login</button> -->
           </form>
           <!--CADASTRAR-->
           <form
@@ -48,14 +88,22 @@
             method="POST"
             class="sign-up-form"
           >
-            <h2 class="title">Cadastre-se</h2>
             {% csrf_token %} {% if messages %}
-            <div class="messages">
-              {% for message in messages %}
-              <div class="alert {{ message.tags }}">{{ message }}</div>
-              {% endfor %}
-            </div>
+            <script>
+              document.addEventListener("DOMContentLoaded", function () {
+                {% for message in messages %}
+                   toastr.options = {
+                      "closeButton": true,
+                      "progressBar": true,
+                      "positionClass": "toast-top-center"
+                   }
+                   toastr["{{ message.tags|default:"info" }}"](`{{ message|escapejs }}`)
+                {% endfor %}
+              })
+            </script>
             {% endif %}
+
+            <h2 class="title">Cadastre-se</h2>
 
             <div class="input-field">
               <i class="bx bxs-user"></i>
@@ -78,10 +126,7 @@
               <i class=""></i>
               {{register_form.user_type}}
             </div>
-            {% comment %}
-            <h6 class="">Selecionar área de interesse</h6>
-            <div class="">{{register_form.research_areas}}</div>
-            {% endcomment %}
+
             <input
               type="submit"
               name="register_submit"

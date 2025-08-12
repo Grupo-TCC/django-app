@@ -33,7 +33,7 @@
           <input type="text" placeholder="Pesquisar pesquisadores ou temas" />
         </div>
         <div class="nav-user-icon online" onclick="settingsMenuToggle()">
-          <img src="{% static 'assets/img/profile-pic.png' %}" />
+          <img src="{% static 'assets/img/no_pic.jpg' %}" />
         </div>
 
         <!-- Settings -->
@@ -41,7 +41,7 @@
           <div id="dark-btn"><span></span></div>
           <div class="settings-menu-inner">
             <div class="user-profile">
-              <img src="{% static 'assets/img/profile-pic.png' %}" />
+              <img src="{% static 'assets/img/no_pic.jpg' %}" />
               <div>
                 <p>{{ request.user.fullname }}</p>
                 <a href="#">Ver Perfil</a>
@@ -131,7 +131,7 @@
         <div class="create-post">
           <div class="create-post-top">
             <img
-              src="{% static 'assets/img/profile-pic.png' %}"
+              src="{% static 'assets/img/no_pic.jpg' %}"
               class="profile-pic"
             />
             
@@ -156,7 +156,7 @@
         {% else %}
         <div class="create-post disabled-post">
     <div class="create-post-top">
-      <img src="{% static 'assets/img/profile-pic.png' %}" class="profile-pic" />
+      <img src="{% static 'assets/img/no_pic.jpg' %}" class="profile-pic" />
       <div class="fake-placeholder">
         Apenas inovadores podem publicar. Acompanhe as últimas pesquisas abaixo!
       </div>
@@ -182,7 +182,7 @@
     <form method="POST" enctype="multipart/form-data" class="post-form">
       {% csrf_token %}
       <div class="user-profile">
-        <img src="{% static 'assets/img/profile-pic.png' %}">
+        <img src="{% static 'assets/img/no_pic.jpg' %}">
         <div>
           <p>{{ request.user.fullname }}</p>
           <small>Publicar em Todos</small>
@@ -213,7 +213,7 @@
   <div class="post-container">
     <div class="post-row">
       <div class="user-profile">
-        <img src="{% static 'assets/img/profile-pic.png' %}">
+        <img src="{% static 'assets/img/no_pic.jpg' %}">
         <div>
           <p>{{ post.user.fullname }}</p>
           <small>{{ post.created_at|date:"d M Y, H:i" }}</small>
@@ -254,7 +254,7 @@
                 <div><img src="{% static 'assets/img/share.png' %}" /> 120</div>
               </div>
               <div class="post-profile-icon">
-                <img src="{% static 'assets/img/profile-pic.png' %}" />
+                <img src="{% static 'assets/img/no_pic.jpg' %}" />
               </div>
             </div>
           </div>

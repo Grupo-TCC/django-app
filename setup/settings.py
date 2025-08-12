@@ -18,7 +18,7 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -116,13 +116,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# settings.py
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 #Media
 MEDIA_ROOT = BASE_DIR / "media"
@@ -142,6 +145,19 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 # SESSION_COOKIE_SECURE =True
 
+# Sending Email
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = "innovator.app1@gmail.com"  
+EMAIL_HOST_PASSWORD = os.getenv("GMAIL_APP_PASSWORD")  # app password from step 3
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_TIMEOUT = 30
+
+LOGIN_REDIRECT_URL = "/feed/"
+LOGOUT_REDIRECT_URL = "/register/"
 
 
 
