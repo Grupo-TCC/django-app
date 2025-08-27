@@ -1,0 +1,56 @@
+<!-- templates/auth/innovator_identity.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <title>Verificação de Inovador</title>
+    {% comment %}
+    <link rel="stylesheet" href="{% static 'styles/register.css' %}" />
+    {% endcomment %}
+  </head>
+  <body>
+    <div class="container" style="max-width: 560px; margin: 40px auto">
+      <h2>Verificação de Inovador</h2>
+      <p>
+        Preencha as informações. Para empresas/instituições, o título é
+        opcional.
+      </p>
+
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="input-field">
+          <label for="{{ form.applicant_type.id_for_label }}"
+            >Tipo de cadastro</label
+          >
+          {{ form.applicant_type }}
+        </div>
+
+        {% comment %}
+        <div class="input-field">
+          <label>Área(s) de atuação</label>
+          {{ form.research_areas }}
+        </div>
+        {% endcomment %}
+
+        <div class="input-field">
+          <label for="{{ form.title.id_for_label }}">Título (opcional)</label>
+          {{ form.title }}
+        </div>
+
+        <div class="input-field">
+          <label for="{{ form.document.id_for_label }}"
+            >Documento para verificação</label
+          >
+          {{ form.document }}
+          <small>PDF/PNG/JPG (máx 10MB)</small>
+        </div>
+
+        <button type="submit" class="btn solid" style="margin-top: 12px">
+          Enviar para análise
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

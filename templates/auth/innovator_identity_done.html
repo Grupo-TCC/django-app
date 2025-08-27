@@ -1,0 +1,30 @@
+<!-- templates/auth/innovator_identity_done.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <title>Solicitação recebida</title>
+    {% comment %}
+    <link rel="stylesheet" href="{% static 'styles/register.css' %}" />
+    {% endcomment %}
+  </head>
+  <body>
+    <div
+      class="container"
+      style="max-width: 620px; margin: 48px auto; text-align: center"
+    >
+      <h2>Recebemos sua solicitação</h2>
+      <p>
+        Sua verificação de Inovador está <strong>pendente</strong>. Enviaremos
+        um email quando for aprovada ou caso precisemos de mais informações.
+      </p>
+      <a
+        href="{% url 'user:register' %}"
+        class="btn solid"
+        style="margin-top: 16px; display: inline-block"
+        >Voltar</a
+      >
+    </div>
+  </body>
+</html>

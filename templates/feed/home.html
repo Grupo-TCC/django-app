@@ -14,7 +14,7 @@
     />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'styles/home.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/home.css' %}?v=1.2" />
   </head>
   <body>
     <nav>
@@ -44,6 +44,9 @@
               <img src="{% static 'assets/img/no_pic.jpg' %}" />
               <div>
                 <p>{{ request.user.fullname }}</p>
+                {% if request.user.innovator_verification and request.user.innovator_verification.title %}
+                   <small>{{ request.user.innovator_verification.title }}</small>
+                {% endif %}
                 <a href="#">Ver Perfil</a>
               </div>
             </div>
@@ -216,52 +219,59 @@
         <img src="{% static 'assets/img/no_pic.jpg' %}">
         <div>
           <p>{{ post.user.fullname }}</p>
-          <small>{{ post.created_at|date:"d M Y, H:i" }}</small>
-          <a href="#"><i class="bx bx-list"></i></a>
+          {% if post.user.innovator_verification and post.user.innovator_verification.title %}
+                <small>{{ post.user.innovator_verification.title }}</small>
+          {% endif %}
+          
+          
         </div>
       </div>
     </div>
     <p class="post-text">{{ post.content }}</p>
 
-    {% if post.media %}
-      {% if post.media.name|lower|slice:"-4:" == ".mp4" %}
-        <video controls width="100%" class="post-img">
-          <source src="{{ post.media.url }}" type="video/mp4">
-        </video>
-      {% else %}
-        <img src="{{ post.media.url }}" class="post-img" />
+      {% if post.media %}
+        {% if post.media.name|lower|slice:"-4:" == ".mp4" %}
+          <video controls width="100%" class="post-img">
+            <source src="{{ post.media.url }}" type="video/mp4">
+          </video>
+        {% else %}
+          <img src="{{ post.media.url }}" class="post-img" />
+        {% endif %}
       {% endif %}
-    {% endif %}
-  </div>
-{% empty %}
-  <p>No posts yet.</p>
-{% endfor %}
-
-
-          </p>
-          <img
-            src="{% static 'assets/img/post-artigo.png' %}"
-            class="post-img"
-          />
-
-          <div class="post-row">
+      <small>{{ post.created_at|date:"d M Y, H:i" }}</small>
+      <div class="post-row">
             <div class="activity-icons">
               <div class="post-profile-icon">
-                <div><img src="{% static 'assets/img/like.png' %}" /> 120</div>
-                <div>
-                  <img src="{% static 'assets/img/bubble-chat.png' %}" /> 120
+                <div
+                  class="like-btn{% if post.id in liked_ids %} liked{% endif %}"
+                  data-post-id="{{ post.id }}"
+                  role="button"
+                  aria-pressed="{% if post.id in liked_ids %}true{% else %}false{% endif %}"
+                >
+                  <img id="like-icon-{{ post.id }}" src="{% static 'assets/img/like.png' %}" alt="like">
+                  <span class="like-count" id="like-count-{{ post.id }}">{{ post.like_count }}</span>
+              </div>
+              <div>
+                  <img src="{% static 'assets/img/bubble-chat.png' %}" /> 
                 </div>
-                <div><img src="{% static 'assets/img/share.png' %}" /> 120</div>
+                <div><img src="{% static 'assets/img/share.png' %}" /> </div>
               </div>
-              <div class="post-profile-icon">
-                <img src="{% static 'assets/img/no_pic.jpg' %}" />
-              </div>
+              
             </div>
           </div>
-        </div>
+  </div>
+        {% empty %}
+          <p>No posts yet.</p>
+        {% endfor %}
 
-        <!-- Repeat Post -->
-        <!-- (Omitted for brevity — follow same pattern as above if repeating) -->
+
+    </p>
+          
+      
+          
+        </div>
+          
+        
       </div>
 
       <!-- Right Sidebar -->
@@ -325,6 +335,67 @@
     <div class="footer">
       <p>Innovator 2025</p>
     </div>
+
+    <script>
+// CSRF helper
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+document.addEventListener('click', function (e) {
+  const btn = e.target.closest('.like-btn');
+  if (!btn) return;
+  
+
+  const postId = btn.getAttribute('data-post-id');
+  const url = `/feed/post/${postId}/like/`; // matches feed:toggle_like
+  const csrftoken = getCookie('csrftoken');
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'X-CSRFToken': csrftoken,
+      'X-Requested-With': 'XMLHttpRequest',
+    },
+  })
+  .then(res => {
+    if (!res.ok) throw new Error('Network error');
+    return res.json();
+  })
+  .then(data => {
+    // update count
+    const countEl = document.getElementById(`like-count-${data.post_id}`);
+    if (countEl) countEl.textContent = data.count;
+
+    // toggle state
+    if (data.liked) {
+      btn.classList.add('liked');
+      btn.setAttribute('aria-pressed', 'true');
+      
+    } else {
+      btn.classList.remove('liked');
+      btn.setAttribute('aria-pressed', 'false');
+      
+    }
+  })
+  .catch(() => {
+    // optionally show a toast or fallback
+    alert('Não foi possível curtir agora. Tente novamente.');
+  });
+});
+</script>
+
 
     <script src="{% static 'js/home.js' %}"></script>
   </body>

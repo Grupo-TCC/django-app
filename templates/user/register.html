@@ -59,7 +59,7 @@
         <div class="singin-singup">
           <!--LOGIN-->
           <form
-            action="{% url 'register' %}"
+            action="{% url 'user:register' %}"
             method="POST"
             class="sign-in-form"
           >
@@ -75,6 +75,10 @@
               {{ login_form.password }}
             </div>
 
+            <p style="margin-top: 12px; text-align: center">
+              <a href="{% url 'password_reset' %}">Esqueci minha senha</a>
+            </p>
+
             <input
               type="submit"
               name="login_submit"
@@ -84,7 +88,7 @@
           </form>
           <!--CADASTRAR-->
           <form
-            action="{% url 'register' %}"
+            action="{% url 'user:register' %}"
             method="POST"
             class="sign-up-form"
           >
@@ -121,7 +125,7 @@
               <i class="bx bxs-lock-alt"></i>
               {{register_form.password2}}
             </div>
-            <h6 class="">Selecionar Usuário</h6>
+
             <div class="">
               <i class=""></i>
               {{register_form.user_type}}

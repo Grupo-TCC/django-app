@@ -609,3 +609,36 @@ nav {
 .fake-placeholder:hover {
   background-color: #eaeaea;
 }
+
+/* base */
+.like-btn {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #555;
+}
+.like-btn:hover {
+  color: #007bff;
+}
+
+/* icon default */
+.like-btn img {
+  width: 20px;
+  transition: 0.2s;
+}
+
+/* count default */
+.like-count {
+  color: #333;
+  margin-left: 5px;
+}
+
+/* when liked */
+.like-btn.liked img {
+  filter: hue-rotate(90deg) brightness(1.2); /* greenish */
+}
+.like-btn.liked .like-count {
+  color: green;
+  font-weight: bold;
+}

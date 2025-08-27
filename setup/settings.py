@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'innovator.apps.InnovatorConfig',
+    'user.apps.UserConfig',
     'feed.apps.FeedConfig',
 ]
 
