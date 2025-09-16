@@ -10,8 +10,7 @@ urlpatterns = [
 
     # email verification + innovator step
     path('verify/<str:uidb64>/<str:token>/', views.verify_email, name='verify_email'),
-    path('innovator/identity/<str:uidb64>/<str:token>/', views.innovator_identity, name='innovator_identity'),
-    path('innovator/identity/done/', views.innovator_identity_done, name='innovator_identity_done'),
     # NEW: one-time auto login link
     path('login/auto/<str:uidb64>/<str:token>/', views.auto_login, name='auto_login'),
+    path("change-profile-picture/", views.change_profile_picture, name="change_profile_picture"),
 ]

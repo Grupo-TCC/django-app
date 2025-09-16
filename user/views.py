@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from user.forms import LoginForms, CustomUserCreationForm
 from django.contrib import messages
-from .models import InnovatorVerification
-from .forms import InnovatorVerificationForm
-from django.http import JsonResponse
+from .models import User, Follow
+from .forms import ProfilePictureForm
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.contrib.auth import get_user_model, authenticate, login
 from django.urls import reverse
 from django.core.mail import send_mail
@@ -11,6 +11,8 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+
 
 User = get_user_model()
 
@@ -145,52 +147,16 @@ def verify_email(request, uidb64, token):
     # Mark email verified
     if not user.email_verified:
         user.email_verified = True
-        user.save(update_fields=['email_verified'])
-
-    if user.user_type == 'Re':
         user.is_active = True  # mark email verified
-        user.save(update_fields=['is_active'])
-        login(request, user)   # first login happens here
+        user.save(update_fields=['is_active', "is_active"])
         
-        return redirect('feed:home')
+        
+    login(request, user)   # first login happens here
+        
+    return redirect('feed:home')
     
-    # Innovators: verified email, but NOT active yet
-    # Send them to identity (doc upload) step.
-    # Optionally re-issue a fresh token for the next step:
-    next_token = default_token_generator.make_token(user)
-    return redirect(reverse('user:innovator_identity', args=[uidb64, next_token]))
     
 
-def innovator_identity(request, uidb64, token):
-    try:
-        uid = force_str(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid, user_type='In')
-    except (User.DoesNotExist, ValueError, TypeError):
-        user = None
-
-    if user is None or not default_token_generator.check_token(user, token):
-        return redirect('user:register')
-
-    if request.method == "POST":
-        form = InnovatorVerificationForm(request.POST, request.FILES)
-        if form.is_valid():
-            obj, _ = InnovatorVerification.objects.get_or_create(user=user)
-            obj.applicant_type = form.cleaned_data["applicant_type"]
-            obj.title = form.cleaned_data["title"]
-            obj.document = form.cleaned_data["document"]
-            obj.status = "PENDING"
-            obj.save()
-            # Save M2M after obj.save()
-            if "research_areas" in form.cleaned_data:
-                obj.research_areas.set(form.cleaned_data["research_areas"])
-            return redirect('user:innovator_identity_done')
-    else:
-        form = InnovatorVerificationForm()
-
-    return render(request, 'auth/innovator_identity.html', {"form": form, "user": user})
-
-def innovator_identity_done(request):
-    return render(request, 'auth/innovator_identity_done.html')
 
 def auto_login(request, uidb64, token):
     """
@@ -219,3 +185,17 @@ def auto_login(request, uidb64, token):
 
     # bad/expired token
     return redirect('user:register')
+
+
+@login_required
+def change_profile_picture(request):
+    if request.method == "POST":
+        form = ProfilePictureForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("feed:settings")  # redirect to your homepage or profile
+    else:
+        form = ProfilePictureForm(instance=request.user)
+
+    return redirect("feed:settings")
+

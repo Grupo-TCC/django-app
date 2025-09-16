@@ -2,13 +2,12 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.db.models.signals import pre_save, post_delete
+from django.dispatch import receiver
 import os
 
 
-USER_TYPE = [
-    ('In', 'Sou uma pesquisador(a) ou inovador(a)'),
-    ('Re', 'Não sou inovador(a), meu interesse é ler conteúdo'), 
-]
+
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -26,7 +25,7 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         
-        extra_fields.setdefault('user_type', 'Re')
+        
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must have is_staff=True.')
@@ -34,30 +33,27 @@ class UserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
 
         user =  self.create_user(email, fullname, password, **extra_fields)
-        # default_area, _ = ResearchArea.objects.get_or_create(code='TD', name='TODOS')
-        # user.research_areas.add(default_area)
-        return user
-
-# class ResearchArea(models.Model):
-#     code = models.CharField(max_length=100, unique=True)
-#     name = models.CharField(max_length=100)
-    
-#     def __str__(self):
-#         return self.name
-    
+        
+        return user 
     
 class User(AbstractUser):
     username = None  # Remove username
     email = models.EmailField('email address', unique=True)
 
     fullname = models.CharField('full name', max_length=100)
-    # research_areas = models.ManyToManyField(
-    #     'ResearchArea', blank=True
-    # )
-    user_type = models.CharField(
-        max_length=20,
-        choices=USER_TYPE,
-        default='Re'
+    
+    title = models.CharField(
+        "title",
+        max_length=100,
+        blank=True,  # keep optional if you want
+        null=True
+    )
+    
+    profile_picture = models.ImageField(
+        upload_to="profile_pics/",
+        blank=True,
+        null=True,
+        
     )
     
     email_verified = models.BooleanField(default=False)
@@ -80,48 +76,29 @@ def validate_doc_size(value):
     if value.size > limit_mb * 1024 * 1024:
         raise ValidationError(f"Arquivo muito grande. Máx {limit_mb}MB.")
     
-# ----------------- ResearchArea (only for innovator verification) -----------------
-class ResearchArea(models.Model):
-    code = models.CharField(max_length=10, unique=True)
-    name = models.CharField(max_length=100)
 
-    class Meta:
-        verbose_name = "Área de Pesquisa"
-        verbose_name_plural = "Áreas de Pesquisa"
-        ordering = ["name"]
-
-    def __str__(self):
-        return self.name
-
-class InnovatorVerification(models.Model):
-    APPLICANT_CHOICES = [
-        ("INDIVIDUAL", "Pessoa Física"),
-        ("COMPANY", "Empresa/Instituição"),
-    ]
     
-    user = models.OneToOneField(
-            settings.AUTH_USER_MODEL,
-            on_delete=models.CASCADE,
-            related_name="innovator_verification",
-        )
-    applicant_type = models.CharField(max_length=12, choices=APPLICANT_CHOICES)
-    
-    title = models.CharField(max_length=100)
-    
-    document = models.FileField(
-        upload_to="verification_docs/",
-        validators=[validate_doc_extension, validate_doc_size],
+class Follow(models.Model):
+    follower = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="following",
+        on_delete=models.CASCADE
     )
-
-    status = models.CharField(
-        max_length=10,
-        choices=[("PENDING", "Pendente"), ("APPROVED", "Aprovado"), ("REJECTED", "Rejeitado")],
-        default="PENDING",
+    following = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="followers",
+        on_delete=models.CASCADE
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ("follower", "following")
+
     def __str__(self):
-        return f"Verification({self.user.email}) - {self.status}"
+        return f"{self.follower.email} -> {self.following.email}"
+    
+    
+
 
     
 

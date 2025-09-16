@@ -28,10 +28,7 @@
       </div>
 
       <div class="nav-right">
-        <div class="search-box">
-          <img src="{% static 'assets/img/search.png' %}" />
-          <input type="text" placeholder="Pesquisar pesquisadores ou temas" />
-        </div>
+
         <div class="nav-user-icon online" onclick="settingsMenuToggle()">
           <img src="{% static 'assets/img/no_pic.jpg' %}" />
         </div>
@@ -64,7 +61,7 @@
                 src="{% static 'assets/img/setting.png' %}"
                 class="settings-icon"
               />
-              <a href="#"
+              <a href="{% url 'feed:settings' %}"
                 >Configuração & Privacidade
                 <img src="{% static 'assets/img/arrow.png' %}" width="10px"
               /></a>
@@ -100,10 +97,10 @@
             ><img src="{% static 'assets/img/newspaper.png' %}" /> Últimas
             Atualizações</a
           >
-          <a href="#"
+          <a href="{% url 'feed:community' %}"
             ><img src="{% static 'assets/img/friends.png' %}" /> Conexões</a
           >
-          <a href="#"
+          <a href=""
             ><img src="{% static 'assets/img/people.png' %}" /> Comunidades</a
           >
           <a href="#">Ver Mais</a>
@@ -129,7 +126,7 @@
       </div>
 
       <!-- Main Content -->
-       {% if request.user.user_type == 'In' %}
+       
       <div class="main-content">
         <div class="create-post">
           <div class="create-post-top">
@@ -156,24 +153,8 @@
             </div>
           </div>
         </div>
-        {% else %}
-        <div class="create-post disabled-post">
-    <div class="create-post-top">
-      <img src="{% static 'assets/img/no_pic.jpg' %}" class="profile-pic" />
-      <div class="fake-placeholder">
-        Apenas inovadores podem publicar. Acompanhe as últimas pesquisas abaixo!
-      </div>
-    </div>
-    <div class="create-post-actions">
-      <div class="action">
-        <img src="{% static 'assets/img/play.png' %}" /><span>Vídeos</span>
-      </div>
-      <div class="action">
-        <img src="{% static 'assets/img/image.png' %}" /><span>Fotos</span>
-      </div>
-    </div>
-            
-        {% endif %}
+        
+    
 
 
         <!-- Post Modal -->
@@ -251,13 +232,26 @@
                   <img id="like-icon-{{ post.id }}" src="{% static 'assets/img/like.png' %}" alt="like">
                   <span class="like-count" id="like-count-{{ post.id }}">{{ post.like_count }}</span>
               </div>
-              <div>
-                  <img src="{% static 'assets/img/bubble-chat.png' %}" /> 
-                </div>
+              <div class="comment-btn" data-post-id="{{ post.id }}" role="button" tabindex="0">
+                  <img src="{% static 'assets/img/bubble-chat.png' %}" alt="comments" /> 
+                  <span id="comment-count-{{ post.id }}">{{ post.comment_count }}</span>
+              </div>
                 <div><img src="{% static 'assets/img/share.png' %}" /> </div>
               </div>
               
             </div>
+            {# COLLAPSIBLE COMMENT PANEL #}
+            <div id="comments-panel-{{ post.id }}" class="comments-panel" hidden>
+              <div class="comments-list" id="comments-list-{{ post.id }}">
+                <!-- filled by JS -->
+              </div>
+              <form class="comment-form" data-post-id="{{ post.id }}">
+                {% csrf_token %}
+                <input type="text" name="body" class="comment-input" placeholder="Escreva um comentário…">
+                <button type="submit" class="comment-submit">Enviar</button>
+              </form>
+            </div>
+
           </div>
   </div>
         {% empty %}
@@ -335,67 +329,6 @@
     <div class="footer">
       <p>Innovator 2025</p>
     </div>
-
-    <script>
-// CSRF helper
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-    const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === (name + '=')) {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-}
-
-document.addEventListener('click', function (e) {
-  const btn = e.target.closest('.like-btn');
-  if (!btn) return;
-  
-
-  const postId = btn.getAttribute('data-post-id');
-  const url = `/feed/post/${postId}/like/`; // matches feed:toggle_like
-  const csrftoken = getCookie('csrftoken');
-
-  fetch(url, {
-    method: 'POST',
-    headers: {
-      'X-CSRFToken': csrftoken,
-      'X-Requested-With': 'XMLHttpRequest',
-    },
-  })
-  .then(res => {
-    if (!res.ok) throw new Error('Network error');
-    return res.json();
-  })
-  .then(data => {
-    // update count
-    const countEl = document.getElementById(`like-count-${data.post_id}`);
-    if (countEl) countEl.textContent = data.count;
-
-    // toggle state
-    if (data.liked) {
-      btn.classList.add('liked');
-      btn.setAttribute('aria-pressed', 'true');
-      
-    } else {
-      btn.classList.remove('liked');
-      btn.setAttribute('aria-pressed', 'false');
-      
-    }
-  })
-  .catch(() => {
-    // optionally show a toast or fallback
-    alert('Não foi possível curtir agora. Tente novamente.');
-  });
-});
-</script>
-
 
     <script src="{% static 'js/home.js' %}"></script>
   </body>

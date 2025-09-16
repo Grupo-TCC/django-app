@@ -1,0 +1,216 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Innovator</title>
+    <link
+      href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'styles/settings.css' %}" />
+  </head>
+  <body>
+    {% comment %}
+    <nav>
+      <div class="nav-left">
+        <img src="{% static 'assets/img/logo.png' %}" class="logo" />
+
+        <ul>
+          <li><img src="{% static 'assets/img/notification.png' %}" /></li>
+          <li><img src="{% static 'assets/img/inbox.png' %}" /></li>
+        </ul>
+      </div>
+      <div class="nav-right">
+        <div class="search-box">
+          <img src="{% static 'assets/img/search.png' %}" />
+          <input type="text" placeholder="Pesquisar pesquisadores ou temas" />
+        </div>
+        <div class="nav-user-icon online" onclick="settingsMenuToggle()">
+          <img src="{% static 'assets/img/no_pic.jpg' %}" />
+        </div>
+
+        <!-- configs -->
+        <div class="settings-menu">
+          <div id="dark-btn">
+            <span></span>
+          </div>
+
+          <div class="settings-menu-inner">
+            <div class="user-profile">
+              <img src="{% static 'assets/img/no_pic.jpg' %}" />
+              <div>
+                <p>John Nicholson</p>
+                <a href="#">Ver Perfil</a>
+              </div>
+            </div>
+
+            <hr />
+            <div class="user-profile">
+              <img src="{% static 'assets/img/feedback.png' %}" />
+              <div>
+                <p>Nos dê seu feedback</p>
+                <a href="#">Ajude a melhorar nosso site</a>
+              </div>
+            </div>
+            <hr />
+
+            <div class="settings-links">
+              <img
+                src="{% static 'assets/img/setting.png' %}"
+                class="settings-icon"
+              />
+              <a href="#"
+                >Configuração & Privacidade
+                <img src="{% static 'assets/img/arrow.png' %}" width="10px"
+              /></a>
+            </div>
+
+            <div class="settings-links">
+              <img
+                src="{% static 'assets/img/help.png' %}"
+                class="settings-icon"
+              />
+              <a href="#"
+                >Ajuda
+                <img src="{% static 'assets/img/arrow.png' %}" width="10px"
+              /></a>
+            </div>
+
+            <div class="settings-links">
+              <img
+                src="{% static 'assets/img/logout.png' %}"
+                class="settings-icon"
+              />
+              <a href="#"
+                >Sair
+                <img src="{% static 'assets/img/arrow.png' %}" width="10px"
+              /></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    {% endcomment %}
+
+    <div class="container">
+      <!--left sidebar-->
+      {% comment %}
+      <div class="left-sidebar">
+        <div class="imp-links">
+          <a href="{% url 'feed:home' %}"
+            ><img src="{% static 'assets/img/newspaper.png' %}" /> Últimas
+            Atualizações</a
+          >
+          <a href="#"
+            ><img src="{% static 'assets/img/friends.png' %}" /> Conexões</a
+          >
+          <a href="#"
+            ><img src="{% static 'assets/img/people.png' %}" /> Comunidades</a
+          >
+        </div>
+      </div>
+      {% endcomment %}
+      <div class="main-content">
+        <div class="settings-wrapper">
+          <div class="settings-header">
+            <div class="settings-banner"></div>
+            <div class="settings-profile">
+              
+              
+              <form method="post" enctype="multipart/form-data" action="{% url 'user:change_profile_picture' %}">
+                    {% csrf_token %}
+                    
+                    {% if request.user.profile_picture %}
+                      <img
+                          src="{{ request.user.profile_picture.url }}"
+                          alt="Foto de Perfil"
+                          class="settings-avatar btn-edit-main"
+                          onclick="document.getElementById('id_profile_picture').click();"
+                      />
+                    {% else %}
+                      <img
+                          src="{% static 'assets/img/no_pic.jpg' %}"
+                          alt="Foto de Perfil"
+                          class="settings-avatar btn-edit-main"
+                          onclick="document.getElementById('id_profile_picture').click();"
+                      />
+                    {% endif %}
+
+                    <!-- Hidden file input for profile picture -->
+                    <input 
+                        type="file" 
+                        id="id_profile_picture" 
+                        name="profile_picture"
+                        accept="image/*" 
+                        style="display:none;"
+                        onchange="this.form.submit();" 
+                    />
+
+                    <!-- You don’t need the manual Change button if auto-submit works -->
+                    <!-- <input type="submit" value="Change"> -->
+              </form>
+
+              <div class="settings-info">
+                <h2>{{ request.user.fullname }}</h2>
+                {% if request.user.innovator_verification.title %}
+                <small>{{ request.user.innovator_verification.title }}</small>
+                {% endif %}
+
+                
+              </div>
+              <button class="btn-edit-main">Editar imagem</button>
+            </div>
+          </div>
+
+          <div class="settings-content">
+            <div class="settings-card">
+              <p>
+                <strong>Nome exibido</strong><br />
+                {{ request.user.fullname }}
+              </p>
+              <button class="btn-edit">Editar</button>
+            </div>
+
+            <div class="settings-card">
+              <p>
+                <strong>Cargo do usuário</strong><br />
+                {{ request.user.innovator_verification.title }}
+              </p>
+              <button class="btn-edit">Editar</button>
+            </div>
+
+            <div class="settings-card">
+              <p>
+                <strong>E-mail</strong><br />
+                {{ request.user.email }}
+              </p>
+              <button class="btn-edit">Editar</button>
+            </div>
+
+            <!-- <div class="settings-card">
+              <p>
+                <strong>Telefone</strong><br />
+                ********1212 <a href="#">Mostrar</a>
+              </p>
+              <div class="card-actions">
+                <button class="btn-edit">Editar</button>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--right so para centralizar-->
+      <div class="right-sidebar"></div>
+    </div>
+
+    <div class="footer">
+      <a href="{% url 'feed:home' %}" />
+      <p>Innovator 2025</p>
+    </div>
+
+    <script src="{% static 'js/settings.js' %}"></script>
+  </body>
+</html>
