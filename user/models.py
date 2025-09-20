@@ -52,9 +52,13 @@ class User(AbstractUser):
     profile_picture = models.ImageField(
         upload_to="profile_pics/",
         blank=True,
-        null=True,
-        
+        null=True,    
     )
+
+    def get_profile_picture_url(self):
+        if self.profile_picture:
+            return self.profile_picture.url
+        return settings.STATIC_URL + "assets/img/no_pic.jpg"
     
     email_verified = models.BooleanField(default=False)
 

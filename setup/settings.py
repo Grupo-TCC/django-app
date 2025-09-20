@@ -165,3 +165,8 @@ LOGOUT_REDIRECT_URL = "/register/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Allow requests from https://localhost:8000 for CSRF protection
+CSRF_TRUSTED_ORIGINS = [
+    'https://localhost:8000',
+]

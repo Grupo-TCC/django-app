@@ -30,7 +30,8 @@
       <div class="nav-right">
 
         <div class="nav-user-icon online" onclick="settingsMenuToggle()">
-          <img src="{% static 'assets/img/no_pic.jpg' %}" />
+          <img src="{{ request.user.get_profile_picture_url }}" alt="Foto de Perfil">
+
         </div>
 
         <!-- Settings -->
@@ -38,7 +39,8 @@
           <div id="dark-btn"><span></span></div>
           <div class="settings-menu-inner">
             <div class="user-profile">
-              <img src="{% static 'assets/img/no_pic.jpg' %}" />
+              <img src="{{ request.user.get_profile_picture_url }}" alt="Foto de Perfil">
+
               <div>
                 <p>{{ request.user.fullname }}</p>
                 {% if request.user.innovator_verification and request.user.innovator_verification.title %}
@@ -130,10 +132,8 @@
       <div class="main-content">
         <div class="create-post">
           <div class="create-post-top">
-            <img
-              src="{% static 'assets/img/no_pic.jpg' %}"
-              class="profile-pic"
-            />
+            <img src="{{ request.user.get_profile_picture_url }}" alt="Foto de Perfil" class="profile-pic">
+
             
             <div class="fake-placeholder" id="openPostModal">
               Comece uma publicação
@@ -166,7 +166,8 @@
     <form method="POST" enctype="multipart/form-data" class="post-form">
       {% csrf_token %}
       <div class="user-profile">
-        <img src="{% static 'assets/img/no_pic.jpg' %}">
+        <img src="{{ request.user.get_profile_picture_url }}" alt="Foto de Perfil">
+
         <div>
           <p>{{ request.user.fullname }}</p>
           <small>Publicar em Todos</small>
@@ -174,7 +175,7 @@
       </div>
 
       {{ form.content }}
-      {{ form.media }}
+      <input type="file" name="media" id="id_media" accept=".pdf,.doc,.docx,.ppt,.pptx,image/png,image/jpeg" />
 
       <div class="modal-actions">
         <img src="{% static 'assets/img/smile.png' %}" alt="Emoji">
@@ -197,7 +198,7 @@
   <div class="post-container">
     <div class="post-row">
       <div class="user-profile">
-        <img src="{% static 'assets/img/no_pic.jpg' %}">
+        <img src="{{ post.user.get_profile_picture_url }}" alt="Foto de Perfil">
         <div>
           <p>{{ post.user.fullname }}</p>
           {% if post.user.innovator_verification and post.user.innovator_verification.title %}
@@ -215,8 +216,24 @@
           <video controls width="100%" class="post-img">
             <source src="{{ post.media.url }}" type="video/mp4">
           </video>
-        {% else %}
+        {% elif post.media.name|lower|slice:"-4:" == ".pdf" %}
+          <a href="{{ post.media.url }}" target="_blank">📄 Visualizar PDF</a>
+        {% elif post.media.name|lower|slice:"-4:" == ".doc" %}
+          <a href="{{ post.media.url }}" target="_blank">📝 Baixar Documento Word</a>
+        {% elif post.media.name|lower|slice:"-5:" == ".docx" %}
+          <a href="{{ post.media.url }}" target="_blank">📝 Baixar Documento Word</a>
+        {% elif post.media.name|lower|slice:"-4:" == ".ppt" %}
+          <a href="{{ post.media.url }}" target="_blank">📊 Baixar Apresentação PowerPoint</a>
+        {% elif post.media.name|lower|slice:"-5:" == ".pptx" %}
+          <a href="{{ post.media.url }}" target="_blank">📊 Baixar Apresentação PowerPoint</a>
+        {% elif post.media.name|lower|slice:"-4:" == ".png" %}
           <img src="{{ post.media.url }}" class="post-img" />
+        {% elif post.media.name|lower|slice:"-5:" == ".jpeg" %}
+          <img src="{{ post.media.url }}" class="post-img" />
+        {% elif post.media.name|lower|slice:"-4:" == ".jpg" %}
+          <img src="{{ post.media.url }}" class="post-img" />
+        {% else %}
+          <a href="{{ post.media.url }}" target="_blank">📁 Baixar Arquivo</a>
         {% endif %}
       {% endif %}
       <small>{{ post.created_at|date:"d M Y, H:i" }}</small>
@@ -331,5 +348,24 @@
     </div>
 
     <script src="{% static 'js/home.js' %}"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var fileInput = document.getElementById('id_media');
+        var warning = document.getElementById('media-warning');
+        if (fileInput) {
+          fileInput.addEventListener('change', function(e) {
+            if (!fileInput.files.length) return;
+            var file = fileInput.files[0];
+            var ext = file.name.split('.').pop().toLowerCase();
+            var imageExts = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'];
+            var videoExts = ['mp4', 'mov', 'avi', 'wmv', 'flv', 'mkv'];
+            if (imageExts.includes(ext) || videoExts.includes(ext)) {
+              warning.style.display = 'block';
+              setTimeout(function(){ warning.style.display = 'none'; }, 6000);
+            }
+          });
+        }
+      });
+    </script>
   </body>
 </html>
