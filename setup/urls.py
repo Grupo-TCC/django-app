@@ -4,6 +4,7 @@ from django.urls import path, include, reverse_lazy
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
+from user.views import custom_logout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -15,7 +16,8 @@ urlpatterns = [
     path('feed/', include(("feed.urls", "feed"), namespace='feed')),
 
     # logout → back to user:register
-    path('logout/', auth_views.LogoutView.as_view(next_page='user:register'), name='logout'),
+    path('logout/', custom_logout, name='logout'),
+
 
     # password reset flow
     path(

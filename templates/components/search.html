@@ -1,16 +1,18 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'styles/search.css' %}" />
-
-<body>
-  <div class="search-box">
-    <img src="{% static 'assets/img/search.png' %}" />
+<div class="search-container">
+  <form class="search-box" autocomplete="off">
+    <button type="submit" class="search-btn" aria-label="Buscar">
+      <img src="{% static 'assets/img/search.png' %}" alt="Buscar" />
+    </button>
     <input
       type="text"
       id="search-input"
-      placeholder="Pesquisar.."
+      placeholder="Pesquisar..."
+      aria-label="Pesquisar"
       autocomplete="off"
     />
-  </div>
-
-  <script src="{% static 'js/search.js' %}"></script>
-</body>
+    <div class="search-spinner" id="search-spinner" style="display:none;"></div>
+  </form>
+</div>
+<script src="{% static 'js/search.js' %}"></script>

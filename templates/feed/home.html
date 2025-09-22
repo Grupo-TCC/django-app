@@ -95,11 +95,11 @@
       <!-- Left Sidebar -->
       <div class="left-sidebar">
         <div class="imp-links">
-          <a href="#"
-            ><img src="{% static 'assets/img/newspaper.png' %}" /> Últimas
-            Atualizações</a
+          <a href="{% url 'feed:artigos' %}"
+            ><img src="{% static 'assets/img/newspaper.png' %}" /> Artigos
+            Científicos</a
           >
-          <a href="{% url 'feed:community' %}"
+          <a href="{% url 'feed:conexao' %}"
             ><img src="{% static 'assets/img/friends.png' %}" /> Conexões</a
           >
           <a href=""

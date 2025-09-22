@@ -4,7 +4,7 @@ from django.contrib import messages
 from .models import User, Follow
 from .forms import ProfilePictureForm
 from django.http import JsonResponse, HttpResponseBadRequest
-from django.contrib.auth import get_user_model, authenticate, login
+from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.urls import reverse
 from django.core.mail import send_mail
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -131,6 +131,10 @@ def register(request):
         'login_form': login_form,
         
     })
+
+def custom_logout(request):
+    logout(request)
+    return redirect('user:register') 
     
 def verify_email(request, uidb64, token):
     try:

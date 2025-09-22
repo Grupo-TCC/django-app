@@ -42,12 +42,7 @@ class User(AbstractUser):
 
     fullname = models.CharField('full name', max_length=100)
     
-    title = models.CharField(
-        "title",
-        max_length=100,
-        blank=True,  # keep optional if you want
-        null=True
-    )
+    
     
     profile_picture = models.ImageField(
         upload_to="profile_pics/",

@@ -92,19 +92,20 @@
             method="POST"
             class="sign-up-form"
           >
-            {% csrf_token %} {% if messages %}
-            <script>
-              document.addEventListener("DOMContentLoaded", function () {
-                {% for message in messages %}
-                   toastr.options = {
+            {% csrf_token %}
+            {% if messages %}
+              <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                  {% for message in messages %}
+                    toastr.options = {
                       "closeButton": true,
                       "progressBar": true,
                       "positionClass": "toast-top-center"
-                   }
-                   toastr["{{ message.tags|default:"info" }}"](`{{ message|escapejs }}`)
-                {% endfor %}
-              })
-            </script>
+                    };
+                    toastr["{{ message.tags|default:'info' }}"](`{{ message|escapejs }}`);
+                  {% endfor %}
+                });
+              </script>
             {% endif %}
 
             <h2 class="title">Cadastre-se</h2>
@@ -126,10 +127,6 @@
               {{register_form.password2}}
             </div>
 
-            <div class="input-field">
-              <i class="bx bxs-lock-alt"></i>
-              {{register_form.title}}
-            </div>
 
             <input
               type="submit"

@@ -6,6 +6,10 @@ from user.models import User, Follow
 from .forms import PostForm
 from django.views.decorators.http import require_POST, require_http_methods
 from django.db.models import Count, Case, When, Value, IntegerField
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+from feed.article_models import Article
+from django.db.models import Q
 
 # Create your views here.
 
@@ -108,7 +112,7 @@ def community(request):
     following_ids = set(
         request.user.following.values_list("following_id", flat=True)
     )
-    return render(request, "feed/community.html", {
+    return render(request, "feed/conexao.html", {
         "users": users,
         "following_ids": following_ids,
     })
@@ -144,4 +148,32 @@ def toggle_follow(request, user_id):
 @login_required
 def settings_view(request):
     return render(request, "feed/settings.html")
+
+@login_required
+def artigos(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        research_area = request.POST.get('research_area')
+        pdf = request.FILES.get('pdf')
+        if title and research_area and pdf:
+            Article.objects.create(
+                user=request.user,
+                title=title,
+                research_area=research_area,
+                pdf=pdf
+            )
+            return redirect('feed:artigos')
+    # Filtering
+    query = request.GET.get('q', '').strip()
+    articles = Article.objects.select_related('user').order_by('-created_at')
+    if query:
+        articles = articles.filter(
+            Q(user__fullname__icontains=query) |
+            Q(title__icontains=query) |
+            Q(research_area__icontains=query)
+        )
+    return render(request, 'feed/artigos.html', {
+        'articles': articles,
+        'search_query': query
+    })
 

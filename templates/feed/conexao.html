@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Comunidade</title>
+    <link rel="stylesheet" href="{% static 'styles/conexao.css' %}" />
+  </head>
+  <body>
+    <h2>Comunidade</h2>
+    {% include "components/search.html" %}
+    <div class="community-container">
+      {% for user in users %}
+      <div class="user-card searchable">
+        <img src="{% static 'assets/img/no_pic.jpg' %}" class="profile-pic" />
+        <p class="name">{{ user.fullname }}</p>
+        
+        <button
+          class="follow-btn {% if user.id in following_ids %}following{% endif %}"
+          data-url="{% url 'feed:toggle_follow' user.id %}"
+        >
+          {% if user.id in following_ids %} Deixar de Seguir {% else %} Seguir
+          {% endif %}
+        </button>
+      </div>
+      {% empty %}
+      <p>Nenhum usuário encontrado.</p>
+      {% endfor %}
+    </div>
+    <a href="{% url 'feed:home' %}">Home</a>
+    <script src="{% static 'js/conexao.js' %}"></script>
+  </body>
+</html>
