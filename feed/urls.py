@@ -11,4 +11,6 @@ urlpatterns = [
     path("conexao/", views.community, name="conexao"),
     path("settings/", views.settings_view, name="settings"),
     path("artigos/", views.artigos, name="artigos"),
+    path("verificacao/", views.verificacao, name="verificacao"),
+    # path("verificacao/submit/", views.submit_verificacao, name="submit_verificacao"),
 ]

@@ -12,7 +12,7 @@
     <div class="community-container">
       {% for user in users %}
       <div class="user-card searchable">
-        <img src="{% static 'assets/img/no_pic.jpg' %}" class="profile-pic" />
+        <img src="{{ user.get_profile_picture_url }}" class="profile-pic" />
         <p class="name">{{ user.fullname }}</p>
         
         <button

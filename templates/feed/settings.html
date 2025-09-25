@@ -155,9 +155,7 @@
 
               <div class="settings-info">
                 <h2>{{ request.user.fullname }}</h2>
-                {% if request.user.innovator_verification.title %}
-                <small>{{ request.user.innovator_verification.title }}</small>
-                {% endif %}
+                
 
                 
               </div>
@@ -176,16 +174,17 @@
 
             <div class="settings-card">
               <p>
-                <strong>Cargo do usuário</strong><br />
-                {{ request.user.innovator_verification.title }}
+                <strong>E-mail</strong><br />
+                {{ request.user.email }}
               </p>
               <button class="btn-edit">Editar</button>
             </div>
-
             <div class="settings-card">
               <p>
-                <strong>E-mail</strong><br />
-                {{ request.user.email }}
+                <strong>Verificação de Pesquisador</strong><br />
+                <a href="{% url 'feed:verificacao' %}" />
+                  <p>clique para verificar</p>
+                
               </p>
               <button class="btn-edit">Editar</button>
             </div>

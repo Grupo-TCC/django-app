@@ -10,6 +10,7 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from feed.article_models import Article
 from django.db.models import Q
+# from user.forms import InnovatorVerificationForm    
 
 # Create your views here.
 
@@ -149,19 +150,15 @@ def toggle_follow(request, user_id):
 def settings_view(request):
     return render(request, "feed/settings.html")
 
-@login_required
 def artigos(request):
+    from .forms import ArticleForm
+    form = ArticleForm()
     if request.method == 'POST':
-        title = request.POST.get('title')
-        research_area = request.POST.get('research_area')
-        pdf = request.FILES.get('pdf')
-        if title and research_area and pdf:
-            Article.objects.create(
-                user=request.user,
-                title=title,
-                research_area=research_area,
-                pdf=pdf
-            )
+        form = ArticleForm(request.POST, request.FILES)
+        if form.is_valid():
+            article = form.save(commit=False)
+            article.user = request.user
+            article.save()
             return redirect('feed:artigos')
     # Filtering
     query = request.GET.get('q', '').strip()
@@ -174,6 +171,76 @@ def artigos(request):
         )
     return render(request, 'feed/artigos.html', {
         'articles': articles,
-        'search_query': query
+        'search_query': query,
+        'form': form,
     })
+
+@login_required
+def verificacao(request):
+    
+    # form = InnovatorVerificationForm(instance=getattr(request.user, 'innovator_verification', None))
+    # if request.method == 'POST':
+    #     form = InnovatorVerificationForm(request.POST, request.FILES, instance=getattr(request.user, 'innovator_verification', None))
+    #     if form.is_valid():
+    #         verification = form.save(commit=False)
+    #         verification.user = request.user
+    #         verification.save()
+    #         return redirect('feed:settings')
+    return render(request, 'feed/verificacao.html', {
+        # 'title': 'Verificação de Pesquisador',
+        # 'description': 'Envie seus documentos para verificação.',
+        # 'form_title': 'Formulário de Verificação',
+        # 'form': form,
+    })
+
+# def conexao_list(request):
+#     queryset = Conexao.objects.all()
+#     search_query = request.GET.get('q', '')
+#     search_type = request.GET.get('search_type', '')
+    
+#     if search_query:
+#         if search_type == 'name_only' or 'conexao' in request.path:
+#             # Search only by name for conexao page
+#             queryset = queryset.filter(
+#                 Q(name__icontains=search_query)
+#             )
+#         else:
+#             # Default search (multiple fields)
+#             queryset = queryset.filter(
+#                 Q(name__icontains=search_query) |
+#                 Q(description__icontains=search_query)
+#             )
+    
+#     context = {
+#         'conexoes': queryset,
+#         'search_query': search_query,
+#     }
+#     return render(request, 'conexao/list.html', context)
+
+# def artigo_list(request):
+#     queryset = Artigo.objects.all()
+#     search_query = request.GET.get('q', '')
+#     search_type = request.GET.get('search_type', '')
+    
+#     if search_query:
+#         if search_type == 'multiple_fields' or 'artigo' in request.path:
+#             # Search by name, title, research area for artigos
+#             queryset = queryset.filter(
+#                 Q(author__name__icontains=search_query) |
+#                 Q(title__icontains=search_query) |
+#                 Q(research_area__icontains=search_query) |
+#                 Q(abstract__icontains=search_query)
+#             )
+#         else:
+#             # Default search
+#             queryset = queryset.filter(
+#                 Q(title__icontains=search_query) |
+#                 Q(author__name__icontains=search_query)
+#             )
+    
+#     context = {
+#         'artigos': queryset,
+#         'search_query': search_query,
+#     }
+#     return render(request, 'artigo/list.html', context)
 

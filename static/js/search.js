@@ -1,58 +1,67 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const searchInput = document.getElementById("search-input");
-  const form = document.querySelector(".search-box");
-  const container = document.querySelector(".community-container") || document.querySelector(".articles-list") || document.body;
+// Search logic for all pages with search component
+(function() {
+  document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("search-input");
+    const searchForm = document.getElementById("search-form");
+    const searchSpinner = document.getElementById("search-spinner");
 
-  // Create or get the no-results message
-  let noResultMsg = document.getElementById("no-results-message");
-  if (!noResultMsg) {
-    noResultMsg = document.createElement("p");
-    noResultMsg.id = "no-results-message";
-    noResultMsg.textContent = "Nenhum resultado encontrado.";
-    noResultMsg.style.display = "none";
-    noResultMsg.style.textAlign = "center";
-    noResultMsg.style.color = "#888";
-    noResultMsg.style.marginTop = "2rem";
-    container.appendChild(noResultMsg);
-  }
-
-  if (form) {
-    form.addEventListener("submit", function (e) {
-      e.preventDefault(); // Prevent form submit
-    });
-  }
-
-  function escapeRegExp(string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  }
-
-  if (searchInput) {
-    searchInput.addEventListener("input", function () {
-      const query = this.value;
-      const items = document.querySelectorAll(".searchable");
-      let anyVisible = false;
-      items.forEach((item) => {
-        // Remove previous highlights
-        const original = item.getAttribute('data-original-text');
-        if (original) {
-          item.innerHTML = original;
-        } else {
-          item.setAttribute('data-original-text', item.innerHTML);
+    if (searchForm) {
+      searchForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const searchTerm = searchInput.value.trim();
+        const url = new URL(window.location.href);
+        
+        // Show loading spinner
+        if (searchSpinner) {
+          searchSpinner.style.display = 'inline-block';
         }
-        const text = item.textContent;
-        if (query && text.includes(query)) {
-          // Highlight the match (case sensitive)
-          const re = new RegExp(escapeRegExp(query), 'g');
-          item.innerHTML = text.replace(re, '<mark>$&</mark>');
-          item.style.display = "flex";
-          anyVisible = true;
-        } else if (!query) {
-          item.style.display = "flex";
+        
+        if (searchTerm) {
+          url.searchParams.set('q', searchTerm);
         } else {
-          item.style.display = "none";
+          url.searchParams.delete('q');
         }
+        
+        // Remove other search parameters to start fresh
+        url.searchParams.delete('search_type');
+        
+        // Add page-specific search type
+        const searchType = getSearchTypeForPage();
+        if (searchType) {
+          url.searchParams.set('search_type', searchType);
+        }
+        
+        // Redirect to new URL
+        setTimeout(() => {
+          window.location.href = url.toString();
+        }, 300);
       });
-      noResultMsg.style.display = anyVisible || !query ? "none" : "block";
-    });
-  }
-});
+    }
+
+    // Function to determine search type based on current page
+    function getSearchTypeForPage() {
+      const currentPath = window.location.pathname;
+      
+      if (currentPath.includes('/conexao/') || currentPath.includes('/conexoes/')) {
+        return 'name_only'; // Search only by name for conexao page
+      } else if (currentPath.includes('/artigos/') || currentPath.includes('/artigo/')) {
+        return 'multiple_fields'; // Search by name, title, research area for artigos
+      } else if (currentPath.includes('/pesquisadores/')) {
+        return 'researcher_fields'; // Search by name, institution, expertise
+      }
+      
+      return 'default'; // Fallback to default search
+    }
+
+    // Preserve search term on page load
+    if (searchInput) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const searchQuery = urlParams.get('q');
+      if (searchQuery) {
+        searchInput.value = searchQuery;
+      }
+    }
+  });
+})();

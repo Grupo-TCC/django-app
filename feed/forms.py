@@ -1,5 +1,6 @@
 from django import forms
 from .models import Post
+from .article_models import Article
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -28,4 +29,20 @@ class PostForm(forms.ModelForm):
             if hasattr(media, 'content_type') and media.content_type not in allowed_types:
                 raise forms.ValidationError('Tipo de arquivo não suportado. Envie PDF, DOC, DOCX, PPT, PPTX, PNG ou JPEG.')
         return media
+
+class ArticleForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = ['pdf', 'title', 'research_area']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': 'Título do artigo', 'class': 'form-control'}),
+            'research_area': forms.TextInput(attrs={'placeholder': 'Área de pesquisa', 'class': 'form-control'}),
+        }
+
+    def clean_pdf(self):
+        pdf = self.cleaned_data.get('pdf')
+        if pdf:
+            if not pdf.name.lower().endswith('.pdf'):
+                raise forms.ValidationError('Apenas arquivos PDF são permitidos.')
+        return pdf
 

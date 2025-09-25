@@ -70,3 +70,26 @@ class ProfilePictureForm(forms.ModelForm):
         model = User
         fields = ["profile_picture"]
 
+
+# class InnovatorVerificationForm(forms.ModelForm):
+#     class Meta:
+#         model = User.InnovatorVerification
+#         fields = ['title', 'institution', 'document']
+#         widgets = {
+#             'title': forms.TextInput(attrs={'placeholder': 'Seu cargo (ex: Estudante, Professor, Pesquisador)', 'class': 'form-control'}),
+#             'institution': forms.TextInput(attrs={'placeholder': 'Sua instituição (ex: Universidade de São Paulo)', 'class': 'form-control'}),
+#             'document': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+#         }
+        
+    def clean_document(self):
+        document = self.cleaned_data.get('document')
+        if document:
+            allowed_types = [
+                'application/pdf',
+                'image/png',
+                'image/jpeg',
+            ]
+            if hasattr(document, 'content_type') and document.content_type not in allowed_types:
+                raise forms.ValidationError('Tipo de arquivo não suportado. Envie PDF, PNG ou JPEG.')
+        return document 
+
