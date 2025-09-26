@@ -1,94 +1,75 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
     <title>Innovator</title>
-
-    <!-- Boxicons -->
-    <link
-      href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css"
-      rel="stylesheet"
-    />
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'styles/home.css' %}?v=1.2" />
-  </head>
-  <body>
+    <link rel="stylesheet" href="{% static 'styles/home.css' %}">
+</head>
+<body>
     <nav>
-      <div class="nav-left">
-        <img src="{% static 'assets/img/newlogo.png' %}" class="logo" />
-        <ul>
-          <li><img src="{% static 'assets/img/notification.png' %}" /></li>
-          <li><img src="{% static 'assets/img/inbox.png' %}" /></li>
-          <li><img src="{% static 'assets/img/video.png' %}" /></li>
-        </ul>
-      </div>
-
-      <div class="nav-right">
-
-        <div class="nav-user-icon online" onclick="settingsMenuToggle()">
-          <img src="{{ request.user.get_profile_picture_url }}" alt="Foto de Perfil">
-
+        <div class="nav-left">
+            <img src="{% static 'assets/img/logo.png' %}" class="logo">
+            <ul>
+                <li><img src="{% static 'assets/img/notification.png' %}"></li>
+                <li><img src="{% static 'assets/img/inbox.png' %}"></li>
+            </ul>
         </div>
+        <div class="nav-right">
+            <div class="search-box">
+                <img src="{% static 'assets/img/search.png' %}">
+                <input type="text" placeholder="Pesquisar pesquisadores ou temas">
+            </div>
+            <div class="nav-user-icon online" onclick="settingsMenuToggle()">
+                <img src="{{ request.user.get_profile_picture_url }}">
+            </div>
 
-        <!-- Settings -->
-        <div class="settings-menu">
-          <div id="dark-btn"><span></span></div>
-          <div class="settings-menu-inner">
-            <div class="user-profile">
-              <img src="{{ request.user.get_profile_picture_url }}" alt="Foto de Perfil">
+            <!--configs-->
+            <div class="settings-menu">
+                <div id="dark-btn">
+                    <span></span>
+                </div>
 
-              <div>
-                <p>{{ request.user.fullname }}</p>
-                {% if request.user.innovator_verification and request.user.innovator_verification.title %}
-                   <small>{{ request.user.innovator_verification.title }}</small>
-                {% endif %}
-                <a href="#">Ver Perfil</a>
-              </div>
-            </div>
-            <hr />
-            <div class="user-profile">
-              <img src="{% static 'assets/img/feedback.png' %}" />
-              <div>
-                <p>Nos dê seu feedback</p>
-                <a href="#">Ajude a melhorar nosso site</a>
-              </div>
-            </div>
-            <hr />
-            <div class="settings-links">
-              <img
-                src="{% static 'assets/img/setting.png' %}"
-                class="settings-icon"
-              />
-              <a href="{% url 'feed:settings' %}"
-                >Configuração & Privacidade
-                <img src="{% static 'assets/img/arrow.png' %}" width="10px"
-              /></a>
-            </div>
-            <div class="settings-links">
-              <img
-                src="{% static 'assets/img/help.png' %}"
-                class="settings-icon"
-              />
-              <a href="#"
-                >Ajuda
-                <img src="{% static 'assets/img/arrow.png' %}" width="10px"
-              /></a>
-            </div>
-            <div class="settings-links">
-              <img
-                src="{% static 'assets/img/logout.png' %}"
-                class="settings-icon"
-              />
-              <a href="{% url 'logout' %}">Sair <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+                <div class="settings-menu-inner">
+                    <div class="user-profile">
+                        <img src="{{ request.user.get_profile_picture_url }}">
+                        <div>
+                            <p>{{ request.user.fullname }}</p>
+                           <a href="#">Ver Perfil</a>
+                        </div>
+                    </div>
 
+                    <hr>
+                    <div class="user-profile">
+                        <img src="{% static 'assets/img/feedback.png' %}">
+                        <div>
+                            <p>Nos dê seu feedback </p>
+                            <a href="#">Ajude a melhorar nosso site</a>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="settings-links">
+                        <img src="{% static 'assets/img/setting.png' %}" class="settings-icon">
+                         <a href="{% url 'feed:settings' %}">Configuração & Privacidade <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+                    </div>
+
+                    <div class="settings-links">
+                        <img src="{% static 'assets/img/help.png' %}" class="settings-icon">
+                        <a href="#">Ajuda <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+                    </div>
+
+                    <div class="settings-links">
+                        <img src="{% static 'assets/img/logout.png' %}" class="settings-icon">
+                        <a href="{% url 'logout' %}">Sair <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </nav>
 
     <div class="container">

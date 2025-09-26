@@ -12,5 +12,6 @@ urlpatterns = [
     path("settings/", views.settings_view, name="settings"),
     path("artigos/", views.artigos, name="artigos"),
     path("verificacao/", views.verificacao, name="verificacao"),
+    path("perfil/", views.perfil, name="perfil"),
     # path("verificacao/submit/", views.submit_verificacao, name="submit_verificacao"),
 ]

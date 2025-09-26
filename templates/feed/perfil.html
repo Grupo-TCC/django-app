@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil - Innovator</title>
+  <link rel="stylesheet" href="{% static 'styles/perfil.css' %}">
+</head>
+<body>
+  <nav>
+    <div class="nav-left">
+  <img src="{% static 'assets/img/logo.png' %}" class="logo">
+      <ul>
+  <li><img src="{% static 'assets/img/notification.png' %}"></li>
+  <li><img src="{% static 'assets/img/inbox.png' %}"></li>
+      </ul>
+    </div>
+    <div class="nav-right">
+      <div class="search-box">
+        <img src="{% static 'assets/img/search.png' %}">
+        <input type="text" placeholder="Pesquisar pesquisadores ou temas">
+      </div>
+      <div class="nav-user-icon online">
+        <img src="{% static 'assets/img/profile-pic.png' %}">
+      </div>
+    </div>
+    </div>
+
+    <!--settings-->
+                <div class="settings-menu">
+                <div id="dark-btn">
+                    <span></span>
+                </div>
+
+                <div class="settings-menu-inner">
+                    <div class="user-profile">
+                        <img src="{% static 'assets/img/profile-pic.png' %}">
+                        <div>
+                            <p>John Nicholson</p>
+                           <a href="#">Ver Perfil</a>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <div class="user-profile">
+                        <img src="{% static 'assets/img/feedback.png' %}">
+                        <div>
+                            <p>Nos dê seu feedback </p>
+                            <a href="#">Ajude a melhorar nosso site</a>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="settings-links">
+                        <img src="{% static 'assets/img/setting.png' %}" class="settings-icon">
+                         <a href="settings.html">Configuração & Privacidade <img src="img/arrow.png" width="10px"></a>
+                    </div>
+
+                    <div class="settings-links">
+                        <img src="{% static 'assets/img/help.png' %}" class="settings-icon">
+                        <a href="#">Ajuda <img src="img/arrow.png" width="10px"></a>
+                    </div>
+
+                    <div class="settings-links">
+                        <img src="{% static 'assets/img/logout.png' %}" class="settings-icon">
+                        <a href="#">Sair <img src="img/arrow.png" width="10px"></a>
+                    </div>
+                </div>
+  </nav>
+
+  <div class="container">
+    <!-- Lateral esquerda igual -->
+    <div class="left-sidebar">
+      <div class="imp-links">
+  <a href="#"><img src="{% static 'assets/img/newspaper.png' %}"> Últimas Atualizações</a>
+  <a href="#"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
+  <a href="#"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
+      </div>
+    </div>
+
+
+    <!-- Conteúdo principal -->
+    <div class="main-content">
+      <div class="profile-header">
+        <div class="profile-cover"></div>
+        <div class="profile-info">
+          <img src="{% static 'assets/img/profile-pic.png' %}" class="profile-pic-big">
+          <h2>John Nicholson</h2>
+          <p class="profile-role">Pesquisador em Inteligência Artificial</p>
+          <p class="profile-bio">
+            Apaixonado por tecnologia e inovação, atuo em projetos de IA aplicados à educação e saúde.
+          </p>
+          <a href="#" class="editar-btn">Editar Perfil</a>
+        </div>
+      </div>
+
+      <div class="profile-content">
+        <div class="profile-section">
+          <h3>Publicações</h3>
+          <div class="post-container">
+            <p class="post-text">
+              Meu último artigo: <a href="#">Redes Neurais no ensino</a>.
+            </p>
+            <img src="{% static 'assets/img/post-artigo.png' %}" class="post-img">
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <h3>Conexões</h3>
+          <div class="seguindo-lista">
+            <div class="seguindo-item">
+              <img src="{% static 'assets/img/member-1.png' %}">
+              <p>Diva Luna</p>
+            </div>
+            <div class="seguindo-item">
+              <img src="{% static 'assets/img/member-2.png' %}">
+              <p>Lucas Brito</p>
+            </div>
+            <div class="seguindo-item">
+              <img src="{% static 'assets/img/member-3.png' %}">
+              <p>Leila Tales</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <h3>Sobre</h3>
+          <p>
+            Doutorando em Ciência da Computação pela Universidade Federal, com foco em IA aplicada.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lateral direita -->
+    <div class="right-sidebar">
+      <div class="sidebar-title">
+        <h4>Últimas Publicações</h4>
+        <a href="#">Ver todas</a>
+      </div>
+      <div class="event">
+        <div class="left-event">
+          <h3>18</h3>
+          <span>Set</span>
+        </div>
+        <div class="right-event">
+          <h4>Workshop de Inovação</h4>
+          <p><i class='bx bx-location'></i> Unijorge</p>
+          <a href="#">Ver mais</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

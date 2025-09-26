@@ -196,6 +196,10 @@ def verificacao(request):
         # 'form': form,
     })
 
+# View para página de perfil
+def perfil(request):
+    return render(request, 'feed/perfil.html')
+
 # def conexao_list(request):
 #     queryset = Conexao.objects.all()
 #     search_query = request.GET.get('q', '')
