@@ -41,7 +41,7 @@
 }
 
 .follow-btn {
-  background: #007bff;
+  background: #28a745;
   color: #fff;
   border: none;
   border-radius: 20px;
@@ -52,14 +52,14 @@
   transition: background 0.2s;
 }
 .follow-btn:hover {
-  background: #0056b3;
+  background: #218838;
 }
 .follow-btn.following {
   background: #f8f9fa;
-  color: #007bff;
+  color: #28a745;
   border: 1.5px solid #e0e0e0;
 }
 .follow-btn.following:hover {
-  background: #007bff;
+  background: #28a745;
   color: #fff;
 }

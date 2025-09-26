@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{% static 'styles/conexao.css' %}" />
   </head>
   <body>
-    <h2>Comunidade</h2>
+    <h2>Seguir Outros Pesquisadores</h2>
     {% include "components/search.html" %}
     <div class="community-container">
       {% for user in users %}
@@ -27,7 +27,8 @@
       <p>Nenhum usuário encontrado.</p>
       {% endfor %}
     </div>
-    <a href="{% url 'feed:home' %}">Home</a>
+    
     <script src="{% static 'js/conexao.js' %}"></script>
+    <script src="{% static 'js/search.js' %}"></script>
   </body>
 </html>

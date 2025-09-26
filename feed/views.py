@@ -107,15 +107,18 @@ def comments_api(request, post_id):
         "count": post.comments.count(),
     })
     
-@login_required
 def community(request):
+    query = request.GET.get('q', '').strip()
     users = User.objects.exclude(id=request.user.id)
+    if query:
+        users = users.filter(fullname__icontains=query)
     following_ids = set(
         request.user.following.values_list("following_id", flat=True)
     )
     return render(request, "feed/conexao.html", {
         "users": users,
         "following_ids": following_ids,
+        "search_query": query,
     })
     
 @login_required

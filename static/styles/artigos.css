@@ -1,3 +1,7 @@
+.search-bar:focus {
+  border: 1.5px solid #28a745;
+  outline: none;
+}
 .artigos-header {
   display: flex;
   align-items: center;
@@ -12,11 +16,11 @@
   flex: 1;
   padding: 8px 12px;
   border-radius: 20px;
-  border: 1.5px solid #e0e0e0;
+  border: 1.5px solid #28a745;
   font-size: 1rem;
 }
 .search-btn {
-  background: #007bff;
+  background: #28a745;
   color: #fff;
   border: none;
   border-radius: 20px;
@@ -26,10 +30,10 @@
   transition: background 0.2s;
 }
 .search-btn:hover {
-  background: #0056b3;
+  background: #218838;
 }
 .plus-btn {
-  background: #007bff;
+  background: #28a745;
   color: #fff;
   border: none;
   border-radius: 50%;
@@ -44,11 +48,11 @@
   transition: background 0.2s;
 }
 .plus-btn:hover {
-  background: #0056b3;
+  background: #218838;
 }
 .home-btn {
   background: #f8f9fa;
-  color: #007bff;
+  color: #28a745;
   border: 1.5px solid #e0e0e0;
   border-radius: 20px;
   padding: 8px 18px;
@@ -58,7 +62,7 @@
   transition: background 0.2s, color 0.2s;
 }
 .home-btn:hover {
-  background: #007bff;
+  background: #28a745;
   color: #fff;
 }
 .modal {
@@ -101,7 +105,7 @@
   border: 1px solid #ccc;
 }
 #article-upload-form button[type="submit"] {
-  background: #007bff;
+  background: #28a745;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -110,7 +114,7 @@
   font-size: 1rem;
 }
 #article-upload-form button[type="submit"]:hover {
-  background: #0056b3;
+  background: #218838;
 }
 .articles-list {
   margin-top: 32px;
@@ -137,11 +141,11 @@
   font-size: 0.95rem;
 }
 .article-link {
-  color: #007bff;
+  color: #28a745;
   text-decoration: underline;
   font-size: 0.98rem;
   margin-top: 2px;
 }
 .article-link:hover {
-  color: #0056b3;
+  color: #218838;
 }
