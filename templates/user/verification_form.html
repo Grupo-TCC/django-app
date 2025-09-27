@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Verificação de Usuário</title>
+  <link rel="stylesheet" href="{% static 'styles/register.css' %}">
+</head>
+<body>
+  <h2>Envie seu link de verificação</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enviar</button>
+  </form>
+</body>
+</html>

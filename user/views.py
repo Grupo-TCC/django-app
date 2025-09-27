@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from user.forms import LoginForms, CustomUserCreationForm
+from user.forms import LoginForms, CustomUserCreationForm, UserVerificationForm
 from django.contrib import messages
-from .models import User, Follow
+from .models import User, Follow, UserVerification
 from .forms import ProfilePictureForm
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.contrib.auth import get_user_model, authenticate, login, logout
@@ -12,6 +12,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 User = get_user_model()
@@ -148,16 +149,19 @@ def verify_email(request, uidb64, token):
         messages.error(request, 'Link de verificação inválido ou expirado')
         return redirect('user:register')
     
-    # Mark email verified
-    if not user.email_verified:
-        user.email_verified = True
-        user.is_active = True  # mark email verified
-        user.save(update_fields=['is_active', "is_active"])
-        
-        
-    login(request, user)   # first login happens here
-        
-    return redirect('feed:home')
+    # ensure UserVerification exists
+    verification, _ = UserVerification.objects.get_or_create(user=user)
+
+    if request.method == "POST":
+        form = UserVerificationForm(request.POST, instance=verification)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Seu link foi enviado para verificação pelo administrador.")
+            return redirect("user:register")
+    else:
+        form = UserVerificationForm(instance=verification)
+
+    return render(request, "user/verification_form.html", {"form": form})
     
     
 
@@ -175,11 +179,8 @@ def auto_login(request, uidb64, token):
     except (User.DoesNotExist, ValueError, TypeError):
         user = None
 
-    if not user:
-        return redirect('user:register')
-
-    # Must be verified and active at this point
-    if not user.email_verified or not user.is_active:
+    if not user or not user.email_verified or not user.is_active:
+        messages.error(request, "Usuário inválido.")
         return redirect('user:register')
 
     # Validate token

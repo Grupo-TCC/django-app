@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'feed.apps.FeedConfig',
 ]
 
-AUTH_USER_MODEL = 'innovator.User'
+AUTH_USER_MODEL = 'user.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -155,6 +155,8 @@ EMAIL_HOST_USER = "innovator.app1@gmail.com"
 EMAIL_HOST_PASSWORD = os.getenv("GMAIL_APP_PASSWORD")  # app password from step 3
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_TIMEOUT = 30
+PASSWORD_RESET_TIMEOUT = 60 * 60 * 24 * 3  # 3 days
+
 
 LOGIN_REDIRECT_URL = "/feed/"
 LOGOUT_REDIRECT_URL = "/register/"

@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import User
+from .models import User, UserVerification
 
 
 class LoginForms(forms.Form):
@@ -8,10 +8,8 @@ class LoginForms(forms.Form):
         label='',
         required=True,
         max_length=100,
-        widget=forms.EmailInput(attrs={'placeholder': 'Email' })
-        
-    )
-    
+        widget=forms.EmailInput(attrs={'placeholder': 'Email' })        
+    )   
     
     password = forms.CharField(
         label='',
@@ -20,9 +18,7 @@ class LoginForms(forms.Form):
         widget=forms.PasswordInput(attrs={'placeholder': 'Senha'})
     )
     
-class CustomUserCreationForm(UserCreationForm):
-    
-        
+class CustomUserCreationForm(UserCreationForm):       
     fullname = forms.CharField(
         label='',
         required=True,
@@ -41,10 +37,7 @@ class CustomUserCreationForm(UserCreationForm):
         max_length=100,
         widget=forms.TextInput(attrs={'placeholder': 'Curso (ex: Ciência da Computação)'})
     )
-
-    
-    
-    
+  
     class Meta:
         model = User  # Your CustomUser model
         fields = ('email', 'fullname')
@@ -70,26 +63,14 @@ class ProfilePictureForm(forms.ModelForm):
         model = User
         fields = ["profile_picture"]
 
-
-# class InnovatorVerificationForm(forms.ModelForm):
-#     class Meta:
-#         model = User.InnovatorVerification
-#         fields = ['title', 'institution', 'document']
-#         widgets = {
-#             'title': forms.TextInput(attrs={'placeholder': 'Seu cargo (ex: Estudante, Professor, Pesquisador)', 'class': 'form-control'}),
-#             'institution': forms.TextInput(attrs={'placeholder': 'Sua instituição (ex: Universidade de São Paulo)', 'class': 'form-control'}),
-#             'document': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-#         }
-        
-    def clean_document(self):
-        document = self.cleaned_data.get('document')
-        if document:
-            allowed_types = [
-                'application/pdf',
-                'image/png',
-                'image/jpeg',
-            ]
-            if hasattr(document, 'content_type') and document.content_type not in allowed_types:
-                raise forms.ValidationError('Tipo de arquivo não suportado. Envie PDF, PNG ou JPEG.')
-        return document 
+class UserVerificationForm(forms.ModelForm):
+    class Meta:
+        model = UserVerification
+        fields = ["link"]
+        widgets = {
+            "link": forms.URLInput(attrs={
+                "placeholder": "Cole o link do seu perfil (Google Scholar, ORCID, LinkedIn, etc.)",
+                "class": "input-text"
+            })
+        }
 

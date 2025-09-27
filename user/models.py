@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_save, post_delete
 from django.dispatch import receiver
 import os
+import uuid
 
 
 
@@ -56,6 +57,7 @@ class User(AbstractUser):
         return settings.STATIC_URL + "assets/img/no_pic.jpg"
     
     email_verified = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)  # Change default to False
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['fullname']
@@ -65,15 +67,23 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
     
-def validate_doc_extension(value):
-    ext = os.path.splitext(value.name)[1].lower()
-    if ext not in [".pdf", ".png", ".jpg", ".jpeg"]:
-        raise ValidationError("Formato inválido. Envie PDF, PNG, JPG ou JPEG.")
-    
-def validate_doc_size(value):
-    limit_mb = 10
-    if value.size > limit_mb * 1024 * 1024:
-        raise ValidationError(f"Arquivo muito grande. Máx {limit_mb}MB.")
+class UserVerification(models.Model):
+    STATUS_CHOICES = [
+        ("PENDING", "Pendente"),
+        ("APPROVED", "Aprovado"),
+        ("REJECTED", "Rejeitado"),
+    ]
+
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="verification")
+    link = models.URLField("Link de verificação", max_length=500)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="PENDING")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    # permanent login token for approved users
+    login_token = models.UUIDField(default=uuid.uuid4, unique=True)
+
+    def __str__(self):
+        return f"{self.user.email} - {self.status}"
     
 
     
