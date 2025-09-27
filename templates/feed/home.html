@@ -1,328 +1,266 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
-    <title>Innovator</title>
-    <link rel="stylesheet" href="{% static 'styles/home.css' %}">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+  <title>Innovator</title>
+  <link rel="stylesheet" href="{% static 'styles/home.css' %}">
 </head>
 <body>
-    <nav>
-        <div class="nav-left">
-            <img src="{% static 'assets/img/logo.png' %}" class="logo">
-            <ul>
-                <li><img src="{% static 'assets/img/notification.png' %}"></li>
-                <li><img src="{% static 'assets/img/inbox.png' %}"></li>
-            </ul>
-        </div>
-        <div class="nav-right">
-            <div class="search-box">
-                <img src="{% static 'assets/img/search.png' %}">
-                <input type="text" placeholder="Pesquisar pesquisadores ou temas">
-            </div>
-            <div class="nav-user-icon online" onclick="settingsMenuToggle()">
-                <img src="{{ request.user.get_profile_picture_url }}">
-            </div>
+  <!-- NAV -->
+  <nav>
+    <div class="nav-left">
+      <img src="{% static 'assets/img/logo.png' %}" class="logo">
+      <ul>
+        <li><img src="{% static 'assets/img/notification.png' %}"></li>
+        <li><img src="{% static 'assets/img/inbox.png' %}"></li>
+      </ul>
+    </div>
 
-            <!--configs-->
-            <div class="settings-menu">
-                <div id="dark-btn">
-                    <span></span>
-                </div>
-
-                <div class="settings-menu-inner">
-                    <div class="user-profile">
-                        <img src="{{ request.user.get_profile_picture_url }}">
-                        <div>
-                            <p>{{ request.user.fullname }}</p>
-                           <a href="#">Ver Perfil</a>
-                        </div>
-                    </div>
-
-                    <hr>
-                    <div class="user-profile">
-                        <img src="{% static 'assets/img/feedback.png' %}">
-                        <div>
-                            <p>Nos dê seu feedback </p>
-                            <a href="#">Ajude a melhorar nosso site</a>
-                        </div>
-                    </div>
-                    <hr>
-
-                    <div class="settings-links">
-                        <img src="{% static 'assets/img/setting.png' %}" class="settings-icon">
-                         <a href="{% url 'feed:settings' %}">Configuração & Privacidade <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
-                    </div>
-
-                    <div class="settings-links">
-                        <img src="{% static 'assets/img/help.png' %}" class="settings-icon">
-                        <a href="#">Ajuda <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
-                    </div>
-
-                    <div class="settings-links">
-                        <img src="{% static 'assets/img/logout.png' %}" class="settings-icon">
-                        <a href="{% url 'logout' %}">Sair <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container">
-      <!-- Left Sidebar -->
-      <div class="left-sidebar">
-        <div class="imp-links">
-          <a href="{% url 'feed:artigos' %}"
-            ><img src="{% static 'assets/img/newspaper.png' %}" /> Artigos
-            Científicos</a
-          >
-          <a href="{% url 'feed:conexao' %}"
-            ><img src="{% static 'assets/img/friends.png' %}" /> Conexões</a
-          >
-          <a href=""
-            ><img src="{% static 'assets/img/people.png' %}" /> Comunidades</a
-          >
-        </div>
+    <div class="nav-right">
+      <div class="search-box">
+        <img src="{% static 'assets/img/search.png' %}">
+        <input type="text" placeholder="Pesquisar pesquisadores ou temas">
+      </div>
+      <div class="nav-user-icon online" onclick="settingsMenuToggle()">
+        <img src="{{ request.user.get_profile_picture_url }}">
       </div>
 
-      <!-- Main Content -->
-       
-      <div class="main-content">
-        <div class="create-post">
-          <div class="create-post-top">
-            <img src="{{ request.user.get_profile_picture_url }}" alt="Foto de Perfil" class="profile-pic">
-
-            
-            <div class="fake-placeholder" id="openPostModal">
-              Comece uma publicação
-              
-
+      <!-- Settings Menu -->
+      <div class="settings-menu">
+        <div id="dark-btn"><span></span></div>
+        <div class="settings-menu-inner">
+          <div class="user-profile">
+            <img src="{{ request.user.get_profile_picture_url }}">
+            <div>
+              <p>{{ request.user.fullname }}</p>
+              <a href="{% url 'feed:perfil' %}">Ver Perfil</a>
             </div>
-            
-            
-            
           </div>
-          <!-- <div class="create-post-actions">
-            <div class="action">
-              <img src="{% static 'assets/img/play.png' %}" /><span>Vídeo</span>
+          <hr>
+          <div class="user-profile">
+            <img src="{% static 'assets/img/feedback.png' %}">
+            <div>
+              <p>Nos dê seu feedback</p>
+              <a href="#">Ajude a melhorar nosso site</a>
             </div>
-            <div class="action">
-              <img src="{% static 'assets/img/image.png' %}" /><span>Foto</span>
-            </div>
-          </div> -->
+          </div>
+          <hr>
+          <div class="settings-links">
+            <img src="{% static 'assets/img/setting.png' %}" class="settings-icon">
+            <a href="{% url 'feed:settings' %}">Configuração & Privacidade 
+              <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+          </div>
+          <div class="settings-links">
+            <img src="{% static 'assets/img/help.png' %}" class="settings-icon">
+            <a href="#">Ajuda 
+              <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+          </div>
+          <div class="settings-links">
+            <img src="{% static 'assets/img/logout.png' %}" class="settings-icon">
+            <a href="{% url 'logout' %}">Sair 
+              <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+          </div>
         </div>
-        
-    
+      </div>
+    </div>
+  </nav>
 
+  <!-- CONTAINER -->
+  <div class="container">
+    <!-- LEFT SIDEBAR -->
+    <div class="left-sidebar">
+      <div class="imp-links">
+        <a href="{% url 'feed:artigos' %}">
+          <img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos
+        </a>
+        <a href="{% url 'feed:conexao' %}">
+          <img src="{% static 'assets/img/friends.png' %}"> Conexões
+        </a>
+        <a href="#"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
+      </div>
+    </div>
 
-        <!-- Post Modal -->
-        <!-- Modal de publicação (Form is now here) -->
-<div class="post-modal" id="postModal">
-  <div class="post-modal-content">
-    <span class="close-modal" id="closeModal">&times;</span>
-
-    <form method="POST" enctype="multipart/form-data" class="post-form">
-      {% csrf_token %}
-      <div class="user-profile">
-        <img src="{{ request.user.get_profile_picture_url }}" alt="Foto de Perfil">
-
-        <div>
-          <p>{{ request.user.fullname }}</p>
-          <small>Publicar em Todos</small>
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <!-- Create Post -->
+      <div class="create-post">
+        <div class="create-post-top">
+          <img src="{{ request.user.get_profile_picture_url }}" class="profile-pic">
+          <div class="fake-placeholder" id="openPostModal">Comece uma publicação</div>
         </div>
       </div>
 
-      {{ form.content }}
-      <input type="file" name="media" id="id_media" accept=".pdf,.doc,.docx,.ppt,.pptx,image/png,image/jpeg" />
-
-      <div class="modal-actions">
-        <img src="{% static 'assets/img/smile.png' %}" alt="Emoji">
-        <label for="id_media">
-          <img src="{% static 'assets/img/image.png' %}" alt="Imagem">
-        </label>
+      <!-- Modal -->
+      <div class="post-modal" id="postModal">
+        <div class="post-modal-content">
+          <span class="close-modal" id="closeModal">&times;</span>
+          <form method="POST" enctype="multipart/form-data" class="post-form">
+            {% csrf_token %}
+            <div class="user-profile">
+              <img src="{{ request.user.get_profile_picture_url }}">
+              <div>
+                <p>{{ request.user.fullname }}</p>
+                <small>Publicar em Todos</small>
+              </div>
+            </div>
+            {{ form.content }}
+            <input type="file" name="media" id="id_media" accept=".pdf,.doc,.docx,.ppt,.pptx,image/png,image/jpeg">
+            <div class="modal-actions">
+              <img src="{% static 'assets/img/smile.png' %}" alt="Emoji">
+              <label for="id_media">
+                <img src="{% static 'assets/img/image.png' %}" alt="Imagem">
+              </label>
+            </div>
+            <button type="submit" class="publish-btn">Publicar</button>
+          </form>
+        </div>
       </div>
 
-      <button type="submit" class="publish-btn">Publicar</button>
-    </form>
-  </div>
-</div>
-
-
-        <!-- Post -->
-        <div class="post-container">
-          
-          
-            {% for post in posts %}
-  <div class="post-container">
-    <div class="post-row">
-      <div class="user-profile" style="flex-direction:column;align-items:center;">
-        <img src="{{ post.user.get_profile_picture_url }}" alt="Foto de Perfil">
-        <div style="text-align:center;">
-          <p style="margin-bottom:0;">{{ post.user.fullname }}</p>
-          <small style="color:#888;display:block;margin:4px 0 0 0;">{{ post.created_at|date:"d M Y, H:i" }}</small>
-          {% if post.user.innovator_verification and post.user.innovator_verification.title %}
+      <!-- POSTS -->
+      {% for post in posts %}
+      <div class="post-container">
+        <div class="post-row">
+          <div class="user-profile">
+            <img src="{{ post.user.get_profile_picture_url }}">
+            <div>
+              <p>{{ post.user.fullname }}</p>
+              <small>{{ post.created_at|date:"d M Y, H:i" }}</small>
+              {% if post.user.innovator_verification and post.user.innovator_verification.title %}
                 <small>{{ post.user.innovator_verification.title }}</small>
+              {% endif %}
+            </div>
+          </div>
+          <div class="post-options">
+            <i class='bx bx-dots-horizontal-rounded menu-icon'></i>
+            <div class="menu-dropdown">
+              <button class="delete-post">Excluir</button>
+            </div>
+          </div>
+        </div>
+
+        <p class="post-text">{{ post.content }}</p>
+
+        {% if post.media %}
+          {% if post.media.name|lower|slice:"-4:" == ".mp4" %}
+            <video controls class="post-img"><source src="{{ post.media.url }}" type="video/mp4"></video>
+          {% elif post.media.name|lower|slice:"-4:" in ".jpg,.png,.jpeg" %}
+            <img src="{{ post.media.url }}" class="post-img">
+          {% else %}
+            <a href="{{ post.media.url }}" target="_blank" class="post-text">📁 Baixar Arquivo</a>
           {% endif %}
-        </div>
-      </div>
-    </div>
-    <p class="post-text">{{ post.content }}</p>
-
-      {% if post.media %}
-        {% if post.media.name|lower|slice:"-4:" == ".mp4" %}
-          <video controls width="100%" class="post-img">
-            <source src="{{ post.media.url }}" type="video/mp4">
-          </video>
-        {% elif post.media.name|lower|slice:"-4:" == ".pdf" %}
-          <a href="{{ post.media.url }}" target="_blank">📄 Visualizar PDF</a>
-        {% elif post.media.name|lower|slice:"-4:" == ".doc" %}
-          <a href="{{ post.media.url }}" target="_blank">📝 Baixar Documento Word</a>
-        {% elif post.media.name|lower|slice:"-5:" == ".docx" %}
-          <a href="{{ post.media.url }}" target="_blank">📝 Baixar Documento Word</a>
-        {% elif post.media.name|lower|slice:"-4:" == ".ppt" %}
-          <a href="{{ post.media.url }}" target="_blank">📊 Baixar Apresentação PowerPoint</a>
-        {% elif post.media.name|lower|slice:"-5:" == ".pptx" %}
-          <a href="{{ post.media.url }}" target="_blank">📊 Baixar Apresentação PowerPoint</a>
-        {% elif post.media.name|lower|slice:"-4:" == ".png" %}
-          <img src="{{ post.media.url }}" class="post-img" />
-        {% elif post.media.name|lower|slice:"-5:" == ".jpeg" %}
-          <img src="{{ post.media.url }}" class="post-img" />
-        {% elif post.media.name|lower|slice:"-4:" == ".jpg" %}
-          <img src="{{ post.media.url }}" class="post-img" />
-        {% else %}
-          <a href="{{ post.media.url }}" target="_blank">📁 Baixar Arquivo</a>
         {% endif %}
-      {% endif %}
-      <small>{{ post.created_at|date:"d M Y, H:i" }}</small>
-      <div class="post-row">
-            <div class="activity-icons">
-              <div class="post-profile-icon">
-                <div
-                  class="like-btn{% if post.id in liked_ids %} liked{% endif %}"
-                  data-post-id="{{ post.id }}"
-                  role="button"
-                  aria-pressed="{% if post.id in liked_ids %}true{% else %}false{% endif %}"
-                >
-                  <img id="like-icon-{{ post.id }}" src="{% static 'assets/img/like.png' %}" alt="like">
-                  <span class="like-count" id="like-count-{{ post.id }}">{{ post.like_count }}</span>
-              </div>
-              <div class="comment-btn" data-post-id="{{ post.id }}" role="button" tabindex="0">
-                  <img src="{% static 'assets/img/bubble-chat.png' %}" alt="comments" /> 
-                  <span id="comment-count-{{ post.id }}">{{ post.comment_count }}</span>
-              </div>
-                <div><img src="{% static 'assets/img/share.png' %}" /> </div>
-              </div>
-              
-            </div>
-            {# COLLAPSIBLE COMMENT PANEL #}
-            <div id="comments-panel-{{ post.id }}" class="comments-panel" hidden>
-              <div class="comments-list" id="comments-list-{{ post.id }}">
-                <!-- filled by JS -->
-              </div>
-              <form class="comment-form" data-post-id="{{ post.id }}">
-                {% csrf_token %}
-                <input type="text" name="body" class="comment-input" placeholder="Escreva um comentário…">
-                <button type="submit" class="comment-submit">Enviar</button>
-              </form>
-            </div>
 
+        <div class="post-row">
+          <div class="activity-icons">
+            <div class="post-profile-icon">
+              <div class="like-btn{% if post.id in liked_ids %} liked{% endif %}" data-post-id="{{ post.id }}">
+                <img src="{% static 'assets/img/like.png' %}">
+                <span class="like-count">{{ post.like_count }}</span>
+              </div>
+              <div class="comment-btn" data-post-id="{{ post.id }}">
+                <img src="{% static 'assets/img/bubble-chat.png' %}">
+                <span>{{ post.comment_count }}</span>
+              </div>
+              <div><img src="{% static 'assets/img/share.png' %}"></div>
+            </div>
           </div>
+        </div>
+
+        <!-- Comments Section (CORRIGIDA - sem duplicação) -->
+        <div id="comments-panel-{{ post.id }}" class="comments-section" hidden>
+          <div class="comments-list" id="comments-list-{{ post.id }}">
+            {% for comment in post.comments.all %}
+              <div class="comment {% if comment.user == request.user %}own{% else %}other{% endif %}">
+                <img src="{{ comment.user.get_profile_picture_url }}" class="profile-pic">
+                <div class="comment-body">
+                  <p class="comment-author">
+                    {{ comment.user.fullname }}
+                    <span class="comment-time">· {{ comment.created_at|timesince }} atrás</span>
+                  </p>
+
+                  {% if comment.user == request.user %}
+                    <small class="comment-role">Você</small>
+                  {% elif comment.user.innovator_verification and comment.user.innovator_verification.title %}
+                    <small class="comment-role">{{ comment.user.innovator_verification.title }}</small>
+                  {% else %}
+                    <small class="comment-role">Leitor</small>
+                  {% endif %}
+
+                  <p class="comment-text">{{ comment.body }}</p>
+                  <a href="#" class="comment-reply">Responder</a>
+                </div>
+              </div>
+            {% empty %}
+              <p class="no-comments">Nenhum comentário ainda.</p>
+            {% endfor %}
+          </div>
+
+          <!-- Add Comment Form -->
+          <form class="comment-form" data-post-id="{{ post.id }}">
+            {% csrf_token %}
+            <img src="{{ request.user.get_profile_picture_url }}" class="profile-pic">
+            <input type="text" name="body" class="comment-input" placeholder="Adicionar comentário...">
+          </form>
+        </div>
+      </div>
+      {% empty %}
+        <p>No posts yet.</p>
+      {% endfor %}
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="right-sidebar">
+      <div class="sidebar-title">
+        <h4>Últimas Publicações</h4>
+        <a href="#">Ver todas</a>
+      </div>
+      <div class="event">
+        <div class="left-event">
+          <h3>10</h3>
+          <span>Jul</span>
+        </div>
+        <div class="right-event">
+          <h4>Redes Neurais Aplicadas</h4>
+          <p><i class='bx bx-location'></i> Universidade Federal do Sul</p>
+          <a href="#">Ver Publicação</a>
+        </div>
+      </div>
+      <div class="event">
+        <div class="left-event">
+          <h3>02</h3>
+          <span>Jul</span>
+        </div>
+        <div class="right-event">
+          <h4>Psicologia do Aprendizado</h4>
+          <p><i class='bx bx-location'></i> Revista Cognitiva</p>
+          <a href="#">Ver Publicação</a>
+        </div>
+      </div>
+
+      <div class="sidebar-title">
+        <h4>Conversas</h4>
+        <a href="#">Esconder conversa</a>
+      </div>
+      <div class="online-list">
+        <div class="online"><img src="{% static 'assets/img/member-1.png' %}"></div>
+        <p>Diva Luna</p>
+      </div>
+      <div class="online-list">
+        <div class="online"><img src="{% static 'assets/img/member-2.png' %}"></div>
+        <p>Lucas Brito</p>
+      </div>
+      <div class="online-list">
+        <div class="online"><img src="{% static 'assets/img/member-3.png' %}"></div>
+        <p>Leila Tales</p>
+      </div>
+    </div>
   </div>
-        {% empty %}
-          <p>No posts yet.</p>
-        {% endfor %}
 
-
-    </p>
-          
-      
-          
-        </div>
-          
-        
-      </div>
-
-      <!-- Right Sidebar -->
-      <div class="right-sidebar">
-        <div class="sidebar-title">
-          <h4>Últimas Publicações</h4>
-          <a href="#">Ver todas</a>
-        </div>
-        <div class="event">
-          <div class="left-event">
-            <h3>10</h3>
-            <span>Jul</span>
-          </div>
-          <div class="right-event">
-            <h4>Redes Neurais Aplicadas</h4>
-            <p><i class="bx bx-location"></i> Universidade Federal do Sul</p>
-            <a href="#">Ver Publicação</a>
-          </div>
-        </div>
-        <div class="event">
-          <div class="left-event">
-            <h3>02</h3>
-            <span>Jul</span>
-          </div>
-          <div class="right-event">
-            <h4>Psicologia do Aprendizado</h4>
-            <p><i class="bx bx-location"></i> Revista Cognitiva</p>
-            <a href="#">Ver Publicação</a>
-          </div>
-        </div>
-        <img src="{% static 'assets/img/profile3.jpg' %}" class="sidebar-ads" />
-        <div class="sidebar-title">
-          <h4>Conversas</h4>
-          <a href="#">Esconder conversa</a>
-        </div>
-        <div class="online-list">
-          <div class="online">
-            <img src="{% static 'assets/img/member-1.png' %}" />
-          </div>
-          <p>Diva Luna</p>
-        </div>
-        <div class="online-list">
-          <div class="online">
-            <img src="{% static 'assets/img/member-2.png' %}" />
-          </div>
-          <p>Lucas Brito</p>
-        </div>
-        <div class="online-list">
-          <div class="online">
-            <img src="{% static 'assets/img/member-3.png' %}" />
-          </div>
-          <p>Leila Tales</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer">
-      <p>Innovator 2025</p>
-    </div>
-
-    <script src="{% static 'js/home.js' %}"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var fileInput = document.getElementById('id_media');
-        var warning = document.getElementById('media-warning');
-        if (fileInput) {
-          fileInput.addEventListener('change', function(e) {
-            if (!fileInput.files.length) return;
-            var file = fileInput.files[0];
-            var ext = file.name.split('.').pop().toLowerCase();
-            var imageExts = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'];
-            var videoExts = ['mp4', 'mov', 'avi', 'wmv', 'flv', 'mkv'];
-            if (imageExts.includes(ext) || videoExts.includes(ext)) {
-              warning.style.display = 'block';
-              setTimeout(function(){ warning.style.display = 'none'; }, 6000);
-            }
-          });
-        }
-      });
-    </script>
-  </body>
+  <div class="footer"><p>Innovator 2025</p></div>
+  <script src="{% static 'js/home.js' %}"></script>
+</body>
 </html>

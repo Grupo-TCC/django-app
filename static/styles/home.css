@@ -328,7 +328,6 @@ nav {
     padding: 20px;
     color: var(--font-color);
     margin: 20px 0;
-    
 }
 
 .user-profile img {
@@ -418,6 +417,7 @@ nav {
     font-size: 13px;
 }
 
+/* === Settings menu === */
 .settings-menu {
     position: absolute;
     width: 90%;
@@ -464,17 +464,6 @@ nav {
     border-radius: 50%;
 }
 
-.settings-links p {
-    font-weight: 500;
-    color: var(--font-color);
-    margin-bottom: 3px;
-}
-
-.settings-links small {
-    font-size: 12px;
-    color: var(--grey-colorhelp);
-}
-
 .settings-links a {
     display: flex;
     flex: 1;
@@ -484,6 +473,7 @@ nav {
     color: var(--font-color);
 }
 
+/* === Dark Mode Button === */
 #dark-btn {
     position: absolute;
     top: 20px;
@@ -510,6 +500,7 @@ nav {
     background: #0a0a0a;
 }
 
+/* === Post Modal === */
 .post-modal {
     display: none;
     position: fixed;
@@ -594,13 +585,12 @@ nav {
     margin-left: auto;
 }
 
-
 .publish-btn.active {
     cursor: pointer;
     opacity: 1;
 }
 
- .fake-placeholder {
+.fake-placeholder {
     flex: 1;
     padding: 10px 15px;
     border: 1px solid var(--grey-colorhelp);
@@ -610,91 +600,107 @@ nav {
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.2s;
-  }
-  .fake-placeholder:hover {
+}
+
+.fake-placeholder:hover {
     background-color: #eaeaea;
-  }
-  
-  .comments-section {
-  margin-top: 15px;
-  padding-top: 15px;
-  border-top: 1px solid var(--grey-colorhelp);
 }
 
-.add-comment {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.add-comment .profile-pic {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-.add-comment input {
-  flex: 1;
-  border: 1px solid var(--grey-colorhelp);
-  border-radius: 20px;
-  padding: 8px 14px;
-  font-size: 14px;
-  background: var(--others-color);
+/* === Comments Section === */
+.comments-section {
+    margin-top: 15px;
+    border-top: 1px solid var(--grey-colorhelp);
+    padding-top: 10px;
 }
 
 .comment {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
 }
 
 .comment .profile-pic {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-  object-fit: cover;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-right: 10px;
+    flex-shrink: 0;
 }
 
 .comment-body {
-  flex: 1;
+    background: transparent;
+    padding: 0;
+    flex: 1;
 }
 
-.comment-user {
-  font-weight: 600;
-  font-size: 14px;
-  color: var(--font-color);
+.comment-author {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--almostblack-color);
+    margin-bottom: 2px;
 }
 
-.comment-user .time {
-  font-weight: 400;
-  font-size: 12px;
-  color: var(--grey-colorhelp);
+.comment-time {
+    font-weight: normal;
+    font-size: 12px;
+    color: var(--grey-colorhelp);
+    margin-left: 5px;
 }
 
 .comment-role {
-  font-size: 12px;
-  color: var(--grey-colorhelp);
-  margin-bottom: 4px;
+    display: block;
+    font-size: 12px;
+    color: var(--grey-colorhelp);
+    margin-bottom: 4px;
 }
 
 .comment-text {
-  font-size: 14px;
-  margin-bottom: 5px;
-  color: var(--font-color);
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: var(--almostblack-color);
 }
 
-.comment-actions {
-  font-size: 12px;
-  color: var(--highlight-color);
-  cursor: pointer;
+.comment-reply {
+    font-size: 13px;
+    color: var(--main-color);
+    font-weight: 500;
+    cursor: pointer;
 }
 
-.comment-actions span {
-  margin-right: 10px;
+.comment-reply:hover {
+    text-decoration: underline;
 }
 
+.no-comments {
+    font-size: 13px;
+    color: var(--grey-colorhelp);
+}
+
+/* === Comment Form === */
+.comment-form {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.comment-form .profile-pic {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.comment-form .comment-input {
+    flex: 1;
+    border: 1px solid var(--grey-colorhelp);
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-size: 14px;
+    background: var(--others-color);
+    outline: none;
+}
+
+/* === Post options === */
 .post-options {
     position: relative;
     cursor: pointer;
@@ -748,3 +754,160 @@ nav {
   pointer-events: none;
   text-decoration: none;
 }
+
+/* === ESTILIZAÇÃO PARA COMENTÁRIOS PRÓPRIOS (OWN) === */
+.comment.own {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 10px 0;
+}
+
+.comment.own .comment-body {
+    background: #e3f2fd; /* Azul claro para destacar comentários próprios */
+    border: 1px solid #bbdefb;
+    border-radius: 12px;
+    padding: 10px 14px;
+    max-width: 80%;
+    text-align: left;
+    box-shadow: 0 1px 3px rgba(33, 150, 243, 0.1);
+}
+
+.comment.own .profile-pic {
+    margin-right: 10px;
+    margin-left: 0;
+    border: 2px solid var(--highlight-color);
+}
+
+.comment.own .comment-author {
+    font-weight: 600;
+    font-size: 13px;
+    color: #1565c0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.comment.own .comment-time {
+    font-size: 11px;
+    color: #64b5f6;
+    margin-left: 6px;
+}
+
+.comment.own .comment-role {
+    font-size: 11px;
+    color: #42a5f5;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.comment.own .comment-text {
+    font-size: 14px;
+    margin: 4px 0;
+    color: #0d47a1;
+    line-height: 1.4;
+}
+
+.comment.own .comment-reply {
+    font-size: 12px;
+    color: #1976d2;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.comment.own .comment-reply:hover {
+    text-decoration: underline;
+}
+
+/* === ESTILIZAÇÃO PARA COMENTÁRIOS DE OUTROS USUÁRIOS === */
+.comment.other {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 10px 0;
+}
+
+.comment.other .comment-body {
+    background: #f5f5f5; /* Cinza claro para comentários de outros */
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 10px 14px;
+    max-width: 80%;
+    text-align: left;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.comment.other .profile-pic {
+    margin-right: 10px;
+    margin-left: 0;
+    border: 2px solid #e0e0e0;
+}
+
+.comment.other .comment-author {
+    font-weight: 600;
+    font-size: 13px;
+    color: #37474f;
+    display: flex;
+    justify-content: space-between;
+}
+
+.comment.other .comment-time {
+    font-size: 11px;
+    color: #78909c;
+    margin-left: 6px;
+}
+
+.comment.other .comment-role {
+    font-size: 11px;
+    color: #546e7a;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.comment.other .comment-text {
+    font-size: 14px;
+    margin: 4px 0;
+    color: #263238;
+    line-height: 1.4;
+}
+
+.comment.other .comment-reply {
+    font-size: 12px;
+    color: var(--main-color);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.comment.other .comment-reply:hover {
+    text-decoration: underline;
+}
+
+/* === Ajustes para tema escuro === */
+.dark-theme .comment.own .comment-body {
+    background: #1a237e;
+    border-color: #283593;
+}
+
+.dark-theme .comment.own .comment-author {
+    color: #90caf9;
+}
+
+.dark-theme .comment.own .comment-text {
+    color: #e3f2fd;
+}
+
+.dark-theme .comment.other .comment-body {
+    background: #2d2d2d;
+    border-color: #404040;
+}
+
+.dark-theme .comment.other .comment-author {
+    color: #cfd8dc;
+}
+
+.dark-theme .comment.other .comment-text {
+    color: #eceff1;
+}
+
+.post-container { position: relative; z-index: 0; }
+.comments-section { position: relative; z-index: 0; }
+.menu-dropdown { z-index: 10; }

@@ -233,3 +233,64 @@ document.addEventListener("DOMContentLoaded", function () {
 
   videos.forEach((video) => observer.observe(video));
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".comment-form").forEach(form => {
+    const input = form.querySelector(".comment-input");
+
+    input.addEventListener("keydown", function (event) {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault(); // evita quebra de linha
+        form.submit(); // envia o form
+      }
+    });
+  });
+});
+
+// abre/fecha painel de comentários do post correto
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.comment-btn');
+  if (!btn) return;
+  const postId = btn.dataset.postId;
+  const panel = document.getElementById(`comments-panel-${postId}`);
+  if (panel) panel.hidden = !panel.hidden;
+});
+
+// envia comentário e insere dentro da lista certa (com .own)
+document.addEventListener('keydown', async (e) => {
+  const input = e.target.closest('.comment-input');
+  if (!input) return;
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    const form = input.closest('.comment-form');
+    const postId = form.dataset.postId;
+    const body = input.value.trim();
+    if (!body) return;
+
+    // --- faça aqui seu POST via fetch/AJAX para criar o comentário ---
+    // await fetch(`/posts/${postId}/comments/`, { method: 'POST', body: ... })
+
+    // mock de sucesso: insere no DOM
+    const list = document.getElementById(`comments-list-${postId}`);
+    if (list) {
+      const html = `
+        <div class="comment own">
+          <img src="${form.querySelector('.profile-pic').src}" class="profile-pic">
+          <div class="comment-body">
+            <p class="comment-author">
+              {{ request.user.fullname }}
+              <span class="comment-time">· agora</span>
+            </p>
+            <small class="comment-role">Você</small>
+            <p class="comment-text"></p>
+            <a href="#" class="comment-reply">Responder</a>
+          </div>
+        </div>`;
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = html.trim();
+      wrapper.querySelector('.comment-text').textContent = body;
+      list.appendChild(wrapper.firstChild);
+    }
+    input.value = '';
+  }
+});

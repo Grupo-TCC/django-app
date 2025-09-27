@@ -131,7 +131,7 @@ def toggle_follow(request, user_id):
 
     # Prevent self-follow
     if user == target_user:
-        return JsonResponse({"success": False, "message": "You cannot follow yourself."}, status=400)
+        return JsonResponse({"success": False, "message": "Você não pode seguir a si mesmo."}, status=400)
 
     follow_obj, created = Follow.objects.get_or_create(follower=user, following=target_user)
 
@@ -142,10 +142,18 @@ def toggle_follow(request, user_id):
     else:
         is_following = True
 
+    # Dados do usuário seguido para atualizar a lista via JS
+    user_data = {
+        "id": target_user.id,
+        "fullname": target_user.fullname,
+        "profile_picture_url": target_user.get_profile_picture_url(),
+        # Adicione outros campos se necessário
+    }
+
     return JsonResponse({
         "success": True,
         "is_following": is_following,
-        "user_id": target_user.id,
+        "user": user_data,
     })
     
 

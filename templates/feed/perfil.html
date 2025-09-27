@@ -8,12 +8,13 @@
   <link rel="stylesheet" href="{% static 'styles/perfil.css' %}">
 </head>
 <body>
+  <!-- Navbar -->
   <nav>
     <div class="nav-left">
-  <img src="{% static 'assets/img/logo.png' %}" class="logo">
+      <img src="{% static 'assets/img/logo.png' %}" class="logo">
       <ul>
-  <li><img src="{% static 'assets/img/notification.png' %}"></li>
-  <li><img src="{% static 'assets/img/inbox.png' %}"></li>
+        <li><img src="{% static 'assets/img/notification.png' %}"></li>
+        <li><img src="{% static 'assets/img/inbox.png' %}"></li>
       </ul>
     </div>
     <div class="nav-right">
@@ -22,135 +23,192 @@
         <input type="text" placeholder="Pesquisar pesquisadores ou temas">
       </div>
       <div class="nav-user-icon online">
-        <img src="{% static 'assets/img/profile-pic.png' %}">
+        <img src="{{ request.user.get_profile_picture_url }}">
       </div>
     </div>
-    </div>
-
-    <!--settings-->
-                <div class="settings-menu">
-                <div id="dark-btn">
-                    <span></span>
-                </div>
-
-                <div class="settings-menu-inner">
-                    <div class="user-profile">
-                        <img src="{% static 'assets/img/profile-pic.png' %}">
-                        <div>
-                            <p>John Nicholson</p>
-                           <a href="#">Ver Perfil</a>
-                        </div>
-                    </div>
-
-                    <hr>
-                    <div class="user-profile">
-                        <img src="{% static 'assets/img/feedback.png' %}">
-                        <div>
-                            <p>Nos dê seu feedback </p>
-                            <a href="#">Ajude a melhorar nosso site</a>
-                        </div>
-                    </div>
-                    <hr>
-
-                    <div class="settings-links">
-                        <img src="{% static 'assets/img/setting.png' %}" class="settings-icon">
-                         <a href="settings.html">Configuração & Privacidade <img src="img/arrow.png" width="10px"></a>
-                    </div>
-
-                    <div class="settings-links">
-                        <img src="{% static 'assets/img/help.png' %}" class="settings-icon">
-                        <a href="#">Ajuda <img src="img/arrow.png" width="10px"></a>
-                    </div>
-
-                    <div class="settings-links">
-                        <img src="{% static 'assets/img/logout.png' %}" class="settings-icon">
-                        <a href="#">Sair <img src="img/arrow.png" width="10px"></a>
-                    </div>
-                </div>
   </nav>
 
-  <div class="container">
-    <!-- Lateral esquerda igual -->
-    <div class="left-sidebar">
-      <div class="imp-links">
-  <a href="#"><img src="{% static 'assets/img/newspaper.png' %}"> Últimas Atualizações</a>
-  <a href="#"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
-  <a href="#"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
-      </div>
-    </div>
-
-
-    <!-- Conteúdo principal -->
-    <div class="main-content">
-      <div class="profile-header">
-        <div class="profile-cover"></div>
-        <div class="profile-info">
-          <img src="{% static 'assets/img/profile-pic.png' %}" class="profile-pic-big">
-          <h2>John Nicholson</h2>
-          <p class="profile-role">Pesquisador em Inteligência Artificial</p>
-          <p class="profile-bio">
-            Apaixonado por tecnologia e inovação, atuo em projetos de IA aplicados à educação e saúde.
-          </p>
-          <a href="#" class="editar-btn">Editar Perfil</a>
+    <div class="container">
+      <!-- LEFT SIDEBAR -->
+      <div class="left-sidebar">
+        <div class="imp-links">
+          <a href="{% url 'feed:artigos' %}">
+            <img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos
+          </a>
+          <a href="{% url 'feed:conexao' %}">
+            <img src="{% static 'assets/img/friends.png' %}"> Conexões
+          </a>
+          <a href="#"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
+        </div>
+        <div class="shortcut-links">
+          <!-- Exemplo de atalho igual home.html -->
+          <!--
+          <a href="#"><img src="{% static 'assets/img/post-artigo.png' %}"> <p>Postar Artigo</p></a>
+          -->
         </div>
       </div>
 
-      <div class="profile-content">
-        <div class="profile-section">
-          <h3>Publicações</h3>
-          <div class="post-container">
-            <p class="post-text">
-              Meu último artigo: <a href="#">Redes Neurais no ensino</a>.
-            </p>
-            <img src="{% static 'assets/img/post-artigo.png' %}" class="post-img">
-          </div>
-        </div>
-
-        <div class="profile-section">
-          <h3>Conexões</h3>
-          <div class="seguindo-lista">
-            <div class="seguindo-item">
-              <img src="{% static 'assets/img/member-1.png' %}">
-              <p>Diva Luna</p>
-            </div>
-            <div class="seguindo-item">
-              <img src="{% static 'assets/img/member-2.png' %}">
-              <p>Lucas Brito</p>
-            </div>
-            <div class="seguindo-item">
-              <img src="{% static 'assets/img/member-3.png' %}">
-              <p>Leila Tales</p>
+      <!-- MAIN CONTENT -->
+      <div class="main-content">
+        <!-- Perfil -->
+        <div class="profile-header">
+          <div class="banner">
+            <button class="edit-profile-btn" type="button" onclick="openEditModal()">Editar perfil</button>
+            <!-- Modal de edição de informações pessoais -->
+            <div id="edit-profile-modal" class="modal" style="display:none;">
+              <div class="modal-content vertical-modal">
+                <span class="close-modal" onclick="closeEditModal()">&times;</span>
+                <form id="edit-profile-form" method="post" action="" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <label for="fullname">Nome completo</label>
+                  <input type="text" id="fullname" name="fullname" value="{{ request.user.fullname }}" required>
+                  <label for="role">Área de pesquisa</label>
+                  <input type="text" id="role" name="role" value="{{ request.user.title }}" placeholder="Ex: Pesquisador(a) em Biologia, Ciências Sociais, etc.">
+                  <label for="bio">Resumo</label>
+                  <input type="text" id="bio" name="bio" value="{{ request.user.bio }}" placeholder="Ex: Pesquisa em inovação, educação, saúde, meio ambiente...">
+                  <label for="university">Instituição</label>
+                  <input type="text" id="university" name="university" value="{{ request.user.university }}" placeholder="Ex: UFBA, USP, Unijorge, etc.">
+                  <button type="submit" class="save-btn">Salvar</button>
+                </form>
+              </div>
             </div>
           </div>
+          <div class="profile-pic-wrapper">
+            <img src="{{ request.user.get_profile_picture_url }}" class="profile-pic-big" id="profile-pic-img">
+          </div>
         </div>
+  <style>
+    .edit-profile-btn {
+      position: absolute;
+      top: 16px;
+      right: 24px;
+      background: #256d4a;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 7px 18px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      z-index: 2;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: background 0.2s;
+    }
+    .edit-profile-btn:hover {
+      background: #1e5a3b;
+    }
+    .modal {
+      display: flex;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.3);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 30px 30px 20px 30px;
+      border-radius: 10px;
+      min-width: 320px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .vertical-modal {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+      max-width: 400px;
+    }
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 18px;
+      font-size: 28px;
+      color: #256d4a;
+      cursor: pointer;
+    }
+    .modal-content label {
+      font-size: 14px;
+      color: #256d4a;
+      margin-bottom: 2px;
+    }
+    .modal-content input {
+      padding: 7px 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+    .save-btn {
+      background: #256d4a;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 18px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 10px;
+      align-self: flex-end;
+    }
+    .save-btn:hover {
+      background: #1e5a3b;
+    }
+    .banner {
+      background: #256d4a;
+      /* cor verde escura */
+    }
+    .profile-pic-wrapper {
+      position: absolute;
+      bottom: -50px;
+      left: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  </style>
+  <script>
+    function openEditModal() {
+      document.getElementById('edit-profile-modal').style.display = 'flex';
+    }
+    function closeEditModal() {
+      document.getElementById('edit-profile-modal').style.display = 'none';
+    }
+    // Fecha modal ao clicar fora do conteúdo
+    window.onclick = function(event) {
+      var modal = document.getElementById('edit-profile-modal');
+      if (event.target === modal) {
+        closeEditModal();
+      }
+    }
+  </script>
 
-        <div class="profile-section">
-          <h3>Sobre</h3>
-          <p>
-            Doutorando em Ciência da Computação pela Universidade Federal, com foco em IA aplicada.
+        <div class="profile-details">
+          <h1 class="profile-name">{{ request.user.fullname }}</h1>
+          <p class="profile-role">{{ request.user.title|default:'Pesquisador(a)' }}</p>
+          <p class="profile-bio">{{ request.user.bio|default:'Atua em pesquisa científica, inovação ou extensão.' }}</p>
+          <p class="profile-location">
+            <img src="{% static 'assets/img/unijorge.png' %}" class="edu-icon"> {{ request.user.university|default:'Instituição de pesquisa' }}
           </p>
         </div>
-      </div>
-    </div>
 
-    <!-- Lateral direita -->
-    <div class="right-sidebar">
-      <div class="sidebar-title">
-        <h4>Últimas Publicações</h4>
-        <a href="#">Ver todas</a>
-      </div>
-      <div class="event">
-        <div class="left-event">
-          <h3>18</h3>
-          <span>Set</span>
-        </div>
-        <div class="right-event">
-          <h4>Workshop de Inovação</h4>
-          <p><i class='bx bx-location'></i> Unijorge</p>
-          <a href="#">Ver mais</a>
+        <!-- Aviso de verificação -->
+        <div class="verify-box">
+          <p><strong>Renata, você ainda não fez a verificação</strong></p>
+          <span>O selo de verificação é um sinal de confiança, para as pessoas se sentirem mais seguras ao interagirem com você.</span>
+          <button class="btn-verify">Fazer verificação agora</button>
         </div>
       </div>
+
+      <!-- INVISIBLE RIGHT SIDEBAR (for centering) -->
+      <div class="right-sidebar invisible-sidebar" aria-hidden="true"></div>
     </div>
-  </div>
 </body>
 </html>

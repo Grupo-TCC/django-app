@@ -10,19 +10,19 @@
 <body>
   <nav>
     <div class="nav-left">
-  <img src="{% static 'assets/img/logo.png' %}" class="logo">
+  <a href="{% url 'feed:home' %}"><img src="{% static 'assets/img/logo.png' %}" class="logo"></a>
       <ul>
   <li><img src="{% static 'assets/img/notification.png' %}"></li>
   <li><img src="{% static 'assets/img/inbox.png' %}"></li>
       </ul>
     </div>
     <div class="nav-right">
-      <div class="search-box">
+      <form class="search-box" method="get" action="">
         <img src="{% static 'assets/img/search.png' %}">
-        <input type="text" placeholder="Pesquisar pesquisadores ou temas">
-      </div>
+        <input type="text" name="q" placeholder="Pesquisar pessoas" value="{{ search_query|default:'' }}">
+      </form>
 <div class="nav-user-icon online" onclick="settingsMenuToggle()">
-  <img src="{% static 'assets/img/profile-pic.png' %}">
+  <img src="{{ request.user.get_profile_picture_url }}">
 </div>
 
 <!-- Bloco de configurações -->
@@ -33,10 +33,10 @@
 
   <div class="settings-menu-inner">
     <div class="user-profile">
-  <img src="{% static 'assets/img/profile-pic.png' %}">
+      <img src="{{ request.user.get_profile_picture_url }}">
       <div>
-        <p>John Nicholson</p>
-        <a href="#">Ver Perfil</a>
+        <p>{{ request.user.fullname }}</p>
+  <a href="{% url 'feed:perfil' %}">Ver Perfil</a>
       </div>
     </div>
 
@@ -75,7 +75,7 @@
   <div class="container">
     <div class="left-sidebar">
       <div class="imp-links">
-  <a href="{% url 'feed:home' %}"><img src="{% static 'assets/img/newspaper.png' %}"> Últimas Atualizações</a>
+  <a href="{% url 'feed:artigos' %}"><img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos</a>
   <a href="{% url 'feed:conexao' %}" class="active"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
   <a href="#"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
       </div>
@@ -86,18 +86,21 @@
   <div class="post-container">
     <h3>Pessoas que você segue</h3>
     <div class="seguindo-lista">
-      <div class="seguindo-item">
-  <img src="{% static 'assets/img/member-1.png' %}">
-        <p>Diva Luna</p>
-      </div>
-      <div class="seguindo-item">
-  <img src="{% static 'assets/img/member-2.png' %}">
-        <p>Lucas Brito</p>
-      </div>
-      <div class="seguindo-item">
-  <img src="{% static 'assets/img/member-3.png' %}">
-        <p>Marcos Silva</p>
-      </div>
+      {% with seguidos=0 %}
+        {% for user in users %}
+          {% if user.id in following_ids %}
+            {% ifchanged %}{% with seguidos=1 %}{% endwith %}{% endifchanged %}
+            <div class="seguindo-item" id="seguindo-{{ user.id }}">
+              <img src="{{ user.get_profile_picture_url }}">
+              <p>{{ user.fullname }}</p>
+              <button type="button" class="seguir-link follow-btn following" data-url="{% url 'feed:toggle_follow' user.id %}">Deixar de Seguir</button>
+            </div>
+          {% endif %}
+        {% endfor %}
+        {% if not following_ids or not users|yesno:'1,0' %}
+          <p>Você ainda não segue ninguém.</p>
+        {% endif %}
+      {% endwith %}
     </div>
   </div>
 
@@ -105,24 +108,22 @@
   <div class="post-container">
     <h3>Sugestões para seguir</h3>
     <div class="sugestoes-grid">
-      <div class="sugestao-card">
-  <img src="{% static 'assets/img/member-4.png' %}">
-        <h4>Leila Tales</h4>
-        <p>Pesquisadora em Biotecnologia</p>
-        <a href="#" class="seguir-link">Seguir</a>
-      </div>
-      <div class="sugestao-card">
-  <img src="{% static 'assets/img/member-5.png' %}">
-        <h4>Carlos Mendes</h4>
-        <p>Ciência de Dados</p>
-        <a href="#" class="seguir-link">Seguir</a>
-      </div>
-      <div class="sugestao-card">
-  <img src="{% static 'assets/img/member-6.png' %}">
-        <h4>Ana Paula</h4>
-        <p>Engenharia Biomédica</p>
-        <a href="#" class="seguir-link">Seguir</a>
-      </div>
+      {% for user in users %}
+        {% if user.id not in following_ids %}
+          <div class="sugestao-card">
+            <img src="{{ user.get_profile_picture_url }}">
+            <h4>{{ user.fullname }}</h4>
+            {% if user.innovator_verification and user.innovator_verification.title %}
+              <p>{{ user.innovator_verification.title }}</p>
+            {% else %}
+              <p>Leitor</p>
+            {% endif %}
+            <button type="button" class="seguir-link follow-btn" data-url="{% url 'feed:toggle_follow' user.id %}">Seguir</button>
+          </div>
+        {% endif %}
+      {% empty %}
+        <p>Nenhuma sugestão encontrada.</p>
+      {% endfor %}
     </div>
   </div>
 </div>
@@ -133,5 +134,6 @@
   </div>
 
   <script src="{% static 'js/home.js' %}"></script>
+  <script src="{% static 'js/conexao.js' %}"></script>
 </body>
 </html>
