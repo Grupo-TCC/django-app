@@ -86,25 +86,6 @@
           <a href=""
             ><img src="{% static 'assets/img/people.png' %}" /> Comunidades</a
           >
-          <a href="#">Ver Mais</a>
-        </div>
-        <div class="shortcut-links">
-          <p>Suas Áreas</p>
-          <a href="#"
-            ><img src="{% static 'assets/img/shortcut-1.png' %}" /> Inteligência
-            Artificial</a
-          >
-          <a href="#"
-            ><img src="{% static 'assets/img/shortcut-2.png' %}" />
-            Neurociência</a
-          >
-          <a href="#"
-            ><img src="{% static 'assets/img/shortcut-3.png' %}" /> Educação</a
-          >
-          <a href="#"
-            ><img src="{% static 'assets/img/shortcut-4.png' %}" /> Meio
-            Ambiente</a
-          >
         </div>
       </div>
 
@@ -178,15 +159,14 @@
             {% for post in posts %}
   <div class="post-container">
     <div class="post-row">
-      <div class="user-profile">
+      <div class="user-profile" style="flex-direction:column;align-items:center;">
         <img src="{{ post.user.get_profile_picture_url }}" alt="Foto de Perfil">
-        <div>
-          <p>{{ post.user.fullname }}</p>
+        <div style="text-align:center;">
+          <p style="margin-bottom:0;">{{ post.user.fullname }}</p>
+          <small style="color:#888;display:block;margin:4px 0 0 0;">{{ post.created_at|date:"d M Y, H:i" }}</small>
           {% if post.user.innovator_verification and post.user.innovator_verification.title %}
                 <small>{{ post.user.innovator_verification.title }}</small>
           {% endif %}
-          
-          
         </div>
       </div>
     </div>
@@ -293,10 +273,6 @@
             <p><i class="bx bx-location"></i> Revista Cognitiva</p>
             <a href="#">Ver Publicação</a>
           </div>
-        </div>
-        <div class="sidebar-title">
-          <h4>Destaques</h4>
-          <a href="#">Fechar</a>
         </div>
         <img src="{% static 'assets/img/profile3.jpg' %}" class="sidebar-ads" />
         <div class="sidebar-title">

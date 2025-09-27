@@ -1,34 +1,137 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Comunidade</title>
-    <link rel="stylesheet" href="{% static 'styles/conexao.css' %}" />
-  </head>
-  <body>
-    <h2>Seguir Outros Pesquisadores</h2>
-    {% include "components/search.html" %}
-    <div class="community-container">
-      {% for user in users %}
-      <div class="user-card searchable">
-        <img src="{{ user.get_profile_picture_url }}" class="profile-pic" />
-        <p class="name">{{ user.fullname }}</p>
-        
-        <button
-          class="follow-btn {% if user.id in following_ids %}following{% endif %}"
-          data-url="{% url 'feed:toggle_follow' user.id %}"
-        >
-          {% if user.id in following_ids %} Deixar de Seguir {% else %} Seguir
-          {% endif %}
-        </button>
-      </div>
-      {% empty %}
-      <p>Nenhum usuário encontrado.</p>
-      {% endfor %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minhas Conexões - Innovator</title>
+  <link rel="stylesheet" href="{% static 'styles/conexao.css' %}">
+</head>
+<body>
+  <nav>
+    <div class="nav-left">
+  <img src="{% static 'assets/img/logo.png' %}" class="logo">
+      <ul>
+  <li><img src="{% static 'assets/img/notification.png' %}"></li>
+  <li><img src="{% static 'assets/img/inbox.png' %}"></li>
+      </ul>
     </div>
-    
-    <script src="{% static 'js/conexao.js' %}"></script>
-    <script src="{% static 'js/search.js' %}"></script>
-  </body>
+    <div class="nav-right">
+      <div class="search-box">
+        <img src="{% static 'assets/img/search.png' %}">
+        <input type="text" placeholder="Pesquisar pesquisadores ou temas">
+      </div>
+<div class="nav-user-icon online" onclick="settingsMenuToggle()">
+  <img src="{% static 'assets/img/profile-pic.png' %}">
+</div>
+
+<!-- Bloco de configurações -->
+<div class="settings-menu">
+  <div id="dark-btn">
+    <span></span>
+  </div>
+
+  <div class="settings-menu-inner">
+    <div class="user-profile">
+  <img src="{% static 'assets/img/profile-pic.png' %}">
+      <div>
+        <p>John Nicholson</p>
+        <a href="#">Ver Perfil</a>
+      </div>
+    </div>
+
+    <hr>
+    <div class="user-profile">
+  <img src="{% static 'assets/img/feedback.png' %}">
+      <div>
+        <p>Nos dê seu feedback </p>
+        <a href="#">Ajude a melhorar nosso site</a>
+      </div>
+    </div>
+    <hr>
+
+    <div class="settings-links">
+  <img src="{% static 'assets/img/setting.png' %}" class="settings-icon">
+      <a href="{% url 'feed:settings' %}">Configuração & Privacidade 
+        <img src="{% static 'assets/img/arrow.png' %}" width="10px">
+      </a>
+    </div>
+
+    <div class="settings-links">
+  <img src="{% static 'assets/img/help.png' %}" class="settings-icon">
+  <a href="#">Ajuda <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+    </div>
+
+    <div class="settings-links">
+  <img src="{% static 'assets/img/logout.png' %}" class="settings-icon">
+  <a href="{% url 'logout' %}">Sair <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+    </div>
+  </div>
+</div>
+
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="left-sidebar">
+      <div class="imp-links">
+  <a href="{% url 'feed:home' %}"><img src="{% static 'assets/img/newspaper.png' %}"> Últimas Atualizações</a>
+  <a href="{% url 'feed:conexao' %}" class="active"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
+  <a href="#"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
+      </div>
+    </div>
+
+<div class="main-content">
+  <!-- Lista de pessoas seguidas -->
+  <div class="post-container">
+    <h3>Pessoas que você segue</h3>
+    <div class="seguindo-lista">
+      <div class="seguindo-item">
+  <img src="{% static 'assets/img/member-1.png' %}">
+        <p>Diva Luna</p>
+      </div>
+      <div class="seguindo-item">
+  <img src="{% static 'assets/img/member-2.png' %}">
+        <p>Lucas Brito</p>
+      </div>
+      <div class="seguindo-item">
+  <img src="{% static 'assets/img/member-3.png' %}">
+        <p>Marcos Silva</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sugestões -->
+  <div class="post-container">
+    <h3>Sugestões para seguir</h3>
+    <div class="sugestoes-grid">
+      <div class="sugestao-card">
+  <img src="{% static 'assets/img/member-4.png' %}">
+        <h4>Leila Tales</h4>
+        <p>Pesquisadora em Biotecnologia</p>
+        <a href="#" class="seguir-link">Seguir</a>
+      </div>
+      <div class="sugestao-card">
+  <img src="{% static 'assets/img/member-5.png' %}">
+        <h4>Carlos Mendes</h4>
+        <p>Ciência de Dados</p>
+        <a href="#" class="seguir-link">Seguir</a>
+      </div>
+      <div class="sugestao-card">
+  <img src="{% static 'assets/img/member-6.png' %}">
+        <h4>Ana Paula</h4>
+        <p>Engenharia Biomédica</p>
+        <a href="#" class="seguir-link">Seguir</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="right-sidebar">
+    </div>
+  </div>
+
+  <script src="{% static 'js/home.js' %}"></script>
+</body>
 </html>
