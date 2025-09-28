@@ -1,0 +1,90 @@
+/* Community page styles, based on artigos.css */
+.search-bar:focus {
+  border: 1.5px solid #28a745;
+  outline: none;
+}
+.community-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.search-form {
+  display: flex;
+  flex: 1;
+  gap: 8px;
+}
+.search-bar {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1.5px solid #28a745;
+  font-size: 1rem;
+}
+.search-btn {
+  background: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 18px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+.search-btn:hover {
+  background: #218838;
+}
+.plus-btn {
+  background: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: background 0.2s;
+}
+.plus-btn:hover {
+  background: #218838;
+}
+.communities-list {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.community-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 18px 20px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.community-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+}
+.community-meta {
+  color: #666;
+  font-size: 0.95rem;
+}
+.join-btn {
+  background: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 8px;
+}
+.join-btn:hover {
+  background: #218838;
+}

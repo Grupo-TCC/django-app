@@ -1,3 +1,5 @@
+# Ensure login_required redirects to the correct login page
+LOGIN_URL = '/register/'
 
 from pathlib import Path, os
 from dotenv import load_dotenv

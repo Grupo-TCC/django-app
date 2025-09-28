@@ -3,14 +3,16 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseBadRequest
 from .models import Post, Comment
 from user.models import User, Follow
-from .forms import PostForm
+from .forms import PostForm, CommunityForm
 from django.views.decorators.http import require_POST, require_http_methods
 from django.db.models import Count, Case, When, Value, IntegerField
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from feed.article_models import Article
 from django.db.models import Q
-# from user.forms import InnovatorVerificationForm    
+from .community_models import Community
+from .community_detail_view import community_detail
+#from user.forms import InnovatorVerificationForm    
 
 # Create your views here.
 
@@ -107,9 +109,9 @@ def comments_api(request, post_id):
         "count": post.comments.count(),
     })
     
-def community(request):
+def conexao(request):
     query = request.GET.get('q', '').strip()
-    users = User.objects.exclude(id=request.user.id)
+    users = User.objects.filter(is_active=True, email_verified=True).exclude(id=request.user.id)
     if query:
         users = users.filter(fullname__icontains=query)
     following_ids = set(
@@ -207,6 +209,47 @@ def verificacao(request):
 # View para página de perfil
 def perfil(request):
     return render(request, 'feed/perfil.html')
+
+
+# Community page: list communities, search, and create modal
+
+@login_required
+def community(request):
+    query = request.GET.get('q', '').strip()
+    communities = Community.objects.all().order_by('-created_at')
+    if query:
+        communities = communities.filter(name__icontains=query)
+    form = CommunityForm()
+
+    # Handle join/leave logic
+    join_id = request.GET.get('join')
+    leave_id = request.GET.get('leave')
+    if request.method == 'POST':
+        # Community creation
+        if not join_id and not leave_id:
+            form = CommunityForm(request.POST, request.FILES)
+            if form.is_valid():
+                community = form.save(commit=False)
+                community.created_by = request.user
+                community.save()
+                community.members.add(request.user)
+                return redirect('feed:community')
+        # Join community
+        elif join_id:
+            community = get_object_or_404(Community, id=join_id)
+            community.members.add(request.user)
+            return redirect('feed:community')
+        # Leave community
+        elif leave_id:
+            community = get_object_or_404(Community, id=leave_id)
+            community.members.remove(request.user)
+            return redirect('feed:community')
+
+    return render(request, "feed/community.html", {
+        "communities": communities,
+        "form": form,
+        "search_query": query,
+    })
 
 # def conexao_list(request):
 #     queryset = Conexao.objects.all()

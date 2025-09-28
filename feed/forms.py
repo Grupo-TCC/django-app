@@ -1,3 +1,4 @@
+from .community_models import Community
 from django import forms
 from .models import Post
 from .article_models import Article
@@ -45,4 +46,18 @@ class ArticleForm(forms.ModelForm):
             if not pdf.name.lower().endswith('.pdf'):
                 raise forms.ValidationError('Apenas arquivos PDF são permitidos.')
         return pdf
+    
+
+class CommunityForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['community_pic'].required = False
+    class Meta:
+        model = Community
+        fields = ["name", "description", "community_pic"]
+        widgets = {
+            "name": forms.TextInput(attrs={"placeholder": "Nome da comunidade", "class": "form-control"}),
+            "description": forms.Textarea(attrs={"placeholder": "Descrição (opcional)", "class": "form-control", "rows": 3}),
+            "community_pic": forms.ClearableFileInput(attrs={"class": "form-control"}),
+        }
 
