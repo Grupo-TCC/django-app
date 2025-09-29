@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_filters %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -83,21 +84,53 @@
         <button id="add-article-btn" class="plus-btn" title="Adicionar artigo">
           <span>+</span>
         </button>
-        <a href="{% url 'feed:home' %}" class="home-btn">Home</a>
+  <a href="{% url 'feed:artigos' %}" class="home-btn">Home</a>
       </div>
       <div id="article-modal" class="modal" style="display:none;">
         <div class="modal-content">
           <span class="close-modal" id="close-article-modal">&times;</span>
           <form method="POST" enctype="multipart/form-data" id="article-upload-form">
             {% csrf_token %}
-            {% if form.non_field_errors %}
-              <div class="form-errors">
-                {{ form.non_field_errors }}
-              </div>
-            {% endif %}
-            {{ form.as_p }}
+            <div class="form-group">
+              {{ form.pdf.label_tag }} {{ form.pdf }}
+            </div>
+            <div class="form-group">
+              {{ form.title.label_tag }} {{ form.title }}
+            </div>
+            <div class="form-group">
+              {{ form.research_area.label_tag }} {{ form.research_area }}
+            </div>
+            <div class="form-group">
+              {{ form.access_type.label_tag }}<br>
+              {% for radio in form.access_type %}
+                <label style="margin-right:16px;">{{ radio.tag }} {{ radio.choice_label }}</label>
+              {% endfor %}
+            </div>
+            <div class="form-group" id="price-group" style="display:none;">
+              {{ form.price.label_tag }} {{ form.price }}
+            </div>
             <button type="submit">Publicar</button>
           </form>
+          <script>
+            function togglePriceField() {
+              var radios = document.getElementsByName('access_type');
+              var priceGroup = document.getElementById('price-group');
+              var paidSelected = false;
+              for (var i = 0; i < radios.length; i++) {
+                if (radios[i].checked && radios[i].value === 'paid') {
+                  paidSelected = true;
+                }
+              }
+              priceGroup.style.display = paidSelected ? 'block' : 'none';
+            }
+            document.addEventListener('DOMContentLoaded', function() {
+              var radios = document.getElementsByName('access_type');
+              for (var i = 0; i < radios.length; i++) {
+                radios[i].addEventListener('change', togglePriceField);
+              }
+              togglePriceField();
+            });
+          </script>
         </div>
       </div>
       <div class="articles-list">
@@ -107,7 +140,14 @@
             <small class="article-meta">
               {{ article.user.fullname }} &middot; {{ article.research_area }}
             </small>
-            <a href="{{ article.pdf.url }}" target="_blank" class="article-link">Ver PDF</a>
+            {% if article.access_type == 'free' or article_access|get_item:article.id %}
+              <a href="{{ article.pdf.url }}" target="_blank" class="article-link">Ver PDF</a>
+            {% else %}
+              <span class="article-link" style="color:#888;cursor:not-allowed;">PDF Bloqueado</span>
+              <span class="article-price" style="color:#28a745; font-weight:bold; margin-left:8px;">R$ {{ article.price }}</span>
+              <button class="pay-btn" onclick="showPayModal('{{ article.title|escapejs }}', '{{ article.price }}')">Pagar</button>
+              <button class="access-btn" onclick="showAccessModal({{ article.id }})">Pedir acesso</button>
+            {% endif %}
           </div>
         {% empty %}
           <p>Nenhum artigo publicado ainda.</p>
@@ -166,5 +206,58 @@
   <script src="{% static 'js/artigos.js' %}"></script>
   <script src="{% static 'js/search.js' %}"></script>
   <script src="{% static 'js/home.js' %}"></script>
+
+  <!-- Payment Modal -->
+<div id="pay-modal" class="modal" style="display:none;">
+  <div class="modal-content" style="min-width:320px;">
+    <span class="close-modal" id="close-pay-modal">&times;</span>
+    <h3>Pagamento Necessário</h3>
+    <p>Para acessar este artigo, realize o pagamento via Pix:</p>
+    <div style="background:#f8f8f8; padding:8px 12px; border-radius:6px; margin-bottom:8px;">
+      <input type="text" id="pix-key" value="chave-pix-exemplo@pagamento.com" readonly style="width:100%; border:none; background:transparent; font-size:1.1em;">
+      <button onclick="copyPixKey()" style="margin-top:4px;">Copiar chave Pix</button>
+    </div>
+    <p>Após o pagamento, clique em pedir acesso para conseguir acessar o artigo.</p>
+  </div>
+</div>
+<script>
+function showPayModal(title, price) {
+  document.getElementById('pay-modal').style.display = 'flex';
+}
+document.getElementById('close-pay-modal').onclick = function() {
+  document.getElementById('pay-modal').style.display = 'none';
+};
+function copyPixKey() {
+  var pixInput = document.getElementById('pix-key');
+  pixInput.select();
+  pixInput.setSelectionRange(0, 99999);
+  document.execCommand('copy');
+  alert('Chave Pix copiada!');
+}
+</script>
+
+<!-- Access Request Modal -->
+<div id="access-modal" class="modal" style="display:none;">
+  <div class="modal-content" style="min-width:320px;">
+    <span class="close-modal" id="close-access-modal">&times;</span>
+    <h3>Pedir acesso ao artigo</h3>
+    <form method="post" enctype="multipart/form-data" id="access-request-form">
+      {% csrf_token %}
+      <input type="hidden" name="article_id" id="access-article-id">
+      <label for="slip-upload">Envie o comprovante de pagamento (PDF ou imagem):</label>
+      <input type="file" id="slip-upload" name="slip" accept="application/pdf,image/*" required>
+      <button type="submit">Enviar pedido</button>
+    </form>
+  </div>
+</div>
+<script>
+function showAccessModal(articleId) {
+  document.getElementById('access-modal').style.display = 'flex';
+  document.getElementById('access-article-id').value = articleId;
+}
+document.getElementById('close-access-modal').onclick = function() {
+  document.getElementById('access-modal').style.display = 'none';
+};
+</script>
 </body>
 </html>

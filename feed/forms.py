@@ -32,13 +32,42 @@ class PostForm(forms.ModelForm):
         return media
 
 class ArticleForm(forms.ModelForm):
+    ACCESS_CHOICES = [
+        ('free', 'Gratuito'),
+        ('paid', 'Pago'),
+    ]
+    access_type = forms.ChoiceField(
+        choices=ACCESS_CHOICES,
+        widget=forms.RadioSelect,
+        label='Tipo de acesso',
+        initial='free',
+    )
+    price = forms.DecimalField(
+        required=False,
+        min_value=0,
+        max_digits=8,
+        decimal_places=2,
+        widget=forms.TextInput(attrs={'placeholder': 'Valor (R$)', 'class': 'form-control', 'style': 'width:100px;'}),
+        label='Valor',
+    )
+
     class Meta:
         model = Article
-        fields = ['pdf', 'title', 'research_area']
+        fields = ['pdf', 'title', 'research_area', 'access_type', 'price']
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'Título do artigo', 'class': 'form-control'}),
             'research_area': forms.TextInput(attrs={'placeholder': 'Área de pesquisa', 'class': 'form-control'}),
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        access_type = cleaned_data.get('access_type')
+        price = cleaned_data.get('price')
+        if access_type == 'paid' and not price:
+            self.add_error('price', 'Informe o valor para artigos pagos.')
+        if access_type == 'free':
+            cleaned_data['price'] = None
+        return cleaned_data
 
     def clean_pdf(self):
         pdf = self.cleaned_data.get('pdf')

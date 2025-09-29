@@ -160,7 +160,7 @@ EMAIL_TIMEOUT = 30
 PASSWORD_RESET_TIMEOUT = 60 * 60 * 24 * 3  # 3 days
 
 
-LOGIN_REDIRECT_URL = "/feed/"
+LOGIN_REDIRECT_URL = "/feed/artigos/"
 LOGOUT_REDIRECT_URL = "/register/"
 
 

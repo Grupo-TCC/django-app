@@ -109,9 +109,9 @@ def register(request):
                     
                     login(request, user)
                     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                        return JsonResponse({'success': True, 'message': f'Bem-vindo, {user.fullname}!', 'redirect': reverse('feed:home')})
+                        return JsonResponse({'success': True, 'message': f'Bem-vindo, {user.fullname}!', 'redirect': reverse('feed:artigos')})
                     
-                    return redirect('feed:home')                
+                    return redirect('feed:artigos')                
                     
                 
                 if request.headers.get('x-requested-with') == 'XMLHttpRequest':

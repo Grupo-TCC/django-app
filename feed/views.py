@@ -12,6 +12,7 @@ from feed.article_models import Article
 from django.db.models import Q
 from .community_models import Community
 from .community_detail_view import community_detail
+from .article_access_models import ArticleAccess
 #from user.forms import InnovatorVerificationForm    
 
 # Create your views here.
@@ -166,7 +167,20 @@ def settings_view(request):
 def artigos(request):
     from .forms import ArticleForm
     form = ArticleForm()
+    from .article_access_models import ArticleAccessRequest
     if request.method == 'POST':
+        # Handle ArticleAccessRequest (payment slip upload)
+        if 'slip' in request.FILES and 'article_id' in request.POST:
+            article_id = request.POST.get('article_id')
+            slip = request.FILES['slip']
+            article = Article.objects.get(id=article_id)
+            ArticleAccessRequest.objects.update_or_create(
+                user=request.user,
+                article=article,
+                defaults={'slip': slip, 'approved': False}
+            )
+            return redirect('feed:artigos')
+        # Handle normal article upload
         form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
             article = form.save(commit=False)
@@ -175,17 +189,23 @@ def artigos(request):
             return redirect('feed:artigos')
     # Filtering
     query = request.GET.get('q', '').strip()
-    articles = Article.objects.select_related('user').order_by('-created_at')
+    articles = Article.objects.select_related('user').order_by('title')
     if query:
         articles = articles.filter(
             Q(user__fullname__icontains=query) |
             Q(title__icontains=query) |
             Q(research_area__icontains=query)
         )
+    user = request.user if request.user.is_authenticated else None
+    article_access = {}
+    if user:
+        access_qs = ArticleAccess.objects.filter(user=user, has_access=True)
+        article_access = {a.article_id: True for a in access_qs}
     return render(request, 'feed/artigos.html', {
         'articles': articles,
         'search_query': query,
         'form': form,
+        'article_access': article_access,
     })
 
 @login_required
