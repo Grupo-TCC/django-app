@@ -13,6 +13,8 @@ from django.db.models import Q
 from .community_models import Community
 from .community_detail_view import community_detail
 from .article_access_models import ArticleAccess
+from user.forms_settings import UserResearchInstitutionForm
+
 #from user.forms import InnovatorVerificationForm    
 
 # Create your views here.
@@ -22,18 +24,18 @@ def home(request):
     following_ids = request.user.following.values_list("following_id", flat=True)
 
     posts = (
-    Post.objects
-    .select_related('user')
-    .prefetch_related('likes', 'comments__user')
-    .annotate(priority=Case(
-                # priority=0 if post is by followed user or self
-                When(user__in=list(following_ids) + [request.user.id], then=Value(0)),
-                # priority=1 otherwise
-                default=Value(1),
-                output_field=IntegerField(),
-            ),comment_count=Count('comments'))
-    .order_by('priority', '-created_at')
-)
+        Post.objects
+        .select_related('user')
+        .prefetch_related('likes', 'comments__user')
+        .annotate(priority=Case(
+            # priority=0 if post is by followed user or self
+            When(user__in=list(following_ids) + [request.user.id], then=Value(0)),
+            # priority=1 otherwise
+            default=Value(1),
+            output_field=IntegerField(),
+        ), comment_count=Count('comments'))
+        .order_by('priority', '-created_at')
+    )
 
     # set of post IDs the current user already liked (efficient)
     liked_ids = set(
@@ -49,7 +51,6 @@ def home(request):
             post.save()
             return redirect('feed:home')
 
-    
     return render(request, 'feed/home.html', {
         'form': form,
         'posts': posts,
@@ -161,8 +162,22 @@ def toggle_follow(request, user_id):
     
 
 @login_required
+
+@login_required
 def settings_view(request):
-    return render(request, "feed/settings.html")
+    user = request.user
+    area_success = None
+    form = UserResearchInstitutionForm(request.POST or None, instance=user)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            area_success = True
+            # Re-instantiate the form with the updated user instance
+            form = UserResearchInstitutionForm(instance=user)
+    return render(request, "feed/settings.html", {
+        "area_success": area_success,
+        "area_form": form,
+    })
 
 def artigos(request):
     from .forms import ArticleForm

@@ -246,6 +246,7 @@ function copyPixKey() {
       <input type="hidden" name="article_id" id="access-article-id">
       <label for="slip-upload">Envie o comprovante de pagamento (PDF ou imagem):</label>
       <input type="file" id="slip-upload" name="slip" accept="application/pdf,image/*" required>
+      <div id="access-error-message" style="color:red; margin:8px 0; display:none;"></div>
       <button type="submit">Enviar pedido</button>
     </form>
   </div>
@@ -254,10 +255,26 @@ function copyPixKey() {
 function showAccessModal(articleId) {
   document.getElementById('access-modal').style.display = 'flex';
   document.getElementById('access-article-id').value = articleId;
+  document.getElementById('access-error-message').style.display = 'none';
 }
 document.getElementById('close-access-modal').onclick = function() {
   document.getElementById('access-modal').style.display = 'none';
 };
+
+// Client-side error handling for access request form
+document.getElementById('access-request-form').addEventListener('submit', function(e) {
+  var slip = document.getElementById('slip-upload').files[0];
+  var errorDiv = document.getElementById('access-error-message');
+  errorDiv.style.display = 'none';
+  errorDiv.textContent = '';
+  if (!slip) {
+    e.preventDefault();
+    errorDiv.textContent = 'Por favor, envie o comprovante de pagamento.';
+    errorDiv.style.display = 'block';
+    return false;
+  }
+  // Optionally, check file type/size here
+});
 </script>
 </body>
 </html>

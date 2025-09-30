@@ -155,8 +155,13 @@
   font-weight: 600;
   transition: filter 0.2s ease, transform 0.05s ease;
 }
-.btn-edit:hover { filter: brightness(0.94); }
-.btn-edit:active { transform: translateY(1px); }
+
+.btn-edit:hover,
+.btn-save:hover,
+.btn-cancel:hover { filter: brightness(0.94); }
+.btn-edit:active,
+.btn-save:active,
+.btn-cancel:active { transform: translateY(1px); }
 
 /* Links auxiliares */
 .remove-link,

@@ -90,23 +90,35 @@
               </form>
               <div class="settings-info">
                 <h2>{{ request.user.fullname }}</h2>
+                <div style="margin-top: 8px;">
+                  <div><strong>Área de Pesquisa:</strong> {{ area_form.instance.research_area|default:'Adicionar sua área de pesquisa' }}</div>
+                  <div style="margin-top: 4px;"><strong>Instituição:</strong> {{ area_form.instance.institution|default:'Adicionar sua instituição' }}</div>
+                </div>
               </div>
               <button type="button" class="btn-edit-main" onclick="document.getElementById('id_profile_picture').click();">Editar imagem</button>
             </div>
           </div>
           <div class="settings-content">
-            <div class="settings-card">
-              <p><strong>Nome exibido</strong><br />{{ request.user.fullname }}</p>
-              <button class="btn-edit">Editar</button>
+            <div class="settings-card" id="area-card">
+              <form id="user-info-form" method="post" action="">
+                {% csrf_token %}
+                <strong>Área de Pesquisa</strong><br />
+                {{ area_form.research_area }}
+                <br><br>
+                <strong>Instituição</strong><br />
+                {{ area_form.institution }}
+                <div style="margin-top:24px; text-align:right;">
+                  <button type="submit" class="btn-save">Salvar</button>
+                </div>
+              </form>
             </div>
-            <div class="settings-card">
-              <p><strong>E-mail</strong><br />{{ request.user.email }}</p>
-              <button class="btn-edit">Editar</button>
-            </div>
-            <div class="settings-card">
+<script>
+
+</script>
+            <!-- <div class="settings-card">
               <p><strong>Verificação de Pesquisador</strong><br /><a href="{% url 'feed:verificacao' %}"><p>clique para verificar</p></a></p>
               <button class="btn-edit">Editar</button>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
