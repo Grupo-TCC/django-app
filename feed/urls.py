@@ -13,6 +13,7 @@ urlpatterns = [
     path("artigos/", views.artigos, name="artigos"),
     path("verificacao/", views.verificacao, name="verificacao"),
     path("perfil/", views.perfil, name="perfil"),
+    path("perfil/<int:user_id>/", views.perfil, name="perfil"),
     path("community/", views.community, name="community"),
     path("community/<int:community_id>/", views.community_detail, name="community_detail"),
     # path("verificacao/submit/", views.submit_verificacao, name="submit_verificacao"),

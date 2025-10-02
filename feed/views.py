@@ -14,6 +14,9 @@ from .community_models import Community
 from .community_detail_view import community_detail
 from .article_access_models import ArticleAccess
 from user.forms_settings import UserResearchInstitutionForm
+from feed.article_models import Article
+from user.models import Follow
+from feed.community_models import Community
 
 #from user.forms import InnovatorVerificationForm    
 
@@ -242,8 +245,22 @@ def verificacao(request):
     })
 
 # View para página de perfil
-def perfil(request):
-    return render(request, 'feed/perfil.html')
+# Accepts optional user_id for viewing other users' profiles
+
+def perfil(request, user_id=None):
+    if user_id is not None:
+        profile_user = get_object_or_404(User, pk=user_id)
+    else:
+        profile_user = request.user
+    user_articles = Article.objects.filter(user=profile_user).order_by('-created_at')
+    following_users = [f.following for f in Follow.objects.filter(follower=profile_user).select_related('following')]
+    joined_communities = Community.objects.filter(members=profile_user).order_by('name')
+    return render(request, 'feed/perfil.html', {
+        'user_articles': user_articles,
+        'following_users': following_users,
+        'joined_communities': joined_communities,
+        'profile_user': profile_user,
+    })
 
 
 # Community page: list communities, search, and create modal

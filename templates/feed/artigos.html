@@ -66,10 +66,31 @@
   <div class="container">
     <!-- LEFT SIDEBAR -->
     <div class="left-sidebar">
+      <style>
+        .imp-links a {
+          display: flex;
+          align-items: center;
+          padding: 10px 16px;
+          border-left: 4px solid transparent;
+          color: #256d4a !important;
+          text-decoration: none;
+          font-weight: 500;
+          background: none;
+          transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .imp-links a.active {
+          background: #eafaf1;
+          border-left: 4px solid #28a745;
+          color: #28a745 !important;
+        }
+        .imp-links a img {
+          margin-right: 10px;
+        }
+      </style>
       <div class="imp-links">
-        <a href="{% url 'feed:artigos' %}" class="active"><img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos</a>
-        <a href="{% url 'feed:conexao' %}"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
-        <a href="{% url 'feed:community' %}"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
+        <a href="{% url 'feed:artigos' %}" class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"><img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos</a>
+        <a href="{% url 'feed:conexao' %}" class="{% if request.resolver_match.url_name == 'conexao' %}active{% endif %}"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
+        <a href="{% url 'feed:community' %}" class="{% if request.resolver_match.url_name == 'community' %}active{% endif %}"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
       </div>
     </div>
 
@@ -99,6 +120,9 @@
             </div>
             <div class="form-group">
               {{ form.research_area.label_tag }} {{ form.research_area }}
+            </div>
+            <div class="form-group">
+              {{ form.description.label_tag }} {{ form.description }}
             </div>
             <div class="form-group">
               {{ form.access_type.label_tag }}<br>
@@ -138,8 +162,39 @@
           <div class="article-card searchable">
             <div class="article-title">{{ article.title }}</div>
             <small class="article-meta">
-              {{ article.user.fullname }} &middot; {{ article.research_area }}
+              <a href="{% url 'feed:perfil' article.user.id %}" style="color: inherit; text-decoration: underline;">{{ article.user.fullname }}</a> &middot; {{ article.research_area }}
             </small>
+            {% if article.description %}
+              <div class="article-description" style="margin:8px 0; position:relative;">
+                <span class="desc-text" style="display:inline;">
+                  {% if article.description|length > 220 %}
+                    <span class="desc-short">{{ article.description|slice:":220" }}...</span>
+                    <span class="desc-full" style="display:none;">{{ article.description }}</span>
+                    <button class="desc-toggle" onclick="toggleDesc(this); return false;" style="background:none;border:none;color:#28a745;cursor:pointer;padding:0;">mais</button>
+                  {% else %}
+                    {{ article.description }}
+                  {% endif %}
+                </span>
+              </div>
+            {% endif %}
+<script>
+function toggleDesc(btn) {
+  var card = btn.closest('.article-description');
+  var shortDesc = card.querySelector('.desc-short');
+  var fullDesc = card.querySelector('.desc-full');
+  if (shortDesc.style.display !== 'none') {
+    shortDesc.style.display = 'none';
+    fullDesc.style.display = 'inline';
+  btn.textContent = 'menos';
+  btn.style.color = '#28a745';
+  } else {
+    shortDesc.style.display = 'inline';
+    fullDesc.style.display = 'none';
+  btn.textContent = 'mais';
+  btn.style.color = '#28a745';
+  }
+}
+</script>
             {% if article.access_type == 'free' or article_access|get_item:article.id %}
               <a href="{{ article.pdf.url }}" target="_blank" class="article-link">Ver PDF</a>
             {% else %}

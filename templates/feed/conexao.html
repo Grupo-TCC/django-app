@@ -74,10 +74,31 @@
 
   <div class="container">
     <div class="left-sidebar">
+      <style>
+        .imp-links a {
+          display: flex;
+          align-items: center;
+          padding: 10px 16px;
+          border-left: 4px solid transparent;
+          color: #256d4a !important;
+          text-decoration: none;
+          font-weight: 500;
+          background: none;
+          transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .imp-links a.active {
+          background: #eafaf1;
+          border-left: 4px solid #28a745;
+          color: #28a745 !important;
+        }
+        .imp-links a img {
+          margin-right: 10px;
+        }
+      </style>
       <div class="imp-links">
-  <a href="{% url 'feed:artigos' %}"><img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos</a>
-  <a href="{% url 'feed:conexao' %}" class="active"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
-  <a href="{% url 'feed:community' %}"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
+        <a href="{% url 'feed:artigos' %}" class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"><img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos</a>
+        <a href="{% url 'feed:conexao' %}" class="{% if request.resolver_match.url_name == 'conexao' %}active{% endif %}"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
+        <a href="{% url 'feed:community' %}" class="{% if request.resolver_match.url_name == 'community' %}active{% endif %}"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
       </div>
     </div>
 
@@ -92,7 +113,7 @@
             {% ifchanged %}{% with seguidos=1 %}{% endwith %}{% endifchanged %}
             <div class="seguindo-item" id="seguindo-{{ user.id }}">
               <img src="{{ user.get_profile_picture_url }}">
-              <p>{{ user.fullname }}</p>
+              <p><a href="{% url 'feed:perfil' user.id %}" style="color: inherit; text-decoration: underline;">{{ user.fullname }}</a></p>
               <button type="button" class="seguir-link follow-btn following" data-url="{% url 'feed:toggle_follow' user.id %}">Deixar de Seguir</button>
             </div>
           {% endif %}
@@ -112,7 +133,8 @@
         {% if user.id not in following_ids %}
           <div class="sugestao-card">
             <img src="{{ user.get_profile_picture_url }}">
-            <h4>{{ user.fullname }}</h4>
+            <h4><a href="{% url 'feed:perfil' user.id %}" style="color: inherit; text-decoration: underline;">{{ user.fullname }}</a></h4>
+            <!-- username link to user profile -->
             {% if user.innovator_verification and user.innovator_verification.title %}
               <p>{{ user.innovator_verification.title }}</p>
             {% else %}

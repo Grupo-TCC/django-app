@@ -53,7 +53,7 @@
         <!-- Perfil -->
         <div class="profile-header">
           <div class="banner">
-            <button class="edit-profile-btn" type="button" onclick="openEditModal()">Editar perfil</button>
+            <!-- <button class="edit-profile-btn" type="button" onclick="openEditModal()">Editar perfil</button> -->
             <!-- Modal de edição de informações pessoais -->
             <div id="edit-profile-modal" class="modal" style="display:none;">
               <div class="modal-content vertical-modal">
@@ -199,16 +199,144 @@
           </p>
         </div>
 
-        <!-- Aviso de verificação -->
-        <div class="verify-box">
-          <p><strong>Renata, você ainda não fez a verificação</strong></p>
-          <span>O selo de verificação é um sinal de confiança, para as pessoas se sentirem mais seguras ao interagirem com você.</span>
-          <button class="btn-verify">Fazer verificação agora</button>
+        <!-- User's Articles List -->
+        <div class="user-articles-list" style="margin-top:32px;">
+          <h2 style="color:#256d4a;">Seus Artigos</h2>
+          {% if user_articles %}
+            <ul style="list-style:none;padding:0;">
+              {% for article in user_articles %}
+                <li style="margin-bottom:18px; padding:16px; border:1px solid #e0e0e0; border-radius:8px; background:#fafafa;">
+                  <div style="font-size:1.1em; font-weight:600; color:#256d4a;">{{ article.title }}</div>
+                  <div style="font-size:0.95em; color:#555; margin:4px 0 8px 0;">{{ article.research_area }}</div>
+                  {% if article.description %}
+                    <div class="article-description" style="font-size:0.97em; color:#333; margin-bottom:8px; position:relative;">
+                      <span class="desc-text" style="display:inline;">
+                        {% if article.description|length > 220 %}
+                          <span class="desc-short">{{ article.description|slice:":220" }}...</span>
+                          <span class="desc-full" style="display:none;">{{ article.description }}</span>
+                          <button class="desc-toggle" onclick="toggleDesc(this); return false;" style="background:none;border:none;color:#28a745;cursor:pointer;padding:0;">mais</button>
+                        {% else %}
+                          {{ article.description }}
+                        {% endif %}
+                      </span>
+                    </div>
+                  {% endif %}
+                  <a href="{{ article.pdf.url }}" target="_blank" style="color:#28a745; font-weight:500; text-decoration:underline;">Ver PDF</a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p style="color:#888;">Você ainda não publicou nenhum artigo.</p>
+          {% endif %}
+<script>
+function toggleDesc(btn) {
+  var card = btn.closest('.article-description');
+  var shortDesc = card.querySelector('.desc-short');
+  var fullDesc = card.querySelector('.desc-full');
+  if (shortDesc.style.display !== 'none') {
+    shortDesc.style.display = 'none';
+    fullDesc.style.display = 'inline';
+    btn.textContent = 'menos';
+    btn.style.color = '#28a745';
+  } else {
+    shortDesc.style.display = 'inline';
+    fullDesc.style.display = 'none';
+    btn.textContent = 'mais';
+    btn.style.color = '#28a745';
+  }
+}
+</script>
         </div>
+
+        <!-- Aviso de verificação -->
+        
       </div>
 
       <!-- INVISIBLE RIGHT SIDEBAR (for centering) -->
-      <div class="right-sidebar invisible-sidebar" aria-hidden="true"></div>
+      <div class="right-sidebar" style="min-width:240px; max-width:320px; background:#fff; border-left:1px solid #e0e0e0; padding:24px 16px;">
+        {# JSON for following and communities #}
+        <script type="application/json" id="following-users-json">
+          [{% for user in following_users %}{"fullname": "{{ user.fullname|escapejs }}", "pic": "{{ user.get_profile_picture_url }}", "area": "{{ user.research_area|default:'Área não informada'|escapejs }}"}{% if not forloop.last %},{% endif %}{% endfor %}]
+        </script>
+        <script type="application/json" id="communities-json">
+          [{% for community in joined_communities %}{"name": "{{ community.name|escapejs }}", "pic": "{{ community.get_community_picture_url }}", "desc": "{{ community.description|truncatechars:40|escapejs }}"}{% if not forloop.last %},{% endif %}{% endfor %}]
+        </script>
+        <h3 style="color:#256d4a; margin-bottom:18px;">Você segue</h3>
+        {% if following_users %}
+          <ul id="following-list" style="list-style:none; padding:0; margin:0;">
+            {% for user in following_users|slice:':5' %}
+              <li style="display:flex; align-items:center; margin-bottom:16px;">
+                <img src="{{ user.get_profile_picture_url }}" alt="Foto de perfil" style="width:38px; height:38px; border-radius:50%; object-fit:cover; margin-right:12px; border:1.5px solid #28a745;">
+                <div>
+                  <div style="font-weight:500; color:#256d4a;">{{ user.fullname }}</div>
+                  <div style="font-size:0.95em; color:#555;">{{ user.research_area|default:'Área não informada' }}</div>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+          {% if following_users|length > 5 %}
+            <button id="toggle-following" style="background:none;border:none;color:#28a745;cursor:pointer;padding:0 0 0 2px;font-weight:500;">Ver mais</button>
+          {% endif %}
+        {% else %}
+          <p style="color:#888;">Você ainda não segue ninguém.</p>
+        {% endif %}
+        <hr style="margin:24px 0 16px 0; border:0; border-top:1.5px solid #e0e0e0;">
+        <h3 style="color:#256d4a; margin-bottom:18px;">Suas Comunidades</h3>
+        {% if joined_communities %}
+          <ul id="communities-list" style="list-style:none; padding:0; margin:0;">
+            {% for community in joined_communities|slice:':5' %}
+              <li style="display:flex; align-items:center; margin-bottom:16px;">
+                <img src="{{ community.get_community_picture_url }}" alt="Foto da comunidade" style="width:38px; height:38px; border-radius:50%; object-fit:cover; margin-right:12px; border:1.5px solid #28a745;">
+                <div>
+                  <div style="font-weight:500; color:#256d4a;">{{ community.name }}</div>
+                  <div style="font-size:0.95em; color:#555;">{{ community.description|truncatechars:40 }}</div>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+          {% if joined_communities|length > 5 %}
+            <button id="toggle-communities" style="background:none;border:none;color:#28a745;cursor:pointer;padding:0 0 0 2px;font-weight:500;">Ver mais</button>
+          {% endif %}
+        {% else %}
+          <p style="color:#888;">Você ainda não participa de nenhuma comunidade.</p>
+        {% endif %}
+<script>
+// Following pagination
+let followingExpanded = false;
+const followingUsers = JSON.parse(document.getElementById('following-users-json').textContent.trim());
+const followingList = document.getElementById('following-list');
+const toggleFollowingBtn = document.getElementById('toggle-following');
+if (toggleFollowingBtn) {
+  toggleFollowingBtn.onclick = function() {
+    followingExpanded = !followingExpanded;
+    followingList.innerHTML = '';
+    let toShow = followingExpanded ? followingUsers.length : 5;
+    for (let i = 0; i < toShow; i++) {
+      const user = followingUsers[i];
+      followingList.innerHTML += `<li style='display:flex; align-items:center; margin-bottom:16px;'><img src='${user.pic}' alt='Foto de perfil' style='width:38px; height:38px; border-radius:50%; object-fit:cover; margin-right:12px; border:1.5px solid #28a745;'><div><div style='font-weight:500; color:#256d4a;'>${user.fullname}</div><div style='font-size:0.95em; color:#555;'>${user.area}</div></div></li>`;
+    }
+    toggleFollowingBtn.textContent = followingExpanded ? 'Ver menos' : 'Ver mais';
+  };
+}
+// Communities pagination
+let communitiesExpanded = false;
+const communities = JSON.parse(document.getElementById('communities-json').textContent.trim());
+const communitiesList = document.getElementById('communities-list');
+const toggleCommunitiesBtn = document.getElementById('toggle-communities');
+if (toggleCommunitiesBtn) {
+  toggleCommunitiesBtn.onclick = function() {
+    communitiesExpanded = !communitiesExpanded;
+    communitiesList.innerHTML = '';
+    let toShow = communitiesExpanded ? communities.length : 5;
+    for (let i = 0; i < toShow; i++) {
+      const c = communities[i];
+      communitiesList.innerHTML += `<li style='display:flex; align-items:center; margin-bottom:16px;'><img src='${c.pic}' alt='Foto da comunidade' style='width:38px; height:38px; border-radius:50%; object-fit:cover; margin-right:12px; border:1.5px solid #28a745;'><div><div style='font-weight:500; color:#256d4a;'>${c.name}</div><div style='font-size:0.95em; color:#555;'>${c.desc}</div></div></li>`;
+    }
+    toggleCommunitiesBtn.textContent = communitiesExpanded ? 'Ver menos' : 'Ver mais';
+  };
+}
+</script>
+      </div>
     </div>
 </body>
 </html>

@@ -32,6 +32,15 @@ class PostForm(forms.ModelForm):
         return media
 
 class ArticleForm(forms.ModelForm):
+    description = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={
+            'placeholder': 'Descreva brevemente o artigo',
+            'class': 'form-control',
+            'rows': 4,
+        }),
+        label='Descrição',
+    )
     ACCESS_CHOICES = [
         ('free', 'Gratuito'),
         ('paid', 'Pago'),
@@ -53,7 +62,7 @@ class ArticleForm(forms.ModelForm):
 
     class Meta:
         model = Article
-        fields = ['pdf', 'title', 'research_area', 'access_type', 'price']
+        fields = ['pdf', 'title', 'research_area', 'description', 'access_type', 'price']
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'Título do artigo', 'class': 'form-control'}),
             'research_area': forms.TextInput(attrs={'placeholder': 'Área de pesquisa', 'class': 'form-control'}),
