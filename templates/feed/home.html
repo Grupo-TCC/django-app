@@ -73,14 +73,31 @@
   <div class="container">
     <!-- LEFT SIDEBAR -->
     <div class="left-sidebar">
+      <style>
+        .imp-links a {
+          display: flex;
+          align-items: center;
+          padding: 10px 16px;
+          border-left: 4px solid transparent;
+          color: #256d4a !important;
+          text-decoration: none;
+          font-weight: 500;
+          background: none;
+          transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .imp-links a.active {
+          background: #eafaf1;
+          border-left: 4px solid #28a745;
+          color: #28a745 !important;
+        }
+        .imp-links a img {
+          margin-right: 10px;
+        }
+      </style>
       <div class="imp-links">
-        <a href="{% url 'feed:artigos' %}">
-          <img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos
-        </a>
-        <a href="{% url 'feed:conexao' %}">
-          <img src="{% static 'assets/img/friends.png' %}"> Conexões
-        </a>
-        <a href="{% url 'feed:community' %}"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
+        <a href="{% url 'feed:artigos' %}" class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"><img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos</a>
+        <a href="{% url 'feed:conexao' %}" class="{% if request.resolver_match.url_name == 'conexao' %}active{% endif %}"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
+        <a href="{% url 'feed:community' %}" class="{% if request.resolver_match.url_name == 'community' %}active{% endif %}"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
       </div>
     </div>
 
@@ -214,32 +231,6 @@
 
     <!-- RIGHT SIDEBAR -->
     <div class="right-sidebar">
-      <div class="sidebar-title">
-        <h4>Últimas Publicações</h4>
-        <a href="#">Ver todas</a>
-      </div>
-      <div class="event">
-        <div class="left-event">
-          <h3>10</h3>
-          <span>Jul</span>
-        </div>
-        <div class="right-event">
-          <h4>Redes Neurais Aplicadas</h4>
-          <p><i class='bx bx-location'></i> Universidade Federal do Sul</p>
-          <a href="#">Ver Publicação</a>
-        </div>
-      </div>
-      <div class="event">
-        <div class="left-event">
-          <h3>02</h3>
-          <span>Jul</span>
-        </div>
-        <div class="right-event">
-          <h4>Psicologia do Aprendizado</h4>
-          <p><i class='bx bx-location'></i> Revista Cognitiva</p>
-          <a href="#">Ver Publicação</a>
-        </div>
-      </div>
 
       <div class="sidebar-title">
         <h4>Conversas</h4>

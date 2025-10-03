@@ -252,6 +252,16 @@ def perfil(request, user_id=None):
         profile_user = get_object_or_404(User, pk=user_id)
     else:
         profile_user = request.user
+
+    # Salvar edição do perfil apenas para o próprio usuário
+    if request.method == 'POST' and user_id is None:
+        research_area = request.POST.get('research_area', '').strip()
+        institution = request.POST.get('institution', '').strip()
+        profile_user.research_area = research_area
+        profile_user.institution = institution
+        profile_user.save()
+        return redirect('feed:perfil')
+
     user_articles = Article.objects.filter(user=profile_user).order_by('-created_at')
     following_users = [f.following for f in Follow.objects.filter(follower=profile_user).select_related('following')]
     joined_communities = Community.objects.filter(members=profile_user).order_by('name')

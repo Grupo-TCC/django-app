@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .delete_article_view import delete_article
 
 app_name = 'feed'
 
@@ -16,5 +17,6 @@ urlpatterns = [
     path("perfil/<int:user_id>/", views.perfil, name="perfil"),
     path("community/", views.community, name="community"),
     path("community/<int:community_id>/", views.community_detail, name="community_detail"),
+    path("article/<int:article_id>/delete/", delete_article, name="delete_article"),
     # path("verificacao/submit/", views.submit_verificacao, name="submit_verificacao"),
 ]

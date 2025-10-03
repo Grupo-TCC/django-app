@@ -45,7 +45,7 @@
 /* Banner superior */
 .settings-banner {
   height: 120px;
-  background: var(--nav-color); 
+  background: #256d4a !important; 
 }
 
 /* Cabeçalho com avatar + infos */
@@ -76,31 +76,41 @@
   color: var(--grey-colorhelp);
 }
 
+/* FOTO DE PERFIL SEM QUADRADÃO VERDE */
 .settings-avatar {
-  width: 80px !important;
-  height: 80px !important;
-  flex: 0 0 80px !important;
-  border-radius: 50% !important;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;   /* deixa redonda */
+  object-fit: cover;
+  display: block;
+  background: none !important;
   border: none !important;
-  object-fit: cover !important;
   box-shadow: none !important;
-  cursor: default !important;
-  transition: none !important;
-  outline: none !important;
-  background: #fff !important;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* remove estilo do botão aplicado na imagem */
+.settings-avatar.btn-edit-main {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
 }
 
 /* Botão principal */
 .btn-edit-main {
-  background: var(--highlight-color);
+  background: #256d4a;
   border: none;
   color: #fff;
-  padding: var(--btn-padding);
-  border-radius: var(--card-border-radius);
+  padding: 0.6rem 1.2rem;
+  border-radius: 1.2rem;
   cursor: pointer;
   font-weight: 600;
   white-space: nowrap;
-  transition: filter 0.2s ease, transform 0.05s ease;
+  font-size: 1rem;
+  transition: filter 0.2s, transform 0.05s;
 }
 .btn-edit-main:hover { filter: brightness(0.95); }
 .btn-edit-main:active { transform: translateY(1px); }
@@ -174,6 +184,41 @@
 .remove-link:hover,
 .settings-card a:hover { text-decoration: underline; }
 
+/* INPUTS MAIS BONITOS */
+.settings-input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.8rem;
+  border: 1px solid var(--grey-colorhelp);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #fff;
+  color: var(--font-color);
+}
+
+.settings-input:focus {
+  outline: none;
+  border-color: var(--bg-color-more-dark);
+  box-shadow: 0 0 6px rgba(105, 167, 135, 0.4);
+}
+
+/* Botão salvar */
+.publish-btn {
+  background: #256d4a;
+  border: none;
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: filter 0.2s, transform 0.05s;
+}
+
+.publish-btn:hover { filter: brightness(0.95); }
+.publish-btn:active { transform: translateY(1px); }
+
 /* Responsivo */
 @media (max-width: 720px) {
   .settings-profile {
@@ -196,7 +241,6 @@
     width: 100%;
   }
 }
-
 
 .dark-theme .settings-card {
   border-color: var(--dark-border);

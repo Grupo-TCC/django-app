@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_filters %}
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
@@ -66,10 +67,31 @@
     <div class="container">
       <!-- LEFT SIDEBAR -->
       <div class="left-sidebar">
+        <style>
+          .imp-links a {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            border-left: 4px solid transparent;
+            color: #256d4a !important;
+            text-decoration: none;
+            font-weight: 500;
+            background: none;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+          }
+          .imp-links a.active {
+            background: #eafaf1;
+            border-left: 4px solid #28a745;
+            color: #28a745 !important;
+          }
+          .imp-links a img {
+            margin-right: 10px;
+          }
+        </style>
         <div class="imp-links">
-          <a href="{% url 'feed:artigos' %}"><img src="{% static 'assets/img/newspaper.png' %}" /> Artigos Científicos</a>
-          <a href="{% url 'feed:conexao' %}"><img src="{% static 'assets/img/friends.png' %}" /> Conexões</a>
-          <a href="#"><img src="{% static 'assets/img/people.png' %}" /> Comunidades</a>
+          <a href="{% url 'feed:artigos' %}" class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"><img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos</a>
+          <a href="{% url 'feed:conexao' %}" class="{% if request.resolver_match.url_name == 'conexao' %}active{% endif %}"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
+          <a href="{% url 'feed:community' %}" class="{% if request.resolver_match.url_name == 'community' %}active{% endif %}"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
         </div>
       </div>
 
@@ -100,17 +122,18 @@
           </div>
           <div class="settings-content">
             <div class="settings-card" id="area-card">
-              <form id="user-info-form" method="post" action="">
-                {% csrf_token %}
-                <strong>Área de Pesquisa</strong><br />
-                {{ area_form.research_area }}
-                <br><br>
-                <strong>Instituição</strong><br />
-                {{ area_form.institution }}
-                <div style="margin-top:24px; text-align:right;">
-                  <button type="submit" class="btn-save">Salvar</button>
-                </div>
-              </form>
+                <form method="post" enctype="multipart/form-data" class="settings-form" style="max-width:400px;margin:0 auto;">
+            {% csrf_token %}
+            <div style="margin-bottom:16px;">
+              <label for="id_research_area" style="display:block;font-weight:500;margin-bottom:4px;text-align:left;">Título/Área de pesquisa</label>
+              {{ area_form.research_area|add_class:'settings-input' }}
+            </div>
+            <div style="margin-bottom:16px;">
+              <label for="id_institution" style="display:block;font-weight:500;margin-bottom:4px;text-align:left;">Instituição</label>
+              {{ area_form.institution|add_class:'settings-input' }}
+            </div>
+            <button type="submit" class="publish-btn active" style="width:100%;">Salvar</button>
+                </form>
             </div>
 <script>
 

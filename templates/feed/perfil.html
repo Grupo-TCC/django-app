@@ -5,338 +5,201 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perfil - Innovator</title>
-  <link rel="stylesheet" href="{% static 'styles/perfil.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/home.css' %}">
 </head>
 <body>
   <!-- Navbar -->
   <nav>
     <div class="nav-left">
-      <img src="{% static 'assets/img/logo.png' %}" class="logo">
+      <a href="{% url 'feed:artigos' %}"><img src="{% static 'assets/img/logo.png' %}" class="logo"></a>
       <ul>
         <li><img src="{% static 'assets/img/notification.png' %}"></li>
         <li><img src="{% static 'assets/img/inbox.png' %}"></li>
       </ul>
     </div>
     <div class="nav-right">
-      <div class="search-box">
+      <form class="search-box" method="get" action="">
         <img src="{% static 'assets/img/search.png' %}">
-        <input type="text" placeholder="Pesquisar pesquisadores ou temas">
+        <input type="text" name="q" placeholder="Pesquisar artigos, pesquisadores ou áreas" value="">
+      </form>
+      <div class="nav-user-icon online" onclick="settingsMenuToggle()">
+        <img src="{{ profile_user.get_profile_picture_url }}">
       </div>
-      <div class="nav-user-icon online">
-        <img src="{{ request.user.get_profile_picture_url }}">
+      <div class="settings-menu">
+        <div id="dark-btn"><span></span></div>
+        <div class="settings-menu-inner">
+          <div class="user-profile">
+            <img src="{{ profile_user.get_profile_picture_url }}">
+            <div>
+              <p>{{ profile_user.fullname }}</p>
+              <a href="{% url 'feed:perfil' %}">Ver Perfil</a>
+            </div>
+          </div>
+          <hr>
+          <div class="user-profile">
+            <img src="{% static 'assets/img/feedback.png' %}">
+            <div>
+              <p>Nos dê seu feedback</p>
+              <a href="#">Ajude a melhorar nosso site</a>
+            </div>
+          </div>
+          <hr>
+          <div class="settings-links">
+            <img src="{% static 'assets/img/setting.png' %}" class="settings-icon">
+            <a href="{% url 'feed:settings' %}">Configuração & Privacidade <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+          </div>
+          <div class="settings-links">
+            <img src="{% static 'assets/img/help.png' %}" class="settings-icon">
+            <a href="#">Ajuda <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+          </div>
+          <div class="settings-links">
+            <img src="{% static 'assets/img/logout.png' %}" class="settings-icon">
+            <a href="{% url 'logout' %}">Sair <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
 
-    <div class="container">
-      <!-- LEFT SIDEBAR -->
-      <div class="left-sidebar">
-        <div class="imp-links">
-          <a href="{% url 'feed:artigos' %}">
-            <img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos
-          </a>
-          <a href="{% url 'feed:conexao' %}">
-            <img src="{% static 'assets/img/friends.png' %}"> Conexões
-          </a>
-          <a href="#"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
-        </div>
-        <div class="shortcut-links">
-          <!-- Exemplo de atalho igual home.html -->
-          <!--
-          <a href="#"><img src="{% static 'assets/img/post-artigo.png' %}"> <p>Postar Artigo</p></a>
-          -->
-        </div>
-      </div>
-
-      <!-- MAIN CONTENT -->
-      <div class="main-content">
-        <!-- Perfil -->
-        <div class="profile-header">
-          <div class="banner">
-            <!-- <button class="edit-profile-btn" type="button" onclick="openEditModal()">Editar perfil</button> -->
-            <!-- Modal de edição de informações pessoais -->
-            <div id="edit-profile-modal" class="modal" style="display:none;">
-              <div class="modal-content vertical-modal">
-                <span class="close-modal" onclick="closeEditModal()">&times;</span>
-                <form id="edit-profile-form" method="post" action="" enctype="multipart/form-data">
-                  {% csrf_token %}
-                  <label for="fullname">Nome completo</label>
-                  <input type="text" id="fullname" name="fullname" value="{{ request.user.fullname }}" required>
-                  <label for="role">Área de pesquisa</label>
-                  <input type="text" id="role" name="role" value="{{ request.user.title }}" placeholder="Ex: Pesquisador(a) em Biologia, Ciências Sociais, etc.">
-                  <label for="bio">Resumo</label>
-                  <input type="text" id="bio" name="bio" value="{{ request.user.bio }}" placeholder="Ex: Pesquisa em inovação, educação, saúde, meio ambiente...">
-                  <label for="university">Instituição</label>
-                  <input type="text" id="university" name="university" value="{{ request.user.university }}" placeholder="Ex: UFBA, USP, Unijorge, etc.">
-                  <button type="submit" class="save-btn">Salvar</button>
-                </form>
-              </div>
-            </div>
-          </div>
-          <div class="profile-pic-wrapper">
-            <img src="{{ request.user.get_profile_picture_url }}" class="profile-pic-big" id="profile-pic-img">
-          </div>
-        </div>
-  <style>
-    .edit-profile-btn {
-      position: absolute;
-      top: 16px;
-      right: 24px;
-      background: #256d4a;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      padding: 7px 18px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      z-index: 2;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      transition: background 0.2s;
-    }
-    .edit-profile-btn:hover {
-      background: #1e5a3b;
-    }
-    .modal {
-      display: flex;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0,0,0,0.3);
-      align-items: center;
-      justify-content: center;
-    }
-    .modal-content {
-      background: #fff;
-      padding: 30px 30px 20px 30px;
-      border-radius: 10px;
-      min-width: 320px;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.18);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .vertical-modal {
-      flex-direction: column;
-      align-items: stretch;
-      width: 100%;
-      max-width: 400px;
-    }
-    .close-modal {
-      position: absolute;
-      top: 10px;
-      right: 18px;
-      font-size: 28px;
-      color: #256d4a;
-      cursor: pointer;
-    }
-    .modal-content label {
-      font-size: 14px;
-      color: #256d4a;
-      margin-bottom: 2px;
-    }
-    .modal-content input {
-      padding: 7px 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 15px;
-      margin-bottom: 8px;
-    }
-    .save-btn {
-      background: #256d4a;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      padding: 8px 18px;
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      margin-top: 10px;
-      align-self: flex-end;
-    }
-    .save-btn:hover {
-      background: #1e5a3b;
-    }
-    .banner {
-      background: #256d4a;
-      /* cor verde escura */
-    }
-    .profile-pic-wrapper {
-      position: absolute;
-      bottom: -50px;
-      left: 50px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-  </style>
-  <script>
-    function openEditModal() {
-      document.getElementById('edit-profile-modal').style.display = 'flex';
-    }
-    function closeEditModal() {
-      document.getElementById('edit-profile-modal').style.display = 'none';
-    }
-    // Fecha modal ao clicar fora do conteúdo
-    window.onclick = function(event) {
-      var modal = document.getElementById('edit-profile-modal');
-      if (event.target === modal) {
-        closeEditModal();
-      }
-    }
-  </script>
-
-        <div class="profile-details">
-          <h1 class="profile-name">{{ request.user.fullname }}</h1>
-          <p class="profile-role">{{ request.user.title|default:'Pesquisador(a)' }}</p>
-          <p class="profile-bio">{{ request.user.bio|default:'Atua em pesquisa científica, inovação ou extensão.' }}</p>
-          <p class="profile-location">
-            <img src="{% static 'assets/img/unijorge.png' %}" class="edu-icon"> {{ request.user.university|default:'Instituição de pesquisa' }}
-          </p>
-        </div>
-
-        <!-- User's Articles List -->
-        <div class="user-articles-list" style="margin-top:32px;">
-          <h2 style="color:#256d4a;">Seus Artigos</h2>
-          {% if user_articles %}
-            <ul style="list-style:none;padding:0;">
-              {% for article in user_articles %}
-                <li style="margin-bottom:18px; padding:16px; border:1px solid #e0e0e0; border-radius:8px; background:#fafafa;">
-                  <div style="font-size:1.1em; font-weight:600; color:#256d4a;">{{ article.title }}</div>
-                  <div style="font-size:0.95em; color:#555; margin:4px 0 8px 0;">{{ article.research_area }}</div>
-                  {% if article.description %}
-                    <div class="article-description" style="font-size:0.97em; color:#333; margin-bottom:8px; position:relative;">
-                      <span class="desc-text" style="display:inline;">
-                        {% if article.description|length > 220 %}
-                          <span class="desc-short">{{ article.description|slice:":220" }}...</span>
-                          <span class="desc-full" style="display:none;">{{ article.description }}</span>
-                          <button class="desc-toggle" onclick="toggleDesc(this); return false;" style="background:none;border:none;color:#28a745;cursor:pointer;padding:0;">mais</button>
-                        {% else %}
-                          {{ article.description }}
-                        {% endif %}
-                      </span>
-                    </div>
-                  {% endif %}
-                  <a href="{{ article.pdf.url }}" target="_blank" style="color:#28a745; font-weight:500; text-decoration:underline;">Ver PDF</a>
-                </li>
-              {% endfor %}
-            </ul>
-          {% else %}
-            <p style="color:#888;">Você ainda não publicou nenhum artigo.</p>
-          {% endif %}
-<script>
-function toggleDesc(btn) {
-  var card = btn.closest('.article-description');
-  var shortDesc = card.querySelector('.desc-short');
-  var fullDesc = card.querySelector('.desc-full');
-  if (shortDesc.style.display !== 'none') {
-    shortDesc.style.display = 'none';
-    fullDesc.style.display = 'inline';
-    btn.textContent = 'menos';
-    btn.style.color = '#28a745';
-  } else {
-    shortDesc.style.display = 'inline';
-    fullDesc.style.display = 'none';
-    btn.textContent = 'mais';
-    btn.style.color = '#28a745';
-  }
-}
-</script>
-        </div>
-
-        <!-- Aviso de verificação -->
-        
-      </div>
-
-      <!-- INVISIBLE RIGHT SIDEBAR (for centering) -->
-      <div class="right-sidebar" style="min-width:240px; max-width:320px; background:#fff; border-left:1px solid #e0e0e0; padding:24px 16px;">
-        {# JSON for following and communities #}
-        <script type="application/json" id="following-users-json">
-          [{% for user in following_users %}{"fullname": "{{ user.fullname|escapejs }}", "pic": "{{ user.get_profile_picture_url }}", "area": "{{ user.research_area|default:'Área não informada'|escapejs }}"}{% if not forloop.last %},{% endif %}{% endfor %}]
-        </script>
-        <script type="application/json" id="communities-json">
-          [{% for community in joined_communities %}{"name": "{{ community.name|escapejs }}", "pic": "{{ community.get_community_picture_url }}", "desc": "{{ community.description|truncatechars:40|escapejs }}"}{% if not forloop.last %},{% endif %}{% endfor %}]
-        </script>
-        <h3 style="color:#256d4a; margin-bottom:18px;">Você segue</h3>
-        {% if following_users %}
-          <ul id="following-list" style="list-style:none; padding:0; margin:0;">
-            {% for user in following_users|slice:':5' %}
-              <li style="display:flex; align-items:center; margin-bottom:16px;">
-                <img src="{{ user.get_profile_picture_url }}" alt="Foto de perfil" style="width:38px; height:38px; border-radius:50%; object-fit:cover; margin-right:12px; border:1.5px solid #28a745;">
-                <div>
-                  <div style="font-weight:500; color:#256d4a;">{{ user.fullname }}</div>
-                  <div style="font-size:0.95em; color:#555;">{{ user.research_area|default:'Área não informada' }}</div>
-                </div>
-              </li>
-            {% endfor %}
-          </ul>
-          {% if following_users|length > 5 %}
-            <button id="toggle-following" style="background:none;border:none;color:#28a745;cursor:pointer;padding:0 0 0 2px;font-weight:500;">Ver mais</button>
-          {% endif %}
-        {% else %}
-          <p style="color:#888;">Você ainda não segue ninguém.</p>
-        {% endif %}
-        <hr style="margin:24px 0 16px 0; border:0; border-top:1.5px solid #e0e0e0;">
-        <h3 style="color:#256d4a; margin-bottom:18px;">Suas Comunidades</h3>
-        {% if joined_communities %}
-          <ul id="communities-list" style="list-style:none; padding:0; margin:0;">
-            {% for community in joined_communities|slice:':5' %}
-              <li style="display:flex; align-items:center; margin-bottom:16px;">
-                <img src="{{ community.get_community_picture_url }}" alt="Foto da comunidade" style="width:38px; height:38px; border-radius:50%; object-fit:cover; margin-right:12px; border:1.5px solid #28a745;">
-                <div>
-                  <div style="font-weight:500; color:#256d4a;">{{ community.name }}</div>
-                  <div style="font-size:0.95em; color:#555;">{{ community.description|truncatechars:40 }}</div>
-                </div>
-              </li>
-            {% endfor %}
-          </ul>
-          {% if joined_communities|length > 5 %}
-            <button id="toggle-communities" style="background:none;border:none;color:#28a745;cursor:pointer;padding:0 0 0 2px;font-weight:500;">Ver mais</button>
-          {% endif %}
-        {% else %}
-          <p style="color:#888;">Você ainda não participa de nenhuma comunidade.</p>
-        {% endif %}
-<script>
-// Following pagination
-let followingExpanded = false;
-const followingUsers = JSON.parse(document.getElementById('following-users-json').textContent.trim());
-const followingList = document.getElementById('following-list');
-const toggleFollowingBtn = document.getElementById('toggle-following');
-if (toggleFollowingBtn) {
-  toggleFollowingBtn.onclick = function() {
-    followingExpanded = !followingExpanded;
-    followingList.innerHTML = '';
-    let toShow = followingExpanded ? followingUsers.length : 5;
-    for (let i = 0; i < toShow; i++) {
-      const user = followingUsers[i];
-      followingList.innerHTML += `<li style='display:flex; align-items:center; margin-bottom:16px;'><img src='${user.pic}' alt='Foto de perfil' style='width:38px; height:38px; border-radius:50%; object-fit:cover; margin-right:12px; border:1.5px solid #28a745;'><div><div style='font-weight:500; color:#256d4a;'>${user.fullname}</div><div style='font-size:0.95em; color:#555;'>${user.area}</div></div></li>`;
-    }
-    toggleFollowingBtn.textContent = followingExpanded ? 'Ver menos' : 'Ver mais';
-  };
-}
-// Communities pagination
-let communitiesExpanded = false;
-const communities = JSON.parse(document.getElementById('communities-json').textContent.trim());
-const communitiesList = document.getElementById('communities-list');
-const toggleCommunitiesBtn = document.getElementById('toggle-communities');
-if (toggleCommunitiesBtn) {
-  toggleCommunitiesBtn.onclick = function() {
-    communitiesExpanded = !communitiesExpanded;
-    communitiesList.innerHTML = '';
-    let toShow = communitiesExpanded ? communities.length : 5;
-    for (let i = 0; i < toShow; i++) {
-      const c = communities[i];
-      communitiesList.innerHTML += `<li style='display:flex; align-items:center; margin-bottom:16px;'><img src='${c.pic}' alt='Foto da comunidade' style='width:38px; height:38px; border-radius:50%; object-fit:cover; margin-right:12px; border:1.5px solid #28a745;'><div><div style='font-weight:500; color:#256d4a;'>${c.name}</div><div style='font-size:0.95em; color:#555;'>${c.desc}</div></div></li>`;
-    }
-    toggleCommunitiesBtn.textContent = communitiesExpanded ? 'Ver menos' : 'Ver mais';
-  };
-}
-</script>
+  <div class="container">
+    <!-- LEFT SIDEBAR -->
+    <div class="left-sidebar">
+      <style>
+        .imp-links a {
+          display: flex;
+          align-items: center;
+          padding: 10px 16px;
+          border-left: 4px solid transparent;
+          color: #256d4a !important;
+          text-decoration: none;
+          font-weight: 500;
+          background: none;
+          transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .imp-links a.active {
+          background: #eafaf1;
+          border-left: 4px solid #28a745;
+          color: #28a745 !important;
+        }
+        .imp-links a img {
+          margin-right: 10px;
+        }
+      </style>
+      <div class="imp-links">
+        <a href="{% url 'feed:artigos' %}" class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"><img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos</a>
+        <a href="{% url 'feed:conexao' %}" class="{% if request.resolver_match.url_name == 'conexao' %}active{% endif %}"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
+        <a href="{% url 'feed:community' %}" class="{% if request.resolver_match.url_name == 'community' %}active{% endif %}"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
       </div>
     </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content" style="margin: 0 auto; float: none; display: flex; flex-direction: column; align-items: center;">
+      <!-- Bloco de perfil restaurado -->
+      <div class="post-container" style="text-align:center; padding:0; overflow:visible;">
+        <!-- Capa verde escuro -->
+        <div style="background:#256d4a; height:120px; border-top-left-radius:10px; border-top-right-radius:10px; position:relative;">
+          <!-- Foto de perfil -->
+          <img src="{{ profile_user.get_profile_picture_url }}" alt="Foto de perfil" style="width: 120px; height: 120px; border-radius: 50%; border:4px solid #fff; position:absolute; left:50%; transform:translateX(-50%); bottom:-60px; box-shadow:0 2px 8px rgba(0,0,0,0.10); background:#fff;">
+          <img src="{{ profile_user.get_profile_picture_url }}" alt="Foto de perfil" id="profile-header-img" style="width: 120px; height: 120px; border-radius: 50%; border:4px solid #fff; position:absolute; left:50%; transform:translateX(-50%); bottom:-60px; box-shadow:0 2px 8px rgba(0,0,0,0.10); background:#fff; cursor:pointer;">
+
+          <!-- Modal para imagem inteira -->
+          <div id="profile-img-modal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); align-items:center; justify-content:center;">
+            <img src="{{ profile_user.get_profile_picture_url }}" alt="Foto de perfil inteira" style="max-width:90vw; max-height:90vh; border-radius:10px; box-shadow:0 4px 24px rgba(0,0,0,0.25); display:block; margin:auto;">
+          </div>
+        </div>
+        <!-- Nome do usuário -->
+        <div id="profile-name" style="font-size:1.4em; font-weight:700; color:#222; margin-top:80px;">{{ profile_user.fullname }}</div>
+        <!-- Título e instituição -->
+        <div id="profile-title" style="font-size:1.1em; color:#256d4a; margin-top:4px;">
+          {% if profile_user.research_area %}
+            {{ profile_user.research_area }}
+          {% else %}
+            <span style="color:#bbb;">adicione um título</span>
+          {% endif %}
+        </div>
+        <div id="profile-university" style="font-size:1em; color:#555; margin-bottom:10px;">
+          {% if profile_user.institution %}
+            {{ profile_user.institution }}
+          {% else %}
+            <span style="color:#bbb;">adicione instituição</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="post-container" style="margin-top:32px;">
+        <h2 style="color:#256d4a;">Seus Artigos</h2>
+        {% if user_articles %}
+          <ul style="list-style:none;padding:0;">
+            {% for article in user_articles %}
+              <li style="margin-bottom:18px; padding:16px; border:1px solid #e0e0e0; border-radius:8px; background:#fafafa; position:relative;">
+                <div style="font-size:1.1em; font-weight:600; color:#256d4a;">{{ article.title }}</div>
+                <div style="font-size:0.95em; color:#555; margin:4px 0 8px 0;">{{ article.research_area }}</div>
+                {% if article.description %}
+                  <div class="article-description" style="font-size:0.97em; color:#333; margin-bottom:8px; position:relative;">
+                    <span class="desc-text" style="display:inline;">
+                      {% if article.description|length > 220 %}
+                        <span class="desc-short">{{ article.description|slice:':220' }}...</span>
+                        <span class="desc-full" style="display:none;">{{ article.description }}</span>
+                        <button class="desc-toggle" onclick="toggleDesc(this); return false;" style="background:none;border:none;color:#28a745;cursor:pointer;padding:0;">mais</button>
+                      {% else %}
+                        {{ article.description }}
+                      {% endif %}
+                    </span>
+                  </div>
+                {% endif %}
+                <a href="{{ article.pdf.url }}" target="_blank" style="color:#28a745; font-weight:500; text-decoration:underline;">Ver PDF</a>
+                <form method="post" action="{% url 'feed:delete_article' article.id %}" style="position:absolute; top:12px; right:12px;">
+                  {% csrf_token %}
+                  <button type="submit" style="background:#fff; color:#d32f2f; border:1px solid #d32f2f; border-radius:4px; padding:2px 10px; font-size:13px; cursor:pointer;">Apagar</button>
+                </form>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p style="color:#888;">Você ainda não publicou nenhum artigo.</p>
+        {% endif %}
+      </div>
+      <script>
+      function toggleDesc(btn) {
+        var card = btn.closest('.article-description');
+        var shortDesc = card.querySelector('.desc-short');
+        var fullDesc = card.querySelector('.desc-full');
+        if (shortDesc.style.display !== 'none') {
+          shortDesc.style.display = 'none';
+          fullDesc.style.display = 'inline';
+          btn.textContent = 'menos';
+          btn.style.color = '#28a745';
+        } else {
+          shortDesc.style.display = 'inline';
+          fullDesc.style.display = 'none';
+          btn.textContent = 'mais';
+          btn.style.color = '#28a745';
+        }
+      }
+
+      // Modal da imagem de perfil
+      document.addEventListener('DOMContentLoaded', function() {
+        var img = document.getElementById('profile-header-img');
+        var modal = document.getElementById('profile-img-modal');
+        if (img && modal) {
+          img.onclick = function() {
+            modal.style.display = 'flex';
+          };
+          modal.onclick = function(e) {
+            if (e.target === modal) {
+              modal.style.display = 'none';
+            }
+          };
+        }
+      });
+      </script>
+    </div>
+    <!-- Fim main-content -->
+
+    <!-- Right Sidebar invisível -->
+    <div class="right-sidebar" style="visibility:hidden; opacity:0; pointer-events:none;"></div>
+  </div>
+  <div class="footer"><p>Innovator 2025</p></div>
+  <script src="{% static 'js/home.js' %}"></script>
 </body>
 </html>

@@ -1,3 +1,4 @@
+/* === Modern card and form styles for artigos page (copied from community.css for consistency) === */
 .search-bar:focus {
   border: 1.5px solid #28a745;
   outline: none;
@@ -50,72 +51,6 @@
 .plus-btn:hover {
   background: #218838;
 }
-.home-btn {
-  background: #f8f9fa;
-  color: #28a745;
-  border: 1.5px solid #e0e0e0;
-  border-radius: 20px;
-  padding: 8px 18px;
-  font-size: 1rem;
-  text-decoration: none;
-  margin-left: 8px;
-  transition: background 0.2s, color 0.2s;
-}
-.home-btn:hover {
-  background: #28a745;
-  color: #fff;
-}
-.modal {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-.modal-content {
-  background: #fff;
-  padding: 32px 24px;
-  border-radius: 12px;
-  min-width: 320px;
-  position: relative;
-  box-shadow: 0 4px 32px rgba(0,0,0,0.12);
-}
-.close-modal {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  font-size: 1.5rem;
-  color: #888;
-  cursor: pointer;
-}
-#article-upload-form label {
-  display: block;
-  margin-bottom: 8px;
-}
-#article-upload-form input[type="file"] {
-  margin-bottom: 12px;
-}
-#article-upload-form input[type="text"] {
-  width: 100%;
-  margin-bottom: 12px;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-#article-upload-form button[type="submit"] {
-  background: #28a745;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 18px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-#article-upload-form button[type="submit"]:hover {
-  background: #218838;
-}
 .articles-list {
   margin-top: 32px;
   display: flex;
@@ -142,10 +77,77 @@
 }
 .article-link {
   color: #28a745;
+  font-weight: 500;
   text-decoration: underline;
-  font-size: 0.98rem;
-  margin-top: 2px;
+  margin-top: 6px;
+  display: inline-block;
 }
-.article-link:hover {
-  color: #218838;
+.article-link[style*="cursor:not-allowed"] {
+  color: #888;
+  text-decoration: none;
+}
+.article-price {
+  color: #28a745;
+  font-weight: bold;
+  margin-left: 8px;
+}
+.pay-btn, .access-btn {
+  background: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 8px;
+  margin-top: 6px;
+  transition: background 0.2s;
+}
+.pay-btn:hover, .access-btn:hover {
+  background: #218838;
+}
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+.community-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.user-card {
+  display: flex;
+  background: #fff;
+  padding: 2rem;
+  gap: 0.8rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 200px;
+}
+
+.user-card .name {
+  font-weight: bold;
+}
+
+.user-card .title {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.follow-btn {
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  background: #9fe2bf;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.follow-btn:hover {
+  background: #86cea9;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
 }

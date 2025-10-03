@@ -1,9 +1,21 @@
+
 var settingsmenu = document.querySelector(".settings-menu");
 var darkBtn = document.getElementById("dark-btn");
 
 function settingsMenuToggle() {
   settingsmenu.classList.toggle("settings-menu-height");
 }
+
+// Fecha o menu de configurações ao clicar fora
+document.addEventListener("mousedown", function(e) {
+  if (settingsmenu && settingsmenu.classList.contains("settings-menu-height")) {
+    // Se o clique não for dentro do menu nem no botão do usuário
+    var userIcon = document.querySelector(".nav-user-icon");
+    if (!settingsmenu.contains(e.target) && !userIcon.contains(e.target)) {
+      settingsmenu.classList.remove("settings-menu-height");
+    }
+  }
+});
 
 darkBtn.onclick = function () {
   darkBtn.classList.toggle("dark-btn-on");
