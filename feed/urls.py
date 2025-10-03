@@ -19,4 +19,5 @@ urlpatterns = [
     path("community/<int:community_id>/", views.community_detail, name="community_detail"),
     path("article/<int:article_id>/delete/", delete_article, name="delete_article"),
     # path("verificacao/submit/", views.submit_verificacao, name="submit_verificacao"),
+    path("mensagens/", views.mensagens, name="mensagens"),
 ]

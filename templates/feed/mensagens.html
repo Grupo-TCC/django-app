@@ -1,0 +1,302 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mensagens - Innovator</title>
+  <link rel="stylesheet" href="{% static 'styles/home.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/perfil.css' %}">
+  <style>
+    .messages-main {
+      flex-basis: 47%;
+      background: #fff;
+      border-radius: 8px;
+      min-height: 500px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      display: flex;
+      overflow: hidden;
+    }
+    .conversations-list {
+      width: 35%;
+      border-right: 1px solid #e0e0e0;
+      background: #fafafa;
+      overflow-y: auto;
+      max-height: 600px;
+    }
+    .conversation-item {
+      display: flex;
+      align-items: center;
+      padding: 16px 18px;
+      cursor: pointer;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.2s;
+    }
+    .conversation-item:hover, .conversation-item.active {
+      background: #eafaf1;
+    }
+    .conversation-item img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-right: 14px;
+      object-fit: cover;
+    }
+    .conversation-info {
+      flex: 1;
+    }
+    .conversation-name {
+      font-weight: 600;
+      color: #256d4a;
+      font-size: 1.08em;
+    }
+    .conversation-last {
+      color: #888;
+      font-size: 0.97em;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px;
+    }
+    .chat-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      min-width: 0;
+    }
+    .chat-header {
+      padding: 18px 22px;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      background: #f8f8f8;
+    }
+    .chat-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 12px;
+    }
+    .chat-header .chat-name {
+      font-weight: 600;
+      color: #256d4a;
+      font-size: 1.1em;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: 22px;
+      overflow-y: auto;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .message {
+      max-width: 70%;
+      padding: 10px 16px;
+      border-radius: 18px;
+      font-size: 1em;
+      background: #eafaf1;
+      color: #222;
+      align-self: flex-start;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .message.me {
+      background: #256d4a;
+      color: #fff;
+      align-self: flex-end;
+    }
+    .chat-input-area {
+      padding: 16px 22px;
+      border-top: 1px solid #e0e0e0;
+      background: #fafafa;
+      display: flex;
+      gap: 10px;
+    }
+    .chat-input {
+      flex: 1;
+      border: 1px solid #e0e0e0;
+      border-radius: 20px;
+      padding: 10px 16px;
+      font-size: 1em;
+      outline: none;
+    }
+    .send-btn {
+      background: #256d4a;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 22px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .send-btn:hover {
+      background: #28a745;
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav>
+    <div class="nav-left">
+      <a href="{% url 'feed:artigos' %}"><img src="{% static 'assets/img/logo.png' %}" class="logo"></a>
+      <ul>
+        <li><img src="{% static 'assets/img/notification.png' %}"></li>
+        <li><a href="{% url 'feed:mensagens' %}"><img src="{% static 'assets/img/inbox.png' %}" alt="Mensagens" style="cursor:pointer;"></a></li>
+      </ul>
+    </div>
+    <div class="nav-right">
+      <div class="nav-user-icon online" onclick="settingsMenuToggle()">
+        <img src="{{ request.user.get_profile_picture_url }}">
+      </div>
+      <div class="settings-menu">
+        <div id="dark-btn"><span></span></div>
+        <div class="settings-menu-inner">
+          <div class="user-profile">
+            <img src="{{ request.user.get_profile_picture_url }}">
+            <div>
+              <p>{{ request.user.fullname }}</p>
+              <a href="{% url 'feed:perfil' %}">Ver Perfil</a>
+            </div>
+          </div>
+          <hr>
+          <div class="user-profile">
+            <img src="{% static 'assets/img/feedback.png' %}">
+            <div>
+              <p>Nos dê seu feedback</p>
+              <a href="#">Ajude a melhorar nosso site</a>
+            </div>
+          </div>
+          <hr>
+          <div class="settings-links">
+            <img src="{% static 'assets/img/setting.png' %}" class="settings-icon">
+            <a href="{% url 'feed:settings' %}">Configuração & Privacidade <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+          </div>
+          <div class="settings-links">
+            <img src="{% static 'assets/img/help.png' %}" class="settings-icon">
+            <a href="#">Ajuda <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+          </div>
+          <div class="settings-links">
+            <img src="{% static 'assets/img/logout.png' %}" class="settings-icon">
+            <a href="{% url 'logout' %}">Sair <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- LEFT SIDEBAR -->
+    <div class="left-sidebar">
+      <style>
+        .imp-links a {
+          display: flex;
+          align-items: center;
+          padding: 10px 16px;
+          border-left: 4px solid transparent;
+          color: #256d4a !important;
+          text-decoration: none;
+          font-weight: 500;
+          background: none;
+          transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .imp-links a.active {
+          background: #eafaf1;
+          border-left: 4px solid #28a745;
+          color: #28a745 !important;
+        }
+        .imp-links a img {
+          margin-right: 10px;
+        }
+      </style>
+      <div class="imp-links">
+        <a href="{% url 'feed:artigos' %}" class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"><img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos</a>
+        <a href="{% url 'feed:conexao' %}" class="{% if request.resolver_match.url_name == 'conexao' %}active{% endif %}"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
+        <a href="{% url 'feed:community' %}" class="{% if request.resolver_match.url_name == 'community' %}active{% endif %}"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
+      </div>
+    </div>
+    <!-- MAIN CONTENT -->
+    <div class="messages-main">
+      <div class="conversations-list">
+        <!-- Exemplo de conversas -->
+        <div class="conversation-item active" onclick="openChat('Maria Silva')">
+          <img src="{% static 'assets/img/member-1.png' %}" alt="Maria Silva">
+          <div class="conversation-info">
+            <div class="conversation-name">Maria Silva</div>
+            <div class="conversation-last">Oi! Tudo bem?</div>
+          </div>
+        </div>
+        <div class="conversation-item" onclick="openChat('João Souza')">
+          <img src="{% static 'assets/img/member-2.png' %}" alt="João Souza">
+          <div class="conversation-info">
+            <div class="conversation-name">João Souza</div>
+            <div class="conversation-last">Vamos marcar uma call?</div>
+          </div>
+        </div>
+        <div class="conversation-item" onclick="openChat('Ana Paula')">
+          <img src="{% static 'assets/img/member-3.png' %}" alt="Ana Paula">
+          <div class="conversation-info">
+            <div class="conversation-name">Ana Paula</div>
+            <div class="conversation-last">Enviei o artigo!</div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-area" id="chat-area">
+        <div class="chat-header">
+          <img src="{% static 'assets/img/member-1.png' %}" id="chat-avatar" alt="Maria Silva">
+          <span class="chat-name" id="chat-name">Maria Silva</span>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+          <div class="message">Oi! Tudo bem?</div>
+          <div class="message me">Tudo sim, e você?</div>
+          <div class="message">Estou bem também! Queria falar sobre o projeto.</div>
+        </div>
+        <div class="chat-input-area">
+          <input type="text" class="chat-input" id="chat-input" placeholder="Digite sua mensagem...">
+          <button class="send-btn" onclick="sendMessage()">Enviar</button>
+        </div>
+      </div>
+    </div>
+    <!-- Right Sidebar invisível -->
+    <div class="right-sidebar" style="visibility:hidden; opacity:0; pointer-events:none;"></div>
+  </div>
+  <div class="footer"><p>Innovator 2025</p></div>
+  <script>
+    function openChat(name) {
+      // Exemplo: troca o nome e avatar do chat
+      document.getElementById('chat-name').textContent = name;
+      let avatar = 'member-1.png';
+      if (name === 'João Souza') avatar = 'member-2.png';
+      if (name === 'Ana Paula') avatar = 'member-3.png';
+      document.getElementById('chat-avatar').src = '/static/assets/img/' + avatar;
+      // Limpa e adiciona mensagens de exemplo
+      const chat = document.getElementById('chat-messages');
+      chat.innerHTML = '';
+      if (name === 'Maria Silva') {
+        chat.innerHTML += '<div class="message">Oi! Tudo bem?</div>';
+        chat.innerHTML += '<div class="message me">Tudo sim, e você?</div>';
+        chat.innerHTML += '<div class="message">Estou bem também! Queria falar sobre o projeto.</div>';
+      } else if (name === 'João Souza') {
+        chat.innerHTML += '<div class="message">Vamos marcar uma call?</div>';
+        chat.innerHTML += '<div class="message me">Pode ser amanhã?</div>';
+      } else if (name === 'Ana Paula') {
+        chat.innerHTML += '<div class="message">Enviei o artigo!</div>';
+        chat.innerHTML += '<div class="message me">Recebi, obrigado!</div>';
+      }
+    }
+    function sendMessage() {
+      const input = document.getElementById('chat-input');
+      const msg = input.value.trim();
+      if (msg) {
+        const chat = document.getElementById('chat-messages');
+        chat.innerHTML += '<div class="message me">' + msg + '</div>';
+        input.value = '';
+        chat.scrollTop = chat.scrollHeight;
+      }
+    }
+  </script>
+</body>
+</html>

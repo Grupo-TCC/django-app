@@ -1,3 +1,8 @@
+# Página de mensagens
+from django.shortcuts import render
+
+def mensagens(request):
+    return render(request, 'feed/mensagens.html')
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseBadRequest

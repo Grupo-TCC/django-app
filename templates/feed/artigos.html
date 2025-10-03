@@ -13,12 +13,10 @@
   <!-- NAV -->
   <nav>
     <div class="nav-left">
-  <a href="{% url 'feed:artigos' %}"><img src="{% static 'assets/img/logo.png' %}" class="logo"></a>
-  <!-- Logo sempre leva para artigos -->
-  <a href="{% url 'feed:artigos' %}"><img src="{% static 'assets/img/logo.png' %}" class="logo"></a>
+      <a href="{% url 'feed:artigos' %}"><img src="{% static 'assets/img/logo.png' %}" class="logo"></a>
       <ul>
-        <li><img src="{% static 'assets/img/notification.png' %}"></li>
-        <li><img src="{% static 'assets/img/inbox.png' %}"></li>
+  <li><img src="{% static 'assets/img/notification.png' %}"></li>
+  <li><a href="{% url 'feed:mensagens' %}"><img src="{% static 'assets/img/inbox.png' %}" alt="Mensagens" style="cursor:pointer;"></a></li>
       </ul>
     </div>
     <div class="nav-right">

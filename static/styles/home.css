@@ -52,7 +52,7 @@ nav {
     padding: 5px 5%;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 10;
 }
 
 .logo {
@@ -430,6 +430,7 @@ nav {
     right: 5%;
     max-height: 0;
     transition: max-height 0.3s;
+    z-index: 100 !important;
 }
 
 .settings-menu.active {
