@@ -211,20 +211,20 @@ function toggleDesc(btn) {
     <div class="right-sidebar">
       <div class="sidebar-title">
         <h4>Conversas</h4>
-        <a href="#">Esconder conversa</a>
+        <!-- <a href="#">Esconder conversa</a> -->
       </div>
-      <div class="online-list">
-        <div class="online"><img src="{% static 'assets/img/member-1.png' %}"></div>
-        <p>Diva Luna</p>
-      </div>
-      <div class="online-list">
-        <div class="online"><img src="{% static 'assets/img/member-2.png' %}"></div>
-        <p>Lucas Brito</p>
-      </div>
-      <div class="online-list">
-        <div class="online"><img src="{% static 'assets/img/member-3.png' %}"></div>
-        <p>Leila Tales</p>
-      </div>
+      {% if top_message_users %}
+        {% for user in top_message_users|slice:":5" %}
+          <div class="online-list">
+            <div class="online"><img src="{{ user.get_profile_picture_url }}" alt="{{ user.fullname }}"></div>
+            <a href="{% url 'feed:mensagens' %}?user={{ user.id }}" style="color:inherit;text-decoration:none;">
+              <p style="margin:0;cursor:pointer;">{{ user.fullname }}</p>
+            </a>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p style="color:#888; margin:12px 0 0 12px;">Nenhuma conversa recente.</p>
+      {% endif %}
     </div>
   </div>
 

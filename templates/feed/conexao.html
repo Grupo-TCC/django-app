@@ -21,6 +21,7 @@
         <img src="{% static 'assets/img/search.png' %}">
         <input type="text" name="q" placeholder="Pesquisar pessoas" value="{{ search_query|default:'' }}">
       </form>
+    </div>
 <div class="nav-user-icon online" onclick="settingsMenuToggle()">
   <img src="{{ request.user.get_profile_picture_url }}">
 </div>

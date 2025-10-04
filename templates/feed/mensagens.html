@@ -149,6 +149,7 @@
       </ul>
     </div>
     <div class="nav-right">
+      
       <div class="nav-user-icon online" onclick="settingsMenuToggle()">
         <img src="{{ request.user.get_profile_picture_url }}">
       </div>
@@ -218,45 +219,60 @@
         <a href="{% url 'feed:community' %}" class="{% if request.resolver_match.url_name == 'community' %}active{% endif %}"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
       </div>
     </div>
+    
+     
     <!-- MAIN CONTENT -->
     <div class="messages-main">
-      <div class="conversations-list">
-        <!-- Exemplo de conversas -->
-        <div class="conversation-item active" onclick="openChat('Maria Silva')">
-          <img src="{% static 'assets/img/member-1.png' %}" alt="Maria Silva">
-          <div class="conversation-info">
-            <div class="conversation-name">Maria Silva</div>
-            <div class="conversation-last">Oi! Tudo bem?</div>
+      
+      <div class="conversations-list" id="conversations-list">
+        <div style="padding: 18px 18px 0 18px; background: #fafafa; border-bottom: 1px solid #e0e0e0;">
+        <input type="text" id="conversation-search" placeholder="Pesquisar contatos..." style="width:100%;padding:8px 14px;border-radius:18px;border:1px solid #e0e0e0;font-size:1em;outline:none;">
+      </div>
+        {% for conv in conversations %}
+          <div class="conversation-item{% if conv.last_sender_id == request.user.id %} active{% endif %}"
+               data-user-id="{{ conv.id }}"
+               data-fullname="{{ conv.fullname|escapejs }}"
+               data-profile-pic="{{ conv.profile_picture_url }}"
+               onclick="openChatUser(this)">
+            <img src="{{ conv.profile_picture_url }}" alt="{{ conv.fullname }}">
+            <div class="conversation-info">
+              <div class="conversation-name">{{ conv.fullname }}</div>
+              <div class="conversation-last">{{ conv.last_message|default:' ' }}</div>
+            </div>
           </div>
-        </div>
-        <div class="conversation-item" onclick="openChat('João Souza')">
-          <img src="{% static 'assets/img/member-2.png' %}" alt="João Souza">
-          <div class="conversation-info">
-            <div class="conversation-name">João Souza</div>
-            <div class="conversation-last">Vamos marcar uma call?</div>
-          </div>
-        </div>
-        <div class="conversation-item" onclick="openChat('Ana Paula')">
-          <img src="{% static 'assets/img/member-3.png' %}" alt="Ana Paula">
-          <div class="conversation-info">
-            <div class="conversation-name">Ana Paula</div>
-            <div class="conversation-last">Enviei o artigo!</div>
-          </div>
-        </div>
+          {% empty %}
+          <div style="padding: 20px; color: #888;">Você ainda não segue ninguém.</div>
+          {% endfor %}
       </div>
       <div class="chat-area" id="chat-area">
         <div class="chat-header">
-          <img src="{% static 'assets/img/member-1.png' %}" id="chat-avatar" alt="Maria Silva">
-          <span class="chat-name" id="chat-name">Maria Silva</span>
+          {% if selected_user %}
+            <img src="{{ selected_user.get_profile_picture_url }}" id="chat-avatar" alt="{{ selected_user.fullname }}">
+            <span class="chat-name" id="chat-name">{{ selected_user.fullname }}</span>
+          {% else %}
+            <img src="{{ request.user.get_profile_picture_url }}" id="chat-avatar" alt="">
+            <span class="chat-name" id="chat-name">Selecione uma conversa</span>
+          {% endif %}
         </div>
         <div class="chat-messages" id="chat-messages">
-          <div class="message">Oi! Tudo bem?</div>
-          <div class="message me">Tudo sim, e você?</div>
-          <div class="message">Estou bem também! Queria falar sobre o projeto.</div>
+          {% if selected_user %}
+            {% for msg in chat_messages %}
+              <div class="message{% if msg.sender_id == request.user.id %} me{% endif %}">
+                {{ msg.body }}
+              </div>
+            {% empty %}
+              <div style="color:#888;">Nenhuma mensagem ainda.</div>
+            {% endfor %}
+          {% else %}
+            <div style="color:#888;">Selecione uma conversa para ver as mensagens.</div>
+          {% endif %}
         </div>
         <div class="chat-input-area">
-          <input type="text" class="chat-input" id="chat-input" placeholder="Digite sua mensagem...">
-          <button class="send-btn" onclick="sendMessage()">Enviar</button>
+          <form id="chat-form" onsubmit="sendMessage(); return false;">
+            {% csrf_token %}
+            <input type="text" class="chat-input" id="chat-input" placeholder="Digite sua mensagem..." autocomplete="off">
+            <button type="submit" class="send-btn">Enviar</button>
+          </form>
         </div>
       </div>
     </div>
@@ -265,37 +281,95 @@
   </div>
   <div class="footer"><p>Innovator 2025</p></div>
   <script>
-    function openChat(name) {
-      // Exemplo: troca o nome e avatar do chat
-      document.getElementById('chat-name').textContent = name;
-      let avatar = 'member-1.png';
-      if (name === 'João Souza') avatar = 'member-2.png';
-      if (name === 'Ana Paula') avatar = 'member-3.png';
-      document.getElementById('chat-avatar').src = '/static/assets/img/' + avatar;
-      // Limpa e adiciona mensagens de exemplo
-      const chat = document.getElementById('chat-messages');
-      chat.innerHTML = '';
-      if (name === 'Maria Silva') {
-        chat.innerHTML += '<div class="message">Oi! Tudo bem?</div>';
-        chat.innerHTML += '<div class="message me">Tudo sim, e você?</div>';
-        chat.innerHTML += '<div class="message">Estou bem também! Queria falar sobre o projeto.</div>';
-      } else if (name === 'João Souza') {
-        chat.innerHTML += '<div class="message">Vamos marcar uma call?</div>';
-        chat.innerHTML += '<div class="message me">Pode ser amanhã?</div>';
-      } else if (name === 'Ana Paula') {
-        chat.innerHTML += '<div class="message">Enviei o artigo!</div>';
-        chat.innerHTML += '<div class="message me">Recebi, obrigado!</div>';
+  // Store current user id for JS
+  var CURRENT_USER_ID = "{{ request.user.id }}";
+    // Search/filter conversations
+    document.addEventListener('DOMContentLoaded', function() {
+      var search = document.getElementById('conversation-search');
+      if (search) {
+        search.addEventListener('input', function() {
+          var val = search.value.toLowerCase();
+          var items = document.querySelectorAll('.conversations-list .conversation-item');
+          items.forEach(function(item) {
+            var name = item.getAttribute('data-fullname') || '';
+            if (name.toLowerCase().indexOf(val) !== -1) {
+              item.style.display = '';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
       }
+    });
+    var SELECTED_USER_ID = null;
+    function openChatUser(elem) {
+      var name = elem.getAttribute('data-fullname');
+      var pic = elem.getAttribute('data-profile-pic');
+      var userId = elem.getAttribute('data-user-id');
+      SELECTED_USER_ID = userId;
+      document.getElementById('chat-name').textContent = name;
+      document.getElementById('chat-avatar').src = pic;
+      // AJAX fetch messages
+      fetch(`/feed/mensagens/api/get_messages/?user_id=${userId}`)
+        .then(resp => resp.json())
+        .then(data => {
+          const chat = document.getElementById('chat-messages');
+          chat.innerHTML = '';
+          if (data.messages.length === 0) {
+            chat.innerHTML = '<div style="color:#888;">Nenhuma mensagem ainda.</div>';
+          } else {
+            data.messages.forEach(function(msg) {
+              var me = msg.sender_id == CURRENT_USER_ID ? ' me' : '';
+              chat.innerHTML += `<div class="message${me}">${msg.body}</div>`;
+            });
+          }
+        });
+    }
+    function getCSRFToken() {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          if (cookie.substring(0, 10) === 'csrftoken=') {
+            cookieValue = decodeURIComponent(cookie.substring(10));
+            break;
+          }
+        }
+      }
+      return cookieValue;
     }
     function sendMessage() {
       const input = document.getElementById('chat-input');
       const msg = input.value.trim();
-      if (msg) {
-        const chat = document.getElementById('chat-messages');
-        chat.innerHTML += '<div class="message me">' + msg + '</div>';
-        input.value = '';
-        chat.scrollTop = chat.scrollHeight;
-      }
+      if (!msg || !SELECTED_USER_ID) return false;
+      fetch('/feed/mensagens/api/send_message/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': getCSRFToken()
+        },
+        body: `user_id=${encodeURIComponent(SELECTED_USER_ID)}&body=${encodeURIComponent(msg)}`
+      })
+      .then(resp => resp.json())
+      .then(data => {
+        if (data.success) {
+          // Move conversation to top, after search bar
+          var conv = document.querySelector(`.conversation-item[data-user-id='${SELECTED_USER_ID}']`);
+          if (conv) {
+            var parent = conv.parentNode;
+            var searchBar = parent.querySelector('div');
+            if (searchBar && searchBar.querySelector('#conversation-search')) {
+              parent.insertBefore(conv, searchBar.nextSibling);
+            } else {
+              parent.insertBefore(conv, parent.firstChild);
+            }
+          }
+          openChatUser(conv);
+          input.value = '';
+        }
+      });
+      return false;
     }
   </script>
 </body>

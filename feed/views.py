@@ -1,8 +1,49 @@
 # Página de mensagens
 from django.shortcuts import render
 
+from django.db import models
+from django.contrib.auth.decorators import login_required
+
+@login_required
 def mensagens(request):
-    return render(request, 'feed/mensagens.html')
+    from .models import Message
+    following_users = [f.following for f in Follow.objects.filter(follower=request.user).select_related('following')]
+    conversation_data = []
+    selected_user_id = request.GET.get('user')
+    selected_user = None
+    chat_messages = []
+    for user in following_users:
+        last_msg = Message.objects.filter(
+            (models.Q(sender=request.user, recipient=user) | models.Q(sender=user, recipient=request.user))
+        ).order_by('-created_at').first()
+        conversation_data.append({
+            'id': user.id,
+            'fullname': user.fullname,
+            'profile_picture_url': user.get_profile_picture_url(),
+            'last_message': last_msg.body if last_msg else '',
+            'last_sender_id': last_msg.sender_id if last_msg else None,
+            'last_message_time': last_msg.created_at if last_msg else None,
+        })
+        if selected_user_id and str(user.id) == str(selected_user_id):
+            selected_user = user
+            chat_messages = Message.objects.filter(
+                (models.Q(sender=request.user, recipient=user) | models.Q(sender=user, recipient=request.user))
+            ).order_by('created_at')
+    # Order by last_message_time desc, None last
+    import datetime
+    import pytz
+    def to_naive_utc(dt):
+        if dt is None:
+            return datetime.datetime(1970, 1, 1)
+        if dt.tzinfo is not None:
+            return dt.astimezone(pytz.UTC).replace(tzinfo=None)
+        return dt
+    conversation_data.sort(key=lambda c: to_naive_utc(c['last_message_time']), reverse=True)
+    return render(request, 'feed/mensagens.html', {
+        'conversations': conversation_data,
+        'selected_user': selected_user,
+        'chat_messages': chat_messages,
+    })
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseBadRequest
@@ -187,6 +228,7 @@ def settings_view(request):
         "area_form": form,
     })
 
+@login_required
 def artigos(request):
     from .forms import ArticleForm
     form = ArticleForm()
@@ -224,11 +266,38 @@ def artigos(request):
     if user:
         access_qs = ArticleAccess.objects.filter(user=user, has_access=True)
         article_access = {a.article_id: True for a in access_qs}
+    # Top 5 users with most recent messages (for sidebar)
+    from .models import Message
+    from user.models import Follow
+    top_message_users = []
+    if user:
+        # Get users the current user follows
+        following_users = [f.following for f in Follow.objects.filter(follower=user).select_related('following')]
+        conversation_data = []
+        for u in following_users:
+            last_msg = Message.objects.filter(
+                (Q(sender=user, recipient=u) | Q(sender=u, recipient=user))
+            ).order_by('-created_at').first()
+            conversation_data.append({
+                'user': u,
+                'last_message_time': last_msg.created_at if last_msg else None,
+            })
+        import datetime
+        import pytz
+        def to_naive_utc(dt):
+            if dt is None:
+                return datetime.datetime(1970, 1, 1)
+            if dt.tzinfo is not None:
+                return dt.astimezone(pytz.UTC).replace(tzinfo=None)
+            return dt
+        conversation_data.sort(key=lambda c: to_naive_utc(c['last_message_time']), reverse=True)
+        top_message_users = [c['user'] for c in conversation_data[:5]]
     return render(request, 'feed/artigos.html', {
         'articles': articles,
         'search_query': query,
         'form': form,
         'article_access': article_access,
+        'top_message_users': top_message_users,
     })
 
 @login_required

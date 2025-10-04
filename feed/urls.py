@@ -1,10 +1,13 @@
+from . import views_message_api
 from django.urls import path
 from . import views
+from . import views_message_api
 from .delete_article_view import delete_article
 
 app_name = 'feed'
 
 urlpatterns = [
+    
     path('', views.home, name='home'),
     path('post/<int:post_id>/like/', views.toggle_like, name='toggle_like'), 
     path('post/<int:post_id>/comments/', views.comments_api, name='comments_api'),  # GET list / POST create
@@ -20,4 +23,6 @@ urlpatterns = [
     path("article/<int:article_id>/delete/", delete_article, name="delete_article"),
     # path("verificacao/submit/", views.submit_verificacao, name="submit_verificacao"),
     path("mensagens/", views.mensagens, name="mensagens"),
+    path("mensagens/api/get_messages/", views_message_api.get_messages_api, name="get_messages_api"),
+    path("mensagens/api/send_message/", views_message_api.send_message_api, name="send_message_api"),
 ]
