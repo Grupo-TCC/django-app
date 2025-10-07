@@ -10,7 +10,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
 from .models import UserVerification
 from feed.community_models import Community
-from feed.models import Post
+
 
 
 
@@ -54,25 +54,34 @@ class UserVerificationAdmin(admin.ModelAdmin):
     def approve_users(self, request, queryset):
         from django.utils.http import urlsafe_base64_encode
         from django.utils.encoding import force_bytes
-        from django.contrib.auth.tokens import default_token_generator
+        from user.views import email_verification_token  # Use our custom token generator
+        
         for verification in queryset:
             user = verification.user
             verification.status = "APPROVED"
             verification.save()
+            
+            # Activate the user
+            user.is_active = True
+            user.email_verified = True
+            user.save()
+            
             # Generate uidb64 and token for the user
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-            token = default_token_generator.make_token(user)
+            token = email_verification_token.make_token(user)
+            
             # Build login URL matching the auto_login view
             login_url = request.build_absolute_uri(
                 reverse("user:auto_login", args=[uidb64, token])
             )
+            
             send_mail(
                 "Sua conta foi aprovada!",
-                f"Parabéns, {user.fullname}! Você pode acessar sua conta por este link:\n\n{login_url}",
+                f"Parabéns, {user.fullname}! Sua conta foi aprovada.\n\nClique no link abaixo para acessar sua conta:\n\n{login_url}\n\nO link expira em 24 horas.",
                 settings.EMAIL_HOST_USER,
                 [user.email],
             )
-        self.message_user(request, "Usuários aprovados e link enviado.")
+        self.message_user(request, "Usuários aprovados e links de acesso enviados.")
 
     def reject_users(self, request, queryset):
         for verification in queryset:
@@ -91,6 +100,6 @@ class UserVerificationAdmin(admin.ModelAdmin):
 class CommunityAdmin(admin.ModelAdmin):
     list_display = ("name", "created_by", "created_at")
 
-admin.site.register(Post)
+
 
 

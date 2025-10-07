@@ -1,12 +1,14 @@
-{% load static %}
-{% load custom_filters %}
+{% load static %} {% load custom_filters %}
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Configurações - Innovator</title>
-    <link href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css" rel="stylesheet" />
+    <link
+      href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="{% static 'styles/home.css' %}" />
     <link rel="stylesheet" href="{% static 'styles/settings.css' %}" />
   </head>
@@ -14,10 +16,19 @@
     <!-- NAV -->
     <nav>
       <div class="nav-left">
-        <a href="{% url 'feed:home' %}"><img src="{% static 'assets/img/logo.png' %}" class="logo" /></a>
+        <a href="{% url 'feed:artigos' %}"
+          ><img src="{% static 'assets/img/logo.png' %}" class="logo"
+        /></a>
         <ul>
           <li><img src="{% static 'assets/img/notification.png' %}" /></li>
-          <li><a href="{% url 'feed:mensagens' %}"><img src="{% static 'assets/img/inbox.png' %}" alt="Mensagens" style="cursor:pointer;"></a></li>
+          <li>
+            <a href="{% url 'feed:mensagens' %}"
+              ><img
+                src="{% static 'assets/img/inbox.png' %}"
+                alt="Mensagens"
+                style="cursor: pointer"
+            /></a>
+          </li>
         </ul>
       </div>
       <div class="nav-right">
@@ -48,16 +59,34 @@
             </div>
             <hr />
             <div class="settings-links">
-              <img src="{% static 'assets/img/setting.png' %}" class="settings-icon" />
-              <a href="{% url 'feed:settings' %}">Configuração & Privacidade <img src="{% static 'assets/img/arrow.png' %}" width="10px" /></a>
+              <img
+                src="{% static 'assets/img/setting.png' %}"
+                class="settings-icon"
+              />
+              <a href="{% url 'feed:settings' %}"
+                >Configuração & Privacidade
+                <img src="{% static 'assets/img/arrow.png' %}" width="10px"
+              /></a>
             </div>
             <div class="settings-links">
-              <img src="{% static 'assets/img/help.png' %}" class="settings-icon" />
-              <a href="#">Ajuda <img src="{% static 'assets/img/arrow.png' %}" width="10px" /></a>
+              <img
+                src="{% static 'assets/img/help.png' %}"
+                class="settings-icon"
+              />
+              <a href="#"
+                >Ajuda
+                <img src="{% static 'assets/img/arrow.png' %}" width="10px"
+              /></a>
             </div>
             <div class="settings-links">
-              <img src="{% static 'assets/img/logout.png' %}" class="settings-icon" />
-              <a href="{% url 'logout' %}">Sair <img src="{% static 'assets/img/arrow.png' %}" width="10px" /></a>
+              <img
+                src="{% static 'assets/img/logout.png' %}"
+                class="settings-icon"
+              />
+              <a href="{% url 'logout' %}"
+                >Sair
+                <img src="{% static 'assets/img/arrow.png' %}" width="10px"
+              /></a>
             </div>
           </div>
         </div>
@@ -89,9 +118,22 @@
           }
         </style>
         <div class="imp-links">
-          <a href="{% url 'feed:artigos' %}" class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"><img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos</a>
-          <a href="{% url 'feed:conexao' %}" class="{% if request.resolver_match.url_name == 'conexao' %}active{% endif %}"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
-          <a href="{% url 'feed:community' %}" class="{% if request.resolver_match.url_name == 'community' %}active{% endif %}"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
+          <a
+            href="{% url 'feed:artigos' %}"
+            class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"
+            ><img src="{% static 'assets/img/newspaper.png' %}" /> Artigos
+            Científicos</a
+          >
+          <a
+            href="{% url 'feed:conexao' %}"
+            class="{% if request.resolver_match.url_name == 'conexao' %}active{% endif %}"
+            ><img src="{% static 'assets/img/friends.png' %}" /> Conexões</a
+          >
+          <a
+            href="{% url 'feed:community' %}"
+            class="{% if request.resolver_match.url_name == 'community' %}active{% endif %}"
+            ><img src="{% static 'assets/img/people.png' %}" /> Comunidades</a
+          >
         </div>
       </div>
 
@@ -101,43 +143,102 @@
           <div class="settings-header">
             <div class="settings-banner"></div>
             <div class="settings-profile">
-              <form method="post" enctype="multipart/form-data" action="{% url 'user:change_profile_picture' %}">
-                {% csrf_token %}
-                {% if request.user.profile_picture %}
-                  <img src="{{ request.user.profile_picture.url }}" alt="Foto de Perfil" class="settings-avatar btn-edit-main" />
+              <form
+                method="post"
+                enctype="multipart/form-data"
+                action="{% url 'user:change_profile_picture' %}"
+              >
+                {% csrf_token %} {% if request.user.profile_picture %}
+                <img
+                  src="{{ request.user.profile_picture.url }}"
+                  alt="Foto de Perfil"
+                  class="settings-avatar btn-edit-main"
+                />
                 {% else %}
-                  <img src="{% static 'assets/img/no_pic.jpg' %}" alt="Foto de Perfil" class="settings-avatar btn-edit-main" />
+                <img
+                  src="{% static 'assets/img/no_pic.jpg' %}"
+                  alt="Foto de Perfil"
+                  class="settings-avatar btn-edit-main"
+                />
                 {% endif %}
-                <input type="file" id="id_profile_picture" name="profile_picture" accept="image/*" style="display:none;" onchange="this.form.submit();" />
+                <input
+                  type="file"
+                  id="id_profile_picture"
+                  name="profile_picture"
+                  accept="image/*"
+                  style="display: none"
+                  onchange="this.form.submit();"
+                />
               </form>
               <div class="settings-info">
                 <h2>{{ request.user.fullname }}</h2>
-                <div style="margin-top: 8px;">
-                  <div><strong>Área de Pesquisa:</strong> {{ area_form.instance.research_area|default:'Adicionar sua área de pesquisa' }}</div>
-                  <div style="margin-top: 4px;"><strong>Instituição:</strong> {{ area_form.instance.institution|default:'Adicionar sua instituição' }}</div>
+                <div style="margin-top: 8px">
+                  <div>
+                    <strong>Área de Pesquisa:</strong> {{
+                    area_form.instance.research_area|default:'Adicionar sua área
+                    de pesquisa' }}
+                  </div>
+                  <div style="margin-top: 4px">
+                    <strong>Instituição:</strong> {{
+                    area_form.instance.institution|default:'Adicionar sua
+                    instituição' }}
+                  </div>
                 </div>
               </div>
-              <button type="button" class="btn-edit-main" onclick="document.getElementById('id_profile_picture').click();">Editar imagem</button>
+              <button
+                type="button"
+                class="btn-edit-main"
+                onclick="document.getElementById('id_profile_picture').click();"
+              >
+                Editar imagem
+              </button>
             </div>
           </div>
           <div class="settings-content">
             <div class="settings-card" id="area-card">
-                <form method="post" enctype="multipart/form-data" class="settings-form" style="max-width:400px;margin:0 auto;">
-            {% csrf_token %}
-            <div style="margin-bottom:16px;">
-              <label for="id_research_area" style="display:block;font-weight:500;margin-bottom:4px;text-align:left;">Título/Área de pesquisa</label>
-              {{ area_form.research_area|add_class:'settings-input' }}
+              <form
+                method="post"
+                enctype="multipart/form-data"
+                class="settings-form"
+                style="max-width: 400px; margin: 0 auto"
+              >
+                {% csrf_token %}
+                <div style="margin-bottom: 16px">
+                  <label
+                    for="id_research_area"
+                    style="
+                      display: block;
+                      font-weight: 500;
+                      margin-bottom: 4px;
+                      text-align: left;
+                    "
+                    >Título/Área de pesquisa</label
+                  >
+                  {{ area_form.research_area|add_class:'settings-input' }}
+                </div>
+                <div style="margin-bottom: 16px">
+                  <label
+                    for="id_institution"
+                    style="
+                      display: block;
+                      font-weight: 500;
+                      margin-bottom: 4px;
+                      text-align: left;
+                    "
+                    >Instituição</label
+                  >
+                  {{ area_form.institution|add_class:'settings-input' }}
+                </div>
+                <button
+                  type="submit"
+                  class="publish-btn active"
+                  style="width: 100%"
+                >
+                  Salvar
+                </button>
+              </form>
             </div>
-            <div style="margin-bottom:16px;">
-              <label for="id_institution" style="display:block;font-weight:500;margin-bottom:4px;text-align:left;">Instituição</label>
-              {{ area_form.institution|add_class:'settings-input' }}
-            </div>
-            <button type="submit" class="publish-btn active" style="width:100%;">Salvar</button>
-                </form>
-            </div>
-<script>
-
-</script>
+            <script></script>
             <!-- <div class="settings-card">
               <p><strong>Verificação de Pesquisador</strong><br /><a href="{% url 'feed:verificacao' %}"><p>clique para verificar</p></a></p>
               <button class="btn-edit">Editar</button>
@@ -147,11 +248,11 @@
       </div>
 
       <!-- RIGHT SIDEBAR (invisível, mas mantém espaço para centralizar) -->
-      <div class="right-sidebar" style="visibility:hidden;"></div>
+      <div class="right-sidebar" style="visibility: hidden"></div>
     </div>
 
     <div class="footer">
-      <a href="{% url 'feed:home' %}"></a>
+      <a href="{% url 'feed:artigos' %}"></a>
       <p>Innovator 2025</p>
     </div>
 

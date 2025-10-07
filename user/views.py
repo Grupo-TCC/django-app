@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from user.forms import LoginForms, CustomUserCreationForm, UserVerificationForm
+from user.forms import LoginForms, CustomUserCreationForm
 from django.contrib import messages
 from .models import User, Follow, UserVerification
 from .forms import ProfilePictureForm
@@ -9,10 +9,20 @@ from django.urls import reverse
 from django.core.mail import send_mail
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
-from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.tokens import default_token_generator, PasswordResetTokenGenerator
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+
+class EmailVerificationTokenGenerator(PasswordResetTokenGenerator):
+    """
+    Custom token generator for email verification that doesn't depend on is_active status
+    """
+    def _make_hash_value(self, user, timestamp):
+        # Only use user pk, email and timestamp - not is_active or last_login
+        return str(user.pk) + user.email + str(timestamp)
+
+email_verification_token = EmailVerificationTokenGenerator()
 
 
 User = get_user_model()
@@ -43,30 +53,43 @@ def register(request):
                 user.is_active = False
                 user.email_verified = False
                 user.save()
-                # Build verification link
-                uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-                token = default_token_generator.make_token(user)
-                verify_url = request.build_absolute_uri(
-                    reverse('user:verify_email', args=[uidb64, token])
+                
+                # Create UserVerification record directly
+                verification_link = register_form.cleaned_data.get('verification_link')
+                verification = UserVerification.objects.create(
+                    user=user,
+                    link=verification_link,
+                    status="PENDING"
                 )
-                subject = "Verifique seu email para acessar o Innovator"
-                body = f"Clique para confirmar seu email e entrar (link expira em breve):\n{verify_url}"
+                
+                # Send admin notification email
+                admin_subject = f"Nova solicitação de verificação - {user.fullname}"
+                admin_body = f"""
+Nova solicitação de verificação de usuário:
+
+Nome: {user.fullname}
+Email: {user.email}
+
+Link de verificação: {verification_link}
+
+Para aprovar ou rejeitar, acesse o painel administrativo.
+                """
+                
                 try:
-                    sent = send_mail(subject, body, None, [user.email])
-                    if sent != 1:
-                        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                            return JsonResponse({'success': False, 'message': 'Não foi possível enviar o email de verificação.'}, status=500)
-                        messages.error(request, 'Não foi possível enviar o email de verificação.')
-                        return redirect('user:register')
+                    # Send notification to admins 
+                    admin_emails = [settings.EMAIL_HOST_USER]  # Use the same email as the sender for now
+                    sent = send_mail(admin_subject, admin_body, None, admin_emails, fail_silently=False)
+                    
+                    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                        return JsonResponse({'success': True, 'message': 'Cadastro realizado com sucesso! Aguarde a aprovação do administrador.'})
+                    messages.success(request, 'Cadastro realizado com sucesso! Aguarde a aprovação do administrador.')
+                    return redirect('user:register')
+                    
                 except Exception as e:
                     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                        return JsonResponse({'success': False, 'message': f'Falha ao enviar email: {e}'}, status=500)
-                    messages.error(request, f'Falha ao enviar email: {e}')
+                        return JsonResponse({'success': False, 'message': f'Falha ao enviar notificação: {e}'}, status=500)
+                    messages.error(request, f'Cadastro realizado, mas falha ao notificar administrador: {e}')
                     return redirect('user:register')
-                if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                    return JsonResponse({'success': True, 'message': 'Enviamos um link de acesso ao seu email!'})
-                messages.success(request, 'Enviamos um link de acesso ao seu email!')
-                return redirect('user:register')
             # Form invalid → return all errors
             errors = [e for field in register_form.errors.values() for e in field]
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -119,33 +142,7 @@ def custom_logout(request):
     logout(request)
     return redirect('user:register') 
     
-def verify_email(request, uidb64, token):
-    try:
-        uid = force_str(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
-    except (User.DoesNotExist, ValueError, TypeError):
-        user = None
-        
-    if user is None or not default_token_generator.check_token(user, token):
-        # invalid or expired link
-        messages.error(request, 'Link de verificação inválido ou expirado')
-        return redirect('user:register')
-    
-    # ensure UserVerification exists
-    verification, _ = UserVerification.objects.get_or_create(user=user)
 
-    if request.method == "POST":
-        form = UserVerificationForm(request.POST, instance=verification)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Seu link foi enviado para verificação pelo administrador.")
-            return redirect("user:register")
-    else:
-        form = UserVerificationForm(instance=verification)
-
-    return render(request, "user/verification_form.html", {"form": form})
-    
-    
 
 
 def auto_login(request, uidb64, token):
@@ -162,15 +159,17 @@ def auto_login(request, uidb64, token):
         user = None
 
     if not user or not user.email_verified or not user.is_active:
-        messages.error(request, "Usuário inválido.")
+        messages.error(request, "Link inválido ou conta não aprovada.")
         return redirect('user:register')
 
-    # Validate token
-    if default_token_generator.check_token(user, token):
+    # Validate token using our custom token generator
+    if email_verification_token.check_token(user, token):
         login(request, user)
-        return redirect('feed:home')
+        messages.success(request, f"Bem-vindo, {user.fullname}!")
+        return redirect('feed:artigos')  # Updated redirect to match LOGIN_REDIRECT_URL
 
     # bad/expired token
+    messages.error(request, "Link de acesso expirado ou inválido.")
     return redirect('user:register')
 
 

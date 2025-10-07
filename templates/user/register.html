@@ -93,30 +93,29 @@
             method="POST"
             class="sign-up-form"
           >
-            {% csrf_token %}
-            {% if messages %}
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    {% for message in messages %}
-    toastr.options = {
-        "closeButton": true,
-        "progressBar": true,
-        "positionClass": "toast-top-center"
-    };
-    
-    // Fixed: Properly handle the message tags and content
-    var messageType = "{{ message.tags|default:'info' }}";
-    var messageText = "{{ message|escapejs }}";
-    
-    if (toastr[messageType]) {
-        toastr[messageType](messageText);
-    } else {
-        toastr.info(messageText); // fallback to info
-    }
-    {% endfor %}
-});
-</script>
-{% endif %}
+            {% csrf_token %} {% if messages %}
+            <script>
+              document.addEventListener("DOMContentLoaded", function () {
+                  {% for message in messages %}
+                  toastr.options = {
+                      "closeButton": true,
+                      "progressBar": true,
+                      "positionClass": "toast-top-center"
+                  };
+
+                  // Fixed: Properly handle the message tags and content
+                  var messageType = "{{ message.tags|default:'info' }}";
+                  var messageText = "{{ message|escapejs }}";
+
+                  if (toastr[messageType]) {
+                      toastr[messageType](messageText);
+                  } else {
+                      toastr.info(messageText); // fallback to info
+                  }
+                  {% endfor %}
+              });
+            </script>
+            {% endif %}
 
             <h2 class="title">Cadastre-se</h2>
             <div class="input-field">
@@ -134,6 +133,10 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="input-field">
               <i class="bx bxs-lock-alt"></i>
               {{register_form.password2}}
+            </div>
+            <div class="input-field">
+              <i class="bx bx-link-external"></i>
+              {{register_form.verification_link}}
             </div>
 
             <input
@@ -178,13 +181,13 @@ document.addEventListener("DOMContentLoaded", function () {
     <script src="{% static 'js/script.js' %}"></script>
     <script>
       // Allow Enter key to submit login form from any field
-      document.addEventListener('DOMContentLoaded', function() {
-        var loginForm = document.getElementById('login-form');
+      document.addEventListener("DOMContentLoaded", function () {
+        var loginForm = document.getElementById("login-form");
         if (loginForm) {
-          loginForm.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
+          loginForm.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
               // Only submit if not a textarea
-              if (e.target.tagName !== 'TEXTAREA') {
+              if (e.target.tagName !== "TEXTAREA") {
                 e.preventDefault();
                 loginForm.submit();
               }

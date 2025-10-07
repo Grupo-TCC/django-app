@@ -31,11 +31,15 @@ class CustomUserCreationForm(UserCreationForm):
         max_length=100,
         widget=forms.EmailInput(attrs={'placeholder': 'Email'})
     )
-    title = forms.CharField(
+    
+    verification_link = forms.URLField(
         label='',
-        required=False,  # change to True if mandatory
-        max_length=100,
-        widget=forms.TextInput(attrs={'placeholder': 'Curso (ex: Ciência da Computação)'})
+        required=True,
+        max_length=500,
+        widget=forms.URLInput(attrs={
+            'placeholder': 'Link do seu perfil Lattes',
+            'class': 'input-text'
+        })
     )
   
     class Meta:
@@ -63,14 +67,5 @@ class ProfilePictureForm(forms.ModelForm):
         model = User
         fields = ["profile_picture"]
 
-class UserVerificationForm(forms.ModelForm):
-    class Meta:
-        model = UserVerification
-        fields = ["link"]
-        widgets = {
-            "link": forms.URLInput(attrs={
-                "placeholder": "Cole o link do seu perfil (Google Scholar, ORCID, LinkedIn, etc.)",
-                "class": "input-text"
-            })
-        }
+
 
