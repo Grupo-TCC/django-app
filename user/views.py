@@ -26,13 +26,11 @@ def index(request):
 def register(request):
     # form_submitted = False
     register_form = CustomUserCreationForm()
-    verification_form = UserVerificationForm()
     login_form = LoginForms()
     
     if request.method == 'POST':
         if 'register_submit' in request.POST:
             register_form = CustomUserCreationForm(request.POST)
-            verification_form = UserVerificationForm(request.POST)
             pwd1 = request.POST.get('password1')
             pwd2 = request.POST.get('password2')
             if pwd1 != pwd2:
@@ -40,15 +38,11 @@ def register(request):
                     return JsonResponse({'success': False, 'message': 'Senhas diferentes, tente novamente'}, status=400)
                 messages.error(request, 'Senhas diferentes, tente novamente')
                 return redirect('user:register')
-            if register_form.is_valid() and verification_form.is_valid():
+            if register_form.is_valid():
                 user = register_form.save(commit=False)
                 user.is_active = False
                 user.email_verified = False
                 user.save()
-                # Save verification link
-                verification = verification_form.save(commit=False)
-                verification.user = user
-                verification.save()
                 # Build verification link
                 uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
                 token = default_token_generator.make_token(user)
@@ -70,12 +64,11 @@ def register(request):
                     messages.error(request, f'Falha ao enviar email: {e}')
                     return redirect('user:register')
                 if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                    return JsonResponse({'success': True, 'message': 'Enviaremos o link de acesso ao seu email após a aprovação do seu cadastro!'})
-                messages.success(request, 'Enviaremos o link de acesso ao seu email após a aprovação do seu cadastro!')
+                    return JsonResponse({'success': True, 'message': 'Enviamos um link de acesso ao seu email!'})
+                messages.success(request, 'Enviamos um link de acesso ao seu email!')
                 return redirect('user:register')
             # Form invalid → return all errors
             errors = [e for field in register_form.errors.values() for e in field]
-            errors += [e for field in verification_form.errors.values() for e in field]
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return JsonResponse({'success': False, 'errors': errors}, status=400)
             for error in errors:
@@ -120,7 +113,6 @@ def register(request):
     return render(request, 'user/register.html', {
         'register_form': register_form,
         'login_form': login_form,
-        'verification_form': verification_form,
     })
 
 def custom_logout(request):
