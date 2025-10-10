@@ -82,6 +82,159 @@
         .imp-links a img {
           margin-right: 10px;
         }
+        
+        /* Modal Styles */
+        .modal {
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .modal-content {
+          background-color: white;
+          padding: 30px;
+          border-radius: 12px;
+          width: 90%;
+          max-width: 500px;
+          max-height: 90vh;
+          overflow-y: auto;
+          position: relative;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .close-modal {
+          position: absolute;
+          top: 15px;
+          right: 20px;
+          color: #aaa;
+          font-size: 28px;
+          font-weight: bold;
+          cursor: pointer;
+          line-height: 1;
+        }
+        
+        .close-modal:hover {
+          color: #000;
+        }
+        
+        .modal-content h3 {
+          margin-top: 0;
+          margin-bottom: 25px;
+          color: #333;
+          font-size: 24px;
+        }
+        
+        /* Form Styles */
+        .form-group {
+          margin-bottom: 20px;
+        }
+        
+        .form-group label {
+          display: block;
+          margin-bottom: 8px;
+          font-weight: 600;
+          color: #333;
+          font-size: 14px;
+        }
+        
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group input[type="file"] {
+          width: 100%;
+          padding: 12px;
+          border: 2px solid #e1e5e9;
+          border-radius: 8px;
+          font-size: 14px;
+          transition: border-color 0.3s ease;
+          box-sizing: border-box;
+        }
+        
+        .form-group input[type="text"]:focus,
+        .form-group textarea:focus {
+          outline: none;
+          border-color: #28a745;
+          box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+        }
+        
+        .form-group textarea {
+          resize: vertical;
+          min-height: 80px;
+        }
+        
+        .form-group input[type="file"] {
+          padding: 8px 12px;
+          background-color: #f8f9fa;
+        }
+        
+        .form-actions {
+          display: flex;
+          gap: 12px;
+          justify-content: flex-end;
+          margin-top: 30px;
+          padding-top: 20px;
+          border-top: 1px solid #e1e5e9;
+        }
+        
+        .btn-cancel {
+          padding: 12px 24px;
+          background-color: #6c757d;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: 500;
+          transition: background-color 0.3s ease;
+        }
+        
+        .btn-cancel:hover {
+          background-color: #5a6268;
+        }
+        
+        .btn-submit {
+          padding: 12px 24px;
+          background-color: #28a745;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: 500;
+          transition: background-color 0.3s ease;
+        }
+        
+        .btn-submit:hover {
+          background-color: #218838;
+        }
+        
+        .form-errors,
+        .field-errors {
+          color: #dc3545;
+          font-size: 12px;
+          margin-top: 5px;
+        }
+        
+        .form-errors {
+          background-color: #f8d7da;
+          border: 1px solid #f5c6cb;
+          border-radius: 4px;
+          padding: 10px;
+          margin-bottom: 20px;
+        }
+
+        .form-text {
+          color: #666;
+          font-size: 11px;
+          margin-top: 5px;
+          display: block;
+        }
       </style>
       <div class="imp-links">
         <a href="{% url 'feed:artigos' %}" class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"><img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos</a>
@@ -99,34 +252,62 @@
       <div id="community-modal" class="modal" style="display:none;">
         <div class="modal-content">
           <span class="close-modal" id="close-community-modal">&times;</span>
-          <form method="POST" id="article-upload-form">
-            enctype="multipart/form-data"
+          <h3>Criar Nova Comunidade</h3>
+          <form method="POST" enctype="multipart/form-data" id="community-upload-form">
             {% csrf_token %}
             {% if form.non_field_errors %}
               <div class="form-errors">
                 {{ form.non_field_errors }}
               </div>
             {% endif %}
-            {{ form.as_p }}
-            <button type="submit">Criar Comunidade</button>
+            
+            <div class="form-group">
+              <label for="{{ form.name.id_for_label }}">Nome da Comunidade:</label>
+              {{ form.name }}
+              {% if form.name.errors %}
+                <div class="field-errors">{{ form.name.errors }}</div>
+              {% endif %}
+            </div>
+            
+            <div class="form-group">
+              <label for="{{ form.description.id_for_label }}">Descrição:</label>
+              {{ form.description }}
+              {% if form.description.errors %}
+                <div class="field-errors">{{ form.description.errors }}</div>
+              {% endif %}
+            </div>
+            
+            <div class="form-group">
+              <label for="{{ form.community_pic.id_for_label }}">Foto da Comunidade:</label>
+              {{ form.community_pic }}
+              {% if form.community_pic.errors %}
+                <div class="field-errors">{{ form.community_pic.errors }}</div>
+              {% endif %}
+              <small class="form-text text-muted">Formatos aceitos: JPG, PNG, GIF (máx. 5MB)</small>
+            </div>
+            
+            <div class="form-actions">
+              <button type="button" id="cancel-community" class="btn-cancel">Cancelar</button>
+              <button type="submit" class="btn-submit">Criar Comunidade</button>
+            </div>
           </form>
         </div>
       </div>
       <!-- Lista de comunidades que o usuário participa -->
       <div class="post-container">
-        <h3>Comunidades que você participa</h3>
+        <h3> Suas Comunidades  você participa</h3>
         <div class="seguindo-lista">
           {% with found=0 %}
             {% for community in communities %}
               {% if request.user in community.members.all %}
                 {% if found == 0 %}{% with found=1 %}{% endwith %}{% endif %}
                 <div class="seguindo-item" id="community-{{ community.id }}">
-                  <img src="{{ community.get_community_picture_url }}" alt="Foto da comunidade" class="profile-pic" style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:8px;">
-                  <p class="community-title"><a href="{% url 'feed:community_detail' community.id %}">{{ community.name }}</a></p>
-                  <!-- <span>{{ community.description|default:'(Sem descrição)' }}</span> -->
+                  <img src="{{ community.get_community_picture_url }}">
+                  <p><a href="{% url 'feed:community_detail' community.id %}">{{ community.name }}</a></p>
+                  
                   <form method="post" action="?leave={{ community.id }}" style="display:inline;">
                     {% csrf_token %}
-                    <button type="submit" class="seguir-link follow-btn unfollowing">Sair</button>
+                    <button type="submit" class="seguir-link follow-btn following">Sair</button>
                   </form>
                 </div>
               {% endif %}
@@ -146,9 +327,9 @@
           {% for community in communities %}
             {% if request.user not in community.members.all %}
               <div class="sugestao-card">
-                <img src="{{ community.get_community_picture_url }}" alt="Foto da comunidade" class="profile-pic" style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:8px;">
-                <p class="community-title">{{ community.name }}</p>
-                <!-- <span>{{ community.description|default:'(Sem descrição)' }}</span> -->
+                <img src="{{ community.get_community_picture_url }}">
+                <h4><a href="{% url 'feed:community_detail' community.id %}">{{ community.name }}</a></h4>
+                <p class="research-area">{{ community.description|default:'Descrição não informada' }}</p>
                 <form method="post" action="?join={{ community.id }}" style="display:inline;">
                   {% csrf_token %}
                   <button type="submit" class="seguir-link follow-btn">Participar</button>
@@ -162,7 +343,7 @@
       </div>
     </div>
             <div class="sugestao-card">
-              <img src="{{ community.get_community_picture_url }}" alt="Foto da comunidade" class="profile-pic" style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:8px;">
+              
               <p class="community-title">{{ community.name }}</p>
 
     <div class="right-sidebar">
@@ -175,5 +356,62 @@
 
   <script src="{% static 'js/home.js' %}"></script>
   <script src="{% static 'js/community.js' %}"></script>
+  
+  <script>
+    // Handle cancel button and form validation
+    document.addEventListener('DOMContentLoaded', function() {
+      const cancelBtn = document.getElementById('cancel-community');
+      const modal = document.getElementById('community-modal');
+      const form = document.getElementById('community-upload-form');
+      const fileInput = document.querySelector('input[type="file"]');
+      
+      if (cancelBtn && modal) {
+        cancelBtn.addEventListener('click', function() {
+          modal.style.display = 'none';
+          // Reset form when canceling
+          form.reset();
+        });
+      }
+      
+      // Handle file input validation
+      if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+          const file = e.target.files[0];
+          if (file) {
+            // Check file size (5MB limit)
+            const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+            if (file.size > maxSize) {
+              alert('O arquivo é muito grande. O tamanho máximo é de 5MB.');
+              e.target.value = '';
+              return;
+            }
+            
+            // Check file type
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+            if (!allowedTypes.includes(file.type)) {
+              alert('Tipo de arquivo não suportado. Use JPG, PNG ou GIF.');
+              e.target.value = '';
+              return;
+            }
+            
+            console.log('File selected:', file.name, 'Size:', file.size, 'Type:', file.type);
+          }
+        });
+      }
+      
+      // Handle form submission
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          const nameInput = form.querySelector('input[name="name"]');
+          if (!nameInput.value.trim()) {
+            alert('Por favor, insira um nome para a comunidade.');
+            e.preventDefault();
+            return;
+          }
+          console.log('Form submitting...');
+        });
+      }
+    });
+  </script>
 </body>
 </html>

@@ -83,6 +83,12 @@
       font-weight: 600;
       color: #256d4a;
       font-size: 1.1em;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .chat-header .chat-name:hover {
+      color: #28a745;
+      cursor: pointer;
     }
     .chat-messages {
       flex: 1;
@@ -248,7 +254,7 @@
         <div class="chat-header">
           {% if selected_user %}
             <img src="{{ selected_user.get_profile_picture_url }}" id="chat-avatar" alt="{{ selected_user.fullname }}">
-            <span class="chat-name" id="chat-name">{{ selected_user.fullname }}</span>
+            <a href="#" class="chat-name" id="chat-name" onclick="goToUserProfile(event)">{{ selected_user.fullname }}</a>
           {% else %}
             <img src="{{ request.user.get_profile_picture_url }}" id="chat-avatar" alt="">
             <span class="chat-name" id="chat-name">Selecione uma conversa</span>
@@ -307,7 +313,12 @@
       var pic = elem.getAttribute('data-profile-pic');
       var userId = elem.getAttribute('data-user-id');
       SELECTED_USER_ID = userId;
-      document.getElementById('chat-name').textContent = name;
+      
+      // Update chat header with clickable name
+      var chatName = document.getElementById('chat-name');
+      chatName.textContent = name;
+      chatName.href = '#';
+      chatName.onclick = goToUserProfile;
       document.getElementById('chat-avatar').src = pic;
       // AJAX fetch messages
       fetch(`/feed/mensagens/api/get_messages/?user_id=${userId}`)
@@ -370,6 +381,14 @@
         }
       });
       return false;
+    }
+    
+    function goToUserProfile(event) {
+      event.preventDefault();
+      if (SELECTED_USER_ID) {
+        // Navigate to the user's profile page
+        window.location.href = `/feed/perfil/${SELECTED_USER_ID}/`;
+      }
     }
   </script>
 </body>

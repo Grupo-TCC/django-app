@@ -6,6 +6,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Minhas Conexões - Innovator</title>
   <link rel="stylesheet" href="{% static 'styles/conexao.css' %}">
+  <style>
+    /* User name hover effects */
+    .user-name-link {
+      position: relative;
+      color: inherit;
+      text-decoration: underline;
+      transition: color 0.3s ease;
+    }
+    
+    .user-name-link:hover {
+      color: #28a745 !important;
+      text-decoration: none;
+    }
+    
+    /* Tooltip for "ver perfil" */
+    .user-name-link::after {
+      content: "ver perfil";
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #333;
+      color: white;
+      padding: 5px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      z-index: 1000;
+    }
+    
+    .user-name-link:hover::after {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* Arrow for tooltip */
+    .user-name-link::before {
+      content: "";
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-bottom-color: #333;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    
+    .user-name-link:hover::before {
+      opacity: 1;
+      visibility: visible;
+    }
+  </style>
 </head>
 <body>
   <nav>
@@ -114,7 +171,8 @@
             {% ifchanged %}{% with seguidos=1 %}{% endwith %}{% endifchanged %}
             <div class="seguindo-item" id="seguindo-{{ user.id }}">
               <img src="{{ user.get_profile_picture_url }}">
-              <p><a href="{% url 'feed:perfil' user.id %}" style="color: inherit; text-decoration: underline;">{{ user.fullname }}</a></p>
+              <p><a href="{% url 'feed:perfil' user.id %}" class="user-name-link">{{ user.fullname }}</a></p>
+              
               <button type="button" class="seguir-link follow-btn following" data-url="{% url 'feed:toggle_follow' user.id %}">Deixar de Seguir</button>
             </div>
           {% endif %}
@@ -134,13 +192,9 @@
         {% if user.id not in following_ids %}
           <div class="sugestao-card">
             <img src="{{ user.get_profile_picture_url }}">
-            <h4><a href="{% url 'feed:perfil' user.id %}" style="color: inherit; text-decoration: underline;">{{ user.fullname }}</a></h4>
-            <!-- username link to user profile -->
-            {% if user.innovator_verification and user.innovator_verification.title %}
-              <p>{{ user.innovator_verification.title }}</p>
-            {% else %}
-              <p>Leitor</p>
-            {% endif %}
+            <h4><a href="{% url 'feed:perfil' user.id %}" class="user-name-link">{{ user.fullname }}</a></h4>
+            <p class="research-area">{{ user.research_area|default:'Área de pesquisa não informada' }}</p> 
+            <p class="research-area">{{ user.institution|default:'Instituição não informada' }}</p>
             <button type="button" class="seguir-link follow-btn" data-url="{% url 'feed:toggle_follow' user.id %}">Seguir</button>
           </div>
         {% endif %}

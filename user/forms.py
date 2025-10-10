@@ -37,7 +37,7 @@ class CustomUserCreationForm(UserCreationForm):
         required=True,
         max_length=500,
         widget=forms.URLInput(attrs={
-            'placeholder': 'Link do seu perfil Lattes',
+            'placeholder': 'Link do currículo Lattes',
             'class': 'input-text'
         })
     )

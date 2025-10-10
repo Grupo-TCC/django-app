@@ -14,3 +14,38 @@ class CommunityMessage(models.Model):
 
     def __str__(self):
         return f"{self.user.fullname}: {self.body[:30]}{' [PDF]' if self.pdf else ''}"
+    
+    @property
+    def has_pdf(self):
+        """Check if message has a PDF attachment"""
+        return bool(self.pdf)
+    
+    @property
+    def pdf_filename(self):
+        """Get the original filename of the PDF"""
+        if self.pdf:
+            import os
+            return os.path.basename(self.pdf.name)
+        return None
+    
+    @property
+    def pdf_size(self):
+        """Get PDF file size in human readable format"""
+        if self.pdf and hasattr(self.pdf, 'file'):
+            try:
+                size = self.pdf.size
+                # Convert bytes to human readable format
+                for unit in ['B', 'KB', 'MB', 'GB']:
+                    if size < 1024.0:
+                        return f"{size:.1f} {unit}"
+                    size /= 1024.0
+                return f"{size:.1f} TB"
+            except (OSError, AttributeError):
+                return "Unknown size"
+        return None
+    
+    def get_pdf_url(self):
+        """Get the URL for the PDF file"""
+        if self.pdf:
+            return self.pdf.url
+        return None

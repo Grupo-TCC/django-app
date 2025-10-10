@@ -278,6 +278,12 @@ def community(request):
                 community.save()
                 community.members.add(request.user)
                 return redirect('feed:community')
+            # If form is invalid, it will be passed to the template with errors
+            else:
+                # Log form errors for debugging
+                print(f"Community form errors: {form.errors}")
+                if hasattr(form, 'non_field_errors'):
+                    print(f"Non-field errors: {form.non_field_errors()}")
         # Join community
         elif join_id:
             community = get_object_or_404(Community, id=join_id)

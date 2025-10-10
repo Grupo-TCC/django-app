@@ -1,197 +1,494 @@
+<!-- prettier-ignore-start -->
 {% load static %}
 {% load custom_filters %}
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Artigos Científicos - Innovator</title>
-  <link rel="stylesheet" href="{% static 'styles/home.css' %}">
-  <link rel="stylesheet" href="{% static 'styles/artigos.css' %}">
-</head>
-<body>
-  <!-- NAV -->
-  <nav>
-    <div class="nav-left">
-      <a href="{% url 'feed:artigos' %}"><img src="{% static 'assets/img/logo.png' %}" class="logo"></a>
-      <ul>
-  <li><img src="{% static 'assets/img/notification.png' %}"></li>
-  <li><a href="{% url 'feed:mensagens' %}"><img src="{% static 'assets/img/inbox.png' %}" alt="Mensagens" style="cursor:pointer;"></a></li>
-      </ul>
-    </div>
-    <div class="nav-right">
-      <!-- Pesquisa removida da navbar -->
-      <div class="nav-user-icon online" onclick="settingsMenuToggle()">
-        <img src="{{ request.user.get_profile_picture_url }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artigos Científicos - Innovator</title>
+    <link rel="stylesheet" href="{% static 'styles/home.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/artigos.css' %}" />
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <div class="nav-left">
+        <a href="{% url 'feed:artigos' %}"
+          ><img src="{% static 'assets/img/logo.png' %}" class="logo"
+        /></a>
+        <ul>
+          <li><img src="{% static 'assets/img/notification.png' %}" /></li>
+          <li>
+            <a href="{% url 'feed:mensagens' %}"
+              ><img
+                src="{% static 'assets/img/inbox.png' %}"
+                alt="Mensagens"
+                style="cursor: pointer"
+            /></a>
+          </li>
+        </ul>
       </div>
-      <div class="settings-menu">
-        <div id="dark-btn"><span></span></div>
-        <div class="settings-menu-inner">
-          <div class="user-profile">
-            <img src="{{ request.user.get_profile_picture_url }}">
-            <div>
-              <p>{{ request.user.fullname }}</p>
-              <a href="{% url 'feed:perfil' %}">Ver Perfil</a>
+      <div class="nav-right">
+        <!-- Pesquisa removida da navbar -->
+        <div class="nav-user-icon online" onclick="settingsMenuToggle()">
+          <img src="{{ request.user.get_profile_picture_url }}" />
+        </div>
+        <div class="settings-menu">
+          <div id="dark-btn"><span></span></div>
+          <div class="settings-menu-inner">
+            <div class="user-profile">
+              <img src="{{ request.user.get_profile_picture_url }}" />
+              <div>
+                <p>{{ request.user.fullname }}</p>
+                <a href="{% url 'feed:perfil' %}">Ver Perfil</a>
+              </div>
             </div>
-          </div>
-          <hr>
-          <div class="user-profile">
-            <img src="{% static 'assets/img/feedback.png' %}">
-            <div>
-              <p>Nos dê seu feedback</p>
-              <a href="#">Ajude a melhorar nosso site</a>
+            <hr />
+            <div class="user-profile">
+              <img src="{% static 'assets/img/feedback.png' %}" />
+              <div>
+                <p>Nos dê seu feedback</p>
+                <a href="#">Ajude a melhorar nosso site</a>
+              </div>
             </div>
-          </div>
-          <hr>
-          <div class="settings-links">
-            <img src="{% static 'assets/img/setting.png' %}" class="settings-icon">
-            <a href="{% url 'feed:settings' %}">Configuração & Privacidade <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
-          </div>
-          <div class="settings-links">
-            <img src="{% static 'assets/img/help.png' %}" class="settings-icon">
-            <a href="#">Ajuda <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
-          </div>
-          <div class="settings-links">
-            <img src="{% static 'assets/img/logout.png' %}" class="settings-icon">
-            <a href="{% url 'logout' %}">Sair <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+            <hr />
+            <div class="settings-links">
+              <img
+                src="{% static 'assets/img/setting.png' %}"
+                class="settings-icon"
+              />
+              <a href="{% url 'feed:settings' %}"
+                >Configuração & Privacidade
+                <img src="{% static 'assets/img/arrow.png' %}" width="10px"
+              /></a>
+            </div>
+            <div class="settings-links">
+              <img
+                src="{% static 'assets/img/help.png' %}"
+                class="settings-icon"
+              />
+              <a href="#"
+                >Ajuda
+                <img src="{% static 'assets/img/arrow.png' %}" width="10px"
+              /></a>
+            </div>
+            <div class="settings-links">
+              <img
+                src="{% static 'assets/img/logout.png' %}"
+                class="settings-icon"
+              />
+              <a href="{% url 'logout' %}"
+                >Sair
+                <img src="{% static 'assets/img/arrow.png' %}" width="10px"
+              /></a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </nav>
+    </nav>
 
-  <div class="container">
-    <!-- LEFT SIDEBAR -->
-    <div class="left-sidebar">
-      <style>
-        .imp-links a {
-          display: flex;
-          align-items: center;
-          padding: 10px 16px;
-          border-left: 4px solid transparent;
-          color: #256d4a !important;
-          text-decoration: none;
-          font-weight: 500;
-          background: none;
-          transition: background 0.2s, border-color 0.2s, color 0.2s;
-        }
-        .imp-links a.active {
-          background: #eafaf1;
-          border-left: 4px solid #28a745;
-          color: #28a745 !important;
-        }
-        .imp-links a img {
-          margin-right: 10px;
-        }
-      </style>
-      <div class="imp-links">
-        <a href="{% url 'feed:artigos' %}" class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"><img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos</a>
-        <a href="{% url 'feed:conexao' %}" class="{% if request.resolver_match.url_name == 'conexao' %}active{% endif %}"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
-        <a href="{% url 'feed:community' %}" class="{% if request.resolver_match.url_name == 'community' %}active{% endif %}"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
-      </div>
-    </div>
+    <div class="container">
+      <!-- LEFT SIDEBAR -->
+      <div class="left-sidebar">
+        <style>
+          .imp-links a {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            border-left: 4px solid transparent;
+            color: #256d4a !important;
+            text-decoration: none;
+            font-weight: 500;
+            background: none;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+          }
+          .imp-links a.active {
+            background: #eafaf1;
+            border-left: 4px solid #28a745;
+            color: #28a745 !important;
+          }
+          .imp-links a img {
+            margin-right: 10px;
+          }
 
-    <!-- MAIN CONTENT -->
-    <div class="main-content">
-      <h2>Publique Seus Artigos</h2>
-      <div class="artigos-header">
-        <form method="get" class="search-box search-form" style="flex:1;">
-          <img src="{% static 'assets/img/search.png' %}" class="search-icon" alt="Buscar">
-          <input type="text" id="search-input" name="q" placeholder="Pesquisar por pesquisador, título ou área" value="{{ search_query|default:'' }}" class="search-bar" />
-          <button type="submit" class="search-btn">Buscar</button>
-        </form>
-        <button id="add-article-btn" class="plus-btn" title="Adicionar artigo">
-          <span>+</span>
-        </button>
+          /* Professional Modal Styles */
+          .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+          }
+
+          .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+          }
+
+          .close-modal:hover {
+            color: #000;
+          }
+
+          .modal-content h3 {
+            margin-top: 0;
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 24px;
+          }
+
+          /* Form Styles */
+          .form-group {
+            margin-bottom: 20px;
+          }
+
+          .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+          }
+
+          .form-group input[type="text"],
+          .form-group textarea,
+          .form-group input[type="file"],
+          .form-group input[type="number"],
+          .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+          }
+
+          .form-group input[type="text"]:focus,
+          .form-group textarea:focus,
+          .form-group input[type="number"]:focus,
+          .form-group select:focus {
+            outline: none;
+            border-color: #28a745;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+          }
+
+          .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+          }
+
+          .form-group input[type="file"] {
+            padding: 8px 12px;
+            background-color: #f8f9fa;
+          }
+
+          .radio-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 5px;
+          }
+
+          .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: normal;
+            font-size: 14px;
+            cursor: pointer;
+          }
+
+          .radio-label input[type="radio"] {
+            width: auto;
+            margin: 0;
+          }
+
+          .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e5e9;
+          }
+
+          .btn-cancel {
+            padding: 12px 24px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+          }
+
+          .btn-cancel:hover {
+            background-color: #5a6268;
+          }
+
+          .btn-submit {
+            padding: 12px 24px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+          }
+
+          .btn-submit:hover {
+            background-color: #218838;
+          }
+
+          .form-errors,
+          .field-errors {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+          }
+
+          .form-errors {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 20px;
+          }
+        </style>
+        <div class="imp-links">
+          <a
+            href="{% url 'feed:artigos' %}"
+            class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"
+            ><img src="{% static 'assets/img/newspaper.png' %}" /> Artigos
+            Científicos</a
+          >
+          <a
+            href="{% url 'feed:conexao' %}"
+            class="{% if request.resolver_match.url_name == 'conexao' %}active{% endif %}"
+            ><img src="{% static 'assets/img/friends.png' %}" /> Conexões</a
+          >
+          <a
+            href="{% url 'feed:community' %}"
+            class="{% if request.resolver_match.url_name == 'community' %}active{% endif %}"
+            ><img src="{% static 'assets/img/people.png' %}" /> Comunidades</a
+          >
+        </div>
       </div>
-      <div id="article-modal" class="modal" style="display:none;">
-        <div class="modal-content">
-          <span class="close-modal" id="close-article-modal">&times;</span>
-          <form method="POST" enctype="multipart/form-data" id="article-upload-form">
-            {% csrf_token %}
-            <div class="form-group">
-              {{ form.pdf.label_tag }} {{ form.pdf }}
-            </div>
-            <div class="form-group">
-              {{ form.title.label_tag }} {{ form.title }}
-            </div>
-            <div class="form-group">
-              {{ form.research_area.label_tag }} {{ form.research_area }}
-            </div>
-            <div class="form-group">
-              {{ form.description.label_tag }} {{ form.description }}
-            </div>
-            <div class="form-group">
-              {{ form.access_type.label_tag }}<br>
-              {% for radio in form.access_type %}
-                <label style="margin-right:16px;">{{ radio.tag }} {{ radio.choice_label }}</label>
-              {% endfor %}
-            </div>
-            <div class="form-group" id="price-group" style="display:none;">
-              {{ form.price.label_tag }} {{ form.price }}
-            </div>
-            <button type="submit">Publicar</button>
+
+      <!-- MAIN CONTENT -->
+      <div class="main-content">
+        <h2>Publique Seus Artigos</h2>
+        <div class="artigos-header">
+          <form method="get" class="search-box search-form" style="flex: 1">
+            {% comment %} <img
+              src="{% static 'assets/img/search.png' %}"
+              class="search-icon"
+              alt="Buscar"
+            /> {% endcomment %}
+            <input
+              type="text"
+              id="search-input"
+              name="q"
+              placeholder="Pesquisar por pesquisador, título ou área"
+              value="{{ search_query|default:'' }}"
+              class="search-bar"
+            />
+            <button type="submit" class="search-btn">Buscar</button>
           </form>
-          <script>
-            function togglePriceField() {
-              var radios = document.getElementsByName('access_type');
-              var priceGroup = document.getElementById('price-group');
-              var paidSelected = false;
-              for (var i = 0; i < radios.length; i++) {
-                if (radios[i].checked && radios[i].value === 'paid') {
-                  paidSelected = true;
-                }
-              }
-              priceGroup.style.display = paidSelected ? 'block' : 'none';
-            }
-            document.addEventListener('DOMContentLoaded', function() {
-              var radios = document.getElementsByName('access_type');
-              for (var i = 0; i < radios.length; i++) {
-                radios[i].addEventListener('change', togglePriceField);
-              }
-              togglePriceField();
-            });
-          </script>
+          <button
+            id="add-article-btn"
+            class="plus-btn"
+            title="Adicionar artigo"
+          >
+            <span>+</span>
+          </button>
         </div>
-      </div>
-      <div class="articles-list">
-        {% for article in articles %}
+        <div id="article-modal" class="modal" style="display: none">
+          <div class="modal-content">
+            <span class="close-modal" id="close-article-modal">&times;</span>
+            <h3>Publicar Novo Artigo</h3>
+            <form
+              method="POST"
+              enctype="multipart/form-data"
+              id="article-upload-form"
+            >
+              {% csrf_token %} {% if form.non_field_errors %}
+              <div class="form-errors">{{ form.non_field_errors }}</div>
+              {% endif %}
+
+              <div class="form-group">
+                <label for="{{ form.pdf.id_for_label }}">Arquivo PDF:</label>
+                {{ form.pdf }} {% if form.pdf.errors %}
+                <div class="field-errors">{{ form.pdf.errors }}</div>
+                {% endif %}
+              </div>
+
+              <div class="form-group">
+                <label for="{{ form.title.id_for_label }}"
+                  >Título do Artigo:</label
+                >
+                {{ form.title }} {% if form.title.errors %}
+                <div class="field-errors">{{ form.title.errors }}</div>
+                {% endif %}
+              </div>
+
+              <div class="form-group">
+                <label for="{{ form.research_area.id_for_label }}"
+                  >Área de Pesquisa:</label
+                >
+                {{ form.research_area }} {% if form.research_area.errors %}
+                <div class="field-errors">{{ form.research_area.errors }}</div>
+                {% endif %}
+              </div>
+
+              <div class="form-group">
+                <label for="{{ form.description.id_for_label }}"
+                  >Descrição:</label
+                >
+                {{ form.description }} {% if form.description.errors %}
+                <div class="field-errors">{{ form.description.errors }}</div>
+                {% endif %}
+              </div>
+
+              <div class="form-group">
+                <label>Tipo de Acesso:</label>
+                <div class="radio-group">
+                  {% for radio in form.access_type %}
+                  <label class="radio-label"
+                    >{{ radio.tag }} {{ radio.choice_label }}</label
+                  >
+                  {% endfor %}
+                </div>
+                {% if form.access_type.errors %}
+                <div class="field-errors">{{ form.access_type.errors }}</div>
+                {% endif %}
+              </div>
+
+              <div class="form-group" id="price-group" style="display: none">
+                <label for="{{ form.price.id_for_label }}">Preço (R$):</label>
+                {{ form.price }} {% if form.price.errors %}
+                <div class="field-errors">{{ form.price.errors }}</div>
+                {% endif %}
+              </div>
+
+              <div class="form-actions">
+                <button type="button" id="cancel-article" class="btn-cancel">
+                  Cancelar
+                </button>
+                <button type="submit" class="btn-submit">
+                  Publicar Artigo
+                </button>
+              </div>
+            </form>
+            <script>
+              function togglePriceField() {
+                var radios = document.getElementsByName("access_type");
+                var priceGroup = document.getElementById("price-group");
+                var paidSelected = false;
+                for (var i = 0; i < radios.length; i++) {
+                  if (radios[i].checked && radios[i].value === "paid") {
+                    paidSelected = true;
+                  }
+                }
+                priceGroup.style.display = paidSelected ? "block" : "none";
+              }
+              document.addEventListener("DOMContentLoaded", function () {
+                var radios = document.getElementsByName("access_type");
+                for (var i = 0; i < radios.length; i++) {
+                  radios[i].addEventListener("change", togglePriceField);
+                }
+                togglePriceField();
+              });
+            </script>
+          </div>
+        </div>
+        <div class="articles-list">
+          {% for article in articles %}
           <div class="article-card searchable">
             <div class="article-title">{{ article.title }}</div>
             <small class="article-meta">
-              <a href="{% url 'feed:perfil' article.user.id %}" style="color: inherit; text-decoration: underline;">{{ article.user.fullname }}</a> &middot; {{ article.research_area }}
+              <a
+                href="{% url 'feed:perfil' article.user.id %}"
+                style="color: inherit; text-decoration: underline"
+                >{{ article.user.fullname }}</a
+              >
+              &middot; {{ article.research_area }}
             </small>
             {% if article.description %}
-              <div class="article-description" style="margin:8px 0; position:relative;">
-                <span class="desc-text" style="display:inline;">
-                  {% if article.description|length > 220 %}
-                    <span class="desc-short">{{ article.description|slice:":220" }}...</span>
-                    <span class="desc-full" style="display:none;">{{ article.description }}</span>
-                    <button class="desc-toggle" onclick="toggleDesc(this); return false;" style="background:none;border:none;color:#28a745;cursor:pointer;padding:0;">mais</button>
-                  {% else %}
-                    {{ article.description }}
-                  {% endif %}
-                </span>
-              </div>
+            <div
+              class="article-description"
+              style="margin: 8px 0; position: relative"
+            >
+              <span class="desc-text" style="display: inline">
+                {% if article.description|length > 220 %}
+                <span class="desc-short"
+                  >{{ article.description|slice:":220" }}...</span
+                >
+                <span class="desc-full" style="display: none"
+                  >{{ article.description }}</span
+                >
+                <button
+                  class="desc-toggle"
+                  onclick="toggleDesc(this); return false;"
+                  style="
+                    background: none;
+                    border: none;
+                    color: #28a745;
+                    cursor: pointer;
+                    padding: 0;
+                  "
+                >
+                  mais
+                </button>
+                {% else %} {{ article.description }} {% endif %}
+              </span>
+            </div>
             {% endif %}
-<script>
-function toggleDesc(btn) {
-  var card = btn.closest('.article-description');
-  var shortDesc = card.querySelector('.desc-short');
-  var fullDesc = card.querySelector('.desc-full');
-  if (shortDesc.style.display !== 'none') {
-    shortDesc.style.display = 'none';
-    fullDesc.style.display = 'inline';
-  btn.textContent = 'menos';
-  btn.style.color = '#28a745';
-  } else {
-    shortDesc.style.display = 'inline';
-    fullDesc.style.display = 'none';
-  btn.textContent = 'mais';
-  btn.style.color = '#28a745';
-  }
-}
-</script>
+            <script>
+              function toggleDesc(btn) {
+                var card = btn.closest(".article-description");
+                var shortDesc = card.querySelector(".desc-short");
+                var fullDesc = card.querySelector(".desc-full");
+                if (shortDesc.style.display !== "none") {
+                  shortDesc.style.display = "none";
+                  fullDesc.style.display = "inline";
+                  btn.textContent = "menos";
+                  btn.style.color = "#28a745";
+                } else {
+                  shortDesc.style.display = "inline";
+                  fullDesc.style.display = "none";
+                  btn.textContent = "mais";
+                  btn.style.color = "#28a745";
+                }
+              }
+            </script>
             {% if article.access_type == 'free' or article_access|get_item:article.id %}
               <a href="{{ article.pdf.url }}" target="_blank" class="article-link">Ver PDF</a>
             {% else %}
@@ -201,106 +498,160 @@ function toggleDesc(btn) {
               <button class="access-btn" onclick="showAccessModal({{ article.id }})">Pedir acesso</button>
             {% endif %}
           </div>
-        {% empty %}
+          {% empty %}
           <p>Nenhum artigo publicado ainda.</p>
-        {% endfor %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- RIGHT SIDEBAR -->
+      <div class="right-sidebar">
+        <div class="sidebar-title">
+          <h4>Conversas</h4>
+        </div>
+        {% if top_message_users %}
+          {% for user in top_message_users|slice:":5" %}
+            <div class="online-list">
+              <div class="online">
+                <img src="{{ user.get_profile_picture_url }}" alt="{{ user.fullname }}">
+              </div>
+              <a href="{% url 'feed:mensagens' %}?user={{ user.id }}" style="color: inherit; text-decoration: none;">
+                <p style="margin: 0; cursor: pointer;">{{ user.fullname }}</p>
+              </a>
+            </div>
+          {% empty %}
+            <p style="color: #888; margin: 12px 0 0 12px;">Nenhuma conversa recente.</p>
+          {% endfor %}
+        {% endif %}
       </div>
     </div>
 
-    <!-- RIGHT SIDEBAR -->
-    <div class="right-sidebar">
-      <div class="sidebar-title">
-        <h4>Conversas</h4>
-        <!-- <a href="#">Esconder conversa</a> -->
+    <div class="footer"><p>Innovator 2025</p></div>
+    <script src="{% static 'js/artigos.js' %}"></script>
+    <script src="{% static 'js/search.js' %}"></script>
+    <script src="{% static 'js/home.js' %}"></script>
+
+    <!-- Payment Modal -->
+    <div id="pay-modal" class="modal" style="display: none">
+      <div class="modal-content" style="min-width: 320px">
+        <span class="close-modal" id="close-pay-modal">&times;</span>
+        <h3>Pagamento Necessário</h3>
+        <p>Para acessar este artigo, realize o pagamento via Pix:</p>
+        <div
+          style="
+            background: #f8f8f8;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+          "
+        >
+          <input
+            type="text"
+            id="pix-key"
+            value="chave-pix-exemplo@pagamento.com"
+            readonly
+            style="
+              width: 100%;
+              border: none;
+              background: transparent;
+              font-size: 1.1em;
+            "
+          />
+          <button onclick="copyPixKey()" style="margin-top: 4px">
+            Copiar chave Pix
+          </button>
+        </div>
+        <p>
+          Após o pagamento, clique em pedir acesso para conseguir acessar o
+          artigo.
+        </p>
       </div>
-      {% if top_message_users %}
-        {% for user in top_message_users|slice:":5" %}
-          <div class="online-list">
-            <div class="online"><img src="{{ user.get_profile_picture_url }}" alt="{{ user.fullname }}"></div>
-            <a href="{% url 'feed:mensagens' %}?user={{ user.id }}" style="color:inherit;text-decoration:none;">
-              <p style="margin:0;cursor:pointer;">{{ user.fullname }}</p>
-            </a>
-          </div>
-        {% endfor %}
-      {% else %}
-        <p style="color:#888; margin:12px 0 0 12px;">Nenhuma conversa recente.</p>
-      {% endif %}
     </div>
-  </div>
+    <script>
+      function showPayModal(title, price) {
+        document.getElementById("pay-modal").style.display = "flex";
+      }
+      document.getElementById("close-pay-modal").onclick = function () {
+        document.getElementById("pay-modal").style.display = "none";
+      };
+      function copyPixKey() {
+        var pixInput = document.getElementById("pix-key");
+        pixInput.select();
+        pixInput.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        alert("Chave Pix copiada!");
+      }
+    </script>
 
-  <div class="footer"><p>Innovator 2025</p></div>
-  <script src="{% static 'js/artigos.js' %}"></script>
-  <script src="{% static 'js/search.js' %}"></script>
-  <script src="{% static 'js/home.js' %}"></script>
-
-  <!-- Payment Modal -->
-<div id="pay-modal" class="modal" style="display:none;">
-  <div class="modal-content" style="min-width:320px;">
-    <span class="close-modal" id="close-pay-modal">&times;</span>
-    <h3>Pagamento Necessário</h3>
-    <p>Para acessar este artigo, realize o pagamento via Pix:</p>
-    <div style="background:#f8f8f8; padding:8px 12px; border-radius:6px; margin-bottom:8px;">
-      <input type="text" id="pix-key" value="chave-pix-exemplo@pagamento.com" readonly style="width:100%; border:none; background:transparent; font-size:1.1em;">
-      <button onclick="copyPixKey()" style="margin-top:4px;">Copiar chave Pix</button>
+    <!-- Access Request Modal -->
+    <div id="access-modal" class="modal" style="display: none">
+      <div class="modal-content" style="min-width: 320px">
+        <span class="close-modal" id="close-access-modal">&times;</span>
+        <h3>Pedir acesso ao artigo</h3>
+        <form
+          method="post"
+          enctype="multipart/form-data"
+          id="access-request-form"
+        >
+          {% csrf_token %}
+          <input type="hidden" name="article_id" id="access-article-id" />
+          <label for="slip-upload"
+            >Envie o comprovante de pagamento (PDF ou imagem):</label
+          >
+          <input
+            type="file"
+            id="slip-upload"
+            name="slip"
+            accept="application/pdf,image/*"
+            required
+          />
+          <div
+            id="access-error-message"
+            style="color: red; margin: 8px 0; display: none"
+          ></div>
+          <button type="submit">Enviar pedido</button>
+        </form>
+      </div>
     </div>
-    <p>Após o pagamento, clique em pedir acesso para conseguir acessar o artigo.</p>
-  </div>
-</div>
-<script>
-function showPayModal(title, price) {
-  document.getElementById('pay-modal').style.display = 'flex';
-}
-document.getElementById('close-pay-modal').onclick = function() {
-  document.getElementById('pay-modal').style.display = 'none';
-};
-function copyPixKey() {
-  var pixInput = document.getElementById('pix-key');
-  pixInput.select();
-  pixInput.setSelectionRange(0, 99999);
-  document.execCommand('copy');
-  alert('Chave Pix copiada!');
-}
-</script>
+    <script>
+      function showAccessModal(articleId) {
+        document.getElementById("access-modal").style.display = "flex";
+        document.getElementById("access-article-id").value = articleId;
+        document.getElementById("access-error-message").style.display = "none";
+      }
+      document.getElementById("close-access-modal").onclick = function () {
+        document.getElementById("access-modal").style.display = "none";
+      };
 
-<!-- Access Request Modal -->
-<div id="access-modal" class="modal" style="display:none;">
-  <div class="modal-content" style="min-width:320px;">
-    <span class="close-modal" id="close-access-modal">&times;</span>
-    <h3>Pedir acesso ao artigo</h3>
-    <form method="post" enctype="multipart/form-data" id="access-request-form">
-      {% csrf_token %}
-      <input type="hidden" name="article_id" id="access-article-id">
-      <label for="slip-upload">Envie o comprovante de pagamento (PDF ou imagem):</label>
-      <input type="file" id="slip-upload" name="slip" accept="application/pdf,image/*" required>
-      <div id="access-error-message" style="color:red; margin:8px 0; display:none;"></div>
-      <button type="submit">Enviar pedido</button>
-    </form>
-  </div>
-</div>
-<script>
-function showAccessModal(articleId) {
-  document.getElementById('access-modal').style.display = 'flex';
-  document.getElementById('access-article-id').value = articleId;
-  document.getElementById('access-error-message').style.display = 'none';
-}
-document.getElementById('close-access-modal').onclick = function() {
-  document.getElementById('access-modal').style.display = 'none';
-};
+      // Client-side error handling for access request form
+      document
+        .getElementById("access-request-form")
+        .addEventListener("submit", function (e) {
+          var slip = document.getElementById("slip-upload").files[0];
+          var errorDiv = document.getElementById("access-error-message");
+          errorDiv.style.display = "none";
+          errorDiv.textContent = "";
+          if (!slip) {
+            e.preventDefault();
+            errorDiv.textContent =
+              "Por favor, envie o comprovante de pagamento.";
+            errorDiv.style.display = "block";
+            return false;
+          }
+          // Optionally, check file type/size here
+        });
 
-// Client-side error handling for access request form
-document.getElementById('access-request-form').addEventListener('submit', function(e) {
-  var slip = document.getElementById('slip-upload').files[0];
-  var errorDiv = document.getElementById('access-error-message');
-  errorDiv.style.display = 'none';
-  errorDiv.textContent = '';
-  if (!slip) {
-    e.preventDefault();
-    errorDiv.textContent = 'Por favor, envie o comprovante de pagamento.';
-    errorDiv.style.display = 'block';
-    return false;
-  }
-  // Optionally, check file type/size here
-});
-</script>
-</body>
+      // Handle cancel button for article form
+      document.addEventListener("DOMContentLoaded", function () {
+        const cancelBtn = document.getElementById("cancel-article");
+        const modal = document.getElementById("article-modal");
+
+        if (cancelBtn && modal) {
+          cancelBtn.addEventListener("click", function () {
+            modal.style.display = "none";
+          });
+        }
+      });
+    </script>
+  </body>
 </html>

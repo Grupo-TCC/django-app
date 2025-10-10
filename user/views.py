@@ -81,8 +81,8 @@ Para aprovar ou rejeitar, acesse o painel administrativo.
                     sent = send_mail(admin_subject, admin_body, None, admin_emails, fail_silently=False)
                     
                     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                        return JsonResponse({'success': True, 'message': 'Cadastro realizado com sucesso! Aguarde a aprovação do administrador.'})
-                    messages.success(request, 'Cadastro realizado com sucesso! Aguarde a aprovação do administrador.')
+                        return JsonResponse({'success': True, 'message': 'Cadastro realizado com sucesso! Você receberá o email de acesso caso sua solicitação seja aprovada.'})
+                    messages.success(request, 'Cadastro realizado com sucesso! Você receberá o email de acesso caso sua solicitação seja aprovada.')
                     return redirect('user:register')
                     
                 except Exception as e:

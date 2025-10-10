@@ -1,39 +1,442 @@
-{% extends 'base.html' %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ community.name }} - Innovator</title>
+  <link rel="stylesheet" href="{% static 'styles/home.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/perfil.css' %}">
+  <style>
+    .messages-main {
+      flex-basis: 47%;
+      backgr  <script>
+    // Modal functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const inviteBtn = document.getElementById('invite-members-btn');
+      const modal = document.getElementById('invite-modal');
+      const closeModal = document.getElementById('close-invite-modal');
+      
+      if (inviteBtn && modal && closeModal) {
+        inviteBtn.onclick = () => { 
+          modal.style.display = 'flex'; 
+          modal.style.alignItems = 'center'; 
+          modal.style.justifyContent = 'center'; 
+        };
+        closeModal.onclick = () => { modal.style.display = 'none'; };
+        window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+      }
+      
+      // PDF upload preview functionality
+      const pdfUpload = document.getElementById('pdf-upload');
+      const pdfPreview = document.getElementById('pdf-preview');
+      const pdfName = document.getElementById('pdf-name');
+      const removePdf = document.getElementById('remove-pdf');
+      const messageInput = document.querySelector('input[name="message"]');
+      
+      if (pdfUpload && pdfPreview && pdfName && removePdf) {
+        pdfUpload.addEventListener('change', function(e) {
+          if (e.target.files.length > 0) {
+            const file = e.target.files[0];
+            pdfName.textContent = file.name;
+            pdfPreview.style.display = 'block';
+            // Remove required attribute from message input since PDF is selected
+            messageInput.removeAttribute('required');
+          }
+        });
+        
+        removePdf.addEventListener('click', function() {
+          pdfUpload.value = '';
+          pdfPreview.style.display = 'none';
+          // Add required attribute back to message input
+          if (!messageInput.value.trim()) {
+            messageInput.setAttribute('required', 'required');
+          }
+        });
+        
+        // Auto-scroll to bottom of messages
+        const chatMessages = document.querySelector('.chat-messages');
+        if (chatMessages) {
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+      }
+    });
+  </script>border-radius: 8px;
+      min-height: 500px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      display: flex;
+      overflow: hidden;
+    }
+    .members-list {
+      width: 35%;
+      border-right: 1px solid #e0e0e0;
+      background: #fafafa;
+      overflow-y: auto;
+      max-height: 600px;
+    }
+    .member-item {
+      display: flex;
+      align-items: center;
+      padding: 16px 18px;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.2s;
+    }
+    .member-item:hover {
+      background: #eafaf1;
+    }
+    .member-item img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-right: 14px;
+      object-fit: cover;
+    }
+    .member-info {
+      flex: 1;
+    }
+    .member-name {
+      font-weight: 600;
+      color: #256d4a;
+      font-size: 1.08em;
+    }
+    .member-status {
+      color: #888;
+      font-size: 0.97em;
+      margin-top: 2px;
+    }
+    .chat-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      min-width: 0;
+    }
+    .chat-header {
+      padding: 18px 22px;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      background: #f8f8f8;
+      justify-content: space-between;
+    }
+    .chat-header .community-info {
+      display: flex;
+      align-items: center;
+    }
+    .chat-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 12px;
+    }
+    .chat-header .chat-name {
+      font-weight: 600;
+      color: #256d4a;
+      font-size: 1.1em;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: 22px;
+      overflow-y: auto;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 400px;
+    }
+    .message {
+      max-width: 70%;
+      padding: 10px 16px;
+      border-radius: 18px;
+      font-size: 1em;
+      word-wrap: break-word;
+    }
+    .message.me {
+      align-self: flex-end;
+      background: #28a745;
+      color: white;
+    }
+    .message:not(.me) {
+      align-self: flex-start;
+      background: #f1f1f1;
+      color: #333;
+    }
+    .message-author {
+      font-size: 0.85em;
+      font-weight: 600;
+      margin-bottom: 4px;
+      opacity: 0.8;
+    }
+    .chat-input-area {
+      padding: 18px 22px;
+      border-top: 1px solid #e0e0e0;
+      background: #fafafa;
+    }
+    .chat-input-area form {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .chat-input {
+      flex: 1;
+      padding: 12px 18px;
+      border-radius: 25px;
+      border: 1px solid #e0e0e0;
+      font-size: 1em;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .chat-input:focus {
+      border-color: #28a745;
+    }
+    .send-btn {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+    .send-btn:hover {
+      background: #218838;
+    }
+    .plus-btn {
+      background: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .plus-btn:hover {
+      background: #218838;
+    }
+    .pdf-attachment {
+      transition: all 0.3s ease;
+    }
+    .pdf-attachment:hover {
+      background: rgba(255,255,255,0.15) !important;
+    }
+    .message.me .pdf-attachment {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .message:not(.me) .pdf-attachment {
+      background: rgba(0,0,0,0.05);
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+    .message-text {
+      margin-bottom: 4px;
+    }
+    .message-time {
+      text-align: right;
+    }
+    .message.me .message-time {
+      color: rgba(255,255,255,0.7);
+    }
+    .message:not(.me) .message-time {
+      color: rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav>
+    <div class="nav-left">
+      <a href="{% url 'feed:artigos' %}"><img src="{% static 'assets/img/logo.png' %}" class="logo"></a>
+      <ul>
+        <li><img src="{% static 'assets/img/notification.png' %}"></li>
+        <li><a href="{% url 'feed:mensagens' %}"><img src="{% static 'assets/img/inbox.png' %}" alt="Mensagens" style="cursor:pointer;"></a></li>
+      </ul>
+    </div>
+    <div class="nav-right">
+      <div class="nav-user-icon online" onclick="settingsMenuToggle()">
+        <img src="{{ request.user.get_profile_picture_url }}">
+      </div>
+      <div class="settings-menu">
+        <div id="dark-btn"><span></span></div>
+        <div class="settings-menu-inner">
+          <div class="user-profile">
+            <img src="{{ request.user.get_profile_picture_url }}">
+            <div>
+              <p>{{ request.user.fullname }}</p>
+              <a href="{% url 'feed:perfil' %}">Ver Perfil</a>
+            </div>
+          </div>
+          <hr>
+          <div class="user-profile">
+            <img src="{% static 'assets/img/feedback.png' %}">
+            <div>
+              <p>Nos dê seu feedback</p>
+              <a href="#">Ajude a melhorar nosso site</a>
+            </div>
+          </div>
+          <hr>
+          <div class="settings-links">
+            <img src="{% static 'assets/img/setting.png' %}" class="settings-icon">
+            <a href="{% url 'feed:settings' %}">Configuração & Privacidade <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+          </div>
+          <div class="settings-links">
+            <img src="{% static 'assets/img/help.png' %}" class="settings-icon">
+            <a href="#">Ajuda <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+          </div>
+          <div class="settings-links">
+            <img src="{% static 'assets/img/logout.png' %}" class="settings-icon">
+            <a href="{% url 'logout' %}">Sair <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
 
-{% block content %}
-<div class="container">
-  <div class="main-content">
-    <div class="community-header" style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-      <h2 style="flex:1;">{{ community.name }}</h2>
-      <button id="invite-members-btn" class="plus-btn" title="Adicionar membros">+</button>
+  <div class="container">
+    <!-- LEFT SIDEBAR -->
+    <div class="left-sidebar">
+      <style>
+        .imp-links a {
+          display: flex;
+          align-items: center;
+          padding: 10px 16px;
+          border-left: 4px solid transparent;
+          color: #256d4a !important;
+          text-decoration: none;
+          font-weight: 500;
+          background: none;
+          transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .imp-links a.active {
+          background: #eafaf1;
+          border-left: 4px solid #28a745;
+          color: #28a745 !important;
+        }
+        .imp-links a img {
+          margin-right: 10px;
+        }
+      </style>
+      <div class="imp-links">
+        <a href="{% url 'feed:artigos' %}" class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"><img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos</a>
+        <a href="{% url 'feed:conexao' %}" class="{% if request.resolver_match.url_name == 'conexao' %}active{% endif %}"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
+        <a href="{% url 'feed:community' %}" class="active"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
+      </div>
     </div>
-    <div class="community-description">
-      <p>{{ community.description }}</p>
-    </div>
-    <div class="community-messages">
-      <h3>Mensagens</h3>
-      {% if error %}<div class="form-errors">{{ error }}</div>{% endif %}
-      <form method="post" enctype="multipart/form-data" style="margin-bottom: 16px;">
-        {% csrf_token %}
-        <textarea name="message" rows="2" placeholder="Digite uma mensagem para todos os membros..." style="width:100%;"></textarea>
-        <label for="pdf-upload" class="pdf-upload-label" style="cursor:pointer; color:#2ecc40; font-weight:bold; margin-right:8px;">+ PDF
-          <input type="file" id="pdf-upload" name="pdf" accept="application/pdf" style="display:none;">
-        </label>
-        <button type="submit">Enviar</button>
-      </form>
-      <div class="messages-list">
-        {% for msg in messages %}
-          <div class="message-item">
-            <strong>{{ msg.user.fullname }}</strong>:
-            {% if msg.body %}{{ msg.body }}{% endif %}
-            {% if msg.pdf %}<a href="{{ msg.pdf.url }}" target="_blank">[PDF]</a>{% endif %}
+    
+    <!-- MAIN CONTENT -->
+    <div class="messages-main">
+      <!-- MEMBERS LIST -->
+      <div class="members-list">
+        <div style="padding: 18px 18px 0 18px; background: #fafafa; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center;">
+          <h4 style="margin: 0; color: #256d4a;">Membros ({{ community.members.count }})</h4>
+          <button id="invite-members-btn" class="plus-btn" title="Adicionar membros">+</button>
+        </div>
+        {% for member in community.members.all %}
+          <div class="member-item">
+            <img src="{{ member.get_profile_picture_url }}" alt="{{ member.fullname }}">
+            <div class="member-info">
+              <div class="member-name">{{ member.fullname }}</div>
+              <div class="member-status">{{ member.research_area|default:'Membro' }}</div>
+            </div>
           </div>
         {% empty %}
-          <p>Nenhuma mensagem ainda.</p>
+          <div style="padding: 20px; color: #888;">Nenhum membro ainda.</div>
+        {% endfor %}
+      </div>
+      
+      <!-- CHAT AREA -->
+      <div class="chat-area">
+        <div class="chat-header">
+          <div class="community-info">
+            <img src="{{ community.get_community_picture_url }}" alt="{{ community.name }}">
+            <div>
+              <div class="chat-name">{{ community.name }}</div>
+              <div style="font-size: 0.9em; color: #888;">{{ community.description|default:'Comunidade' }}</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="chat-messages">
+          {% if error %}<div style="color: #dc3545; margin-bottom: 10px;">{{ error }}</div>{% endif %}
+          {% for msg in messages %}
+            <div class="message{% if msg.user == request.user %} me{% endif %}">
+              {% if msg.user != request.user %}
+                <div class="message-author">{{ msg.user.fullname }}</div>
+              {% endif %}
+              {% if msg.body %}
+                <div class="message-text">{{ msg.body }}</div>
+              {% endif %}
+              {% if msg.has_pdf %}
+                <div class="pdf-attachment" style="margin-top: 8px; padding: 8px 12px; background: rgba(255,255,255,0.1); border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 1.2em;">📄</span>
+                    <div style="flex: 1;">
+                      <div style="font-weight: 600; font-size: 0.9em;">{{ msg.pdf_filename }}</div>
+                      {% if msg.pdf_size %}<div style="font-size: 0.8em; opacity: 0.8;">{{ msg.pdf_size }}</div>{% endif %}
+                    </div>
+                    <a href="{{ msg.get_pdf_url }}" target="_blank" style="background: rgba(255,255,255,0.2); color: inherit; text-decoration: none; padding: 4px 8px; border-radius: 4px; font-size: 0.8em; font-weight: 600;">Abrir</a>
+                  </div>
+                </div>
+              {% endif %}
+              <div class="message-time" style="font-size: 0.75em; opacity: 0.7; margin-top: 4px;">
+                {{ msg.created_at|date:"H:i" }}
+              </div>
+            </div>
+          {% empty %}
+            <div style="color:#888; text-align: center; margin-top: 50px;">Nenhuma mensagem ainda. Seja o primeiro a enviar uma mensagem!</div>
+          {% endfor %}
+        </div>
+        
+        <div class="chat-input-area">
+          <div id="pdf-preview" style="display: none; padding: 8px 12px; background: #f0f0f0; border-radius: 8px; margin-bottom: 8px; font-size: 0.9em;">
+            <span style="font-weight: 600;">📄 PDF selecionado: </span>
+            <span id="pdf-name"></span>
+            <button type="button" id="remove-pdf" style="background: none; border: none; color: #dc3545; cursor: pointer; margin-left: 8px;">✕</button>
+          </div>
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="text" name="message" class="chat-input" placeholder="Digite uma mensagem para a comunidade...">
+            <label for="pdf-upload" style="cursor:pointer; color:#28a745; font-weight:bold; margin-right:8px; transition: color 0.3s;" title="Anexar PDF">📎
+              <input type="file" id="pdf-upload" name="pdf" accept="application/pdf" style="display:none;">
+            </label>
+            <button type="submit" class="send-btn">Enviar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Right Sidebar invisible -->
+    <div class="right-sidebar" style="visibility:hidden; opacity:0; pointer-events:none;"></div>
+  </div>
+
+  <!-- Modal para convidar membros -->
+  <div id="invite-modal" class="modal" style="display:none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+    <div class="modal-content" style="background-color: white; margin: 5% auto; padding: 20px; border-radius: 10px; width: 500px; max-width: 95%; box-shadow: 0 2px 10px rgba(0,0,0,0.2); position: relative;">
+      <span class="close-modal" id="close-invite-modal" style="color: #aaa; font-size: 24px; font-weight: bold; position: absolute; top: 10px; right: 20px; cursor: pointer;">&times;</span>
+      <h4 style="margin-top: 0; color: #256d4a;">Convidar pessoas que você segue</h4>
+      <div style="max-height: 300px; overflow-y: auto;">
+        {% for user in possible_invites %}
+          <div style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+            <img src="{{ user.get_profile_picture_url }}" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 12px;">
+            <div style="flex: 1;">
+              <div style="font-weight: 600; color: #256d4a;">{{ user.fullname }}</div>
+              <div style="color: #888; font-size: 0.9em;">{{ user.research_area|default:'Pesquisador' }}</div>
+            </div>
+            <form method="get" style="display:inline;">
+              <input type="hidden" name="invite" value="{{ user.id }}">
+              <button type="submit" style="background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Convidar</button>
+            </form>
+          </div>
+        {% empty %}
+          <div style="padding: 20px; color: #888; text-align: center;">Você já convidou todos que segue.</div>
         {% endfor %}
       </div>
     </div>
+  </div>
+
+  <script src="{% static 'js/home.js' %}"></script>
     <!-- Modal para convidar membros -->
     <div id="invite-modal" class="modal" style="display:none;">
       <div class="modal-content">
@@ -51,11 +454,22 @@
   </div>
 </div>
 <script>
-  document.getElementById('invite-members-btn').onclick = function() {
-    document.getElementById('invite-modal').style.display = 'block';
-  };
-  document.getElementById('close-invite-modal').onclick = function() {
-    document.getElementById('invite-modal').style.display = 'none';
-  };
-</script>
-{% endblock %}
+    // Modal functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const inviteBtn = document.getElementById('invite-members-btn');
+      const modal = document.getElementById('invite-modal');
+      const closeModal = document.getElementById('close-invite-modal');
+      
+      if (inviteBtn && modal && closeModal) {
+        inviteBtn.onclick = () => { 
+          modal.style.display = 'flex'; 
+          modal.style.alignItems = 'center'; 
+          modal.style.justifyContent = 'center'; 
+        };
+        closeModal.onclick = () => { modal.style.display = 'none'; };
+        window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+      }
+    });
+  </script>
+</body>
+</html>

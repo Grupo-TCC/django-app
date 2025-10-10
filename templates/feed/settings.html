@@ -172,18 +172,7 @@
               </form>
               <div class="settings-info">
                 <h2>{{ request.user.fullname }}</h2>
-                <div style="margin-top: 8px">
-                  <div>
-                    <strong>Área de Pesquisa:</strong> {{
-                    area_form.instance.research_area|default:'Adicionar sua área
-                    de pesquisa' }}
-                  </div>
-                  <div style="margin-top: 4px">
-                    <strong>Instituição:</strong> {{
-                    area_form.instance.institution|default:'Adicionar sua
-                    instituição' }}
-                  </div>
-                </div>
+                {{ request.user.research_area}}, {{ request.user.institution}}
               </div>
               <button
                 type="button"
