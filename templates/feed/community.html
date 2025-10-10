@@ -1,5 +1,4 @@
 {% load static %}
-{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,6 +9,7 @@
   <link rel="stylesheet" href="{% static 'styles/artigos.css' %}">
 </head>
 <body>
+  <!-- Navbar consistent with other pages -->
   <nav>
     <div class="nav-left">
       <a href="{% url 'feed:artigos' %}"><img src="{% static 'assets/img/logo.png' %}" class="logo"></a>
@@ -302,9 +302,8 @@
               {% if request.user in community.members.all %}
                 {% if found == 0 %}{% with found=1 %}{% endwith %}{% endif %}
                 <div class="seguindo-item" id="community-{{ community.id }}">
-                  <img src="{{ community.get_community_picture_url }}">
-                  <p><a href="{% url 'feed:community_detail' community.id %}">{{ community.name }}</a></p>
-                  
+                  <img src="{{ community.get_community_picture_url }}" alt="Foto da comunidade" class="profile-pic" style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:8px;">
+                  <p class="community-title"><a href="{% url 'feed:community_detail' community.id %}">{{ community.name }}</a></p>
                   <form method="post" action="?leave={{ community.id }}" style="display:inline;">
                     {% csrf_token %}
                     <button type="submit" class="seguir-link follow-btn following">Sair</button>
@@ -312,15 +311,12 @@
                 </div>
               {% endif %}
             {% endfor %}
-            {% if not found == 0 %}
+            {% if found == 0 %}
               <p>Você ainda não participa de nenhuma comunidade.</p>
             {% endif %}
-                 
           {% endwith %}
         </div>
       </div>
-
-      <!-- Sugestões de comunidades para participar -->
       <div class="post-container">
         <h3>Sugestões de comunidades</h3>
         <div class="sugestoes-grid">
@@ -342,17 +338,8 @@
         </div>
       </div>
     </div>
-            <div class="sugestao-card">
-              
-              <p class="community-title">{{ community.name }}</p>
-
-    <div class="right-sidebar">
-    </div>
+  <div class="right-sidebar"></div>
   </div>
-
-  <script src="{% static 'js/home.js' %}"></script>
-  
-</body>
 
   <script src="{% static 'js/home.js' %}"></script>
   <script src="{% static 'js/community.js' %}"></script>
