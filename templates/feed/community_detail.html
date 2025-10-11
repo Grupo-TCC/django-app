@@ -1,472 +1,282 @@
-{% extends 'base.html' %}
 {% load static %}
-{% block extra_head %}
-<link rel="stylesheet" href="{% static 'styles/home.css' %}">
-<link rel="stylesheet" href="{% static 'styles/conexao.css' %}">
-<link rel="stylesheet" href="{% static 'styles/artigos.css' %}">
-<!-- Boxicons for icons used in chat input -->
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-<style>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<!-- Toastr CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Detalhes da Comunidade</title>
+	<link rel="stylesheet" href="{% static 'styles/home.css' %}">
+	<!-- Removido script do head para garantir que o DOM esteja pronto -->
+</head>
+<body>
+	<!-- Toastr JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<!-- Navbar -->
+	<nav>
+		<div class="nav-left">
+			<a href="{% url 'feed:artigos' %}"><img src="{% static 'assets/img/logo.png' %}" class="logo"></a>
+			<ul>
+				<li><img src="{% static 'assets/img/notification.png' %}"></li>
+				<li><a href="{% url 'feed:mensagens' %}"><img src="{% static 'assets/img/inbox.png' %}" alt="Mensagens" style="cursor:pointer;"></a></li>
+			</ul>
+		</div>
+		<div class="nav-right">
+			<form class="search-box" method="get" action="">
+				<img src="{% static 'assets/img/search.png' %}">
+				<input type="text" name="q" placeholder="Pesquisar artigos, pesquisadores ou áreas" value="">
+			</form>
+			<div class="nav-user-icon online" onclick="settingsMenuToggle()">
+				<img src="{{ profile_user.get_profile_picture_url }}">
+			</div>
+			<div class="settings-menu">
+				<div id="dark-btn"><span></span></div>
+				<div class="settings-menu-inner">
+					<div class="user-profile">
+						<img src="{{ profile_user.get_profile_picture_url }}">
+						<div>
+							<p>{{ profile_user.fullname }}</p>
+							<a href="{% url 'feed:perfil' %}">Ver Perfil</a>
+						</div>
+					</div>
+					<hr>
+					<div class="user-profile">
+						<img src="{% static 'assets/img/feedback.png' %}">
+						<div>
+							<p>Nos dê seu feedback</p>
+							<a href="#">Ajude a melhorar nosso site</a>
+						</div>
+					</div>
+					<hr>
+					<div class="settings-links">
+						<img src="{% static 'assets/img/setting.png' %}" class="settings-icon">
+						<a href="{% url 'feed:settings' %}">Configuração & Privacidade <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+					</div>
+					<div class="settings-links">
+						<img src="{% static 'assets/img/help.png' %}" class="settings-icon">
+						<a href="#">Ajuda <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+					</div>
+					<div class="settings-links">
+						<img src="{% static 'assets/img/logout.png' %}" class="settings-icon">
+						<a href="{% url 'logout' %}">Sair <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<!-- Conteúdo da página community_detail -->
+		<script src="{% static 'js/home.js' %}"></script>
+		<script>
+			// Abas de mensagens e arquivos
+			document.addEventListener("DOMContentLoaded", function() {
+				var tabMessages = document.getElementById('tab-messages');
+				var tabFiles = document.getElementById('tab-files');
+				var contentMessages = document.getElementById('tab-content-messages');
+				var contentFiles = document.getElementById('tab-content-files');
+				tabMessages.addEventListener('click', function() {
+					tabMessages.classList.add('active');
+					tabFiles.classList.remove('active');
+					contentMessages.style.display = 'block';
+					contentFiles.style.display = 'none';
+					tabMessages.style.background = '#256d4a';
+					tabMessages.style.color = '#fff';
+					tabFiles.style.background = '#eafaf1';
+					tabFiles.style.color = '#256d4a';
+				});
+				tabFiles.addEventListener('click', function() {
+					tabFiles.classList.add('active');
+					tabMessages.classList.remove('active');
+					contentFiles.style.display = 'block';
+					contentMessages.style.display = 'none';
+					tabFiles.style.background = '#256d4a';
+					tabFiles.style.color = '#fff';
+					tabMessages.style.background = '#eafaf1';
+					tabMessages.style.color = '#256d4a';
+				});
+			});
+		</script>
+		<!-- Conteúdo da página community_detail -->
+		<div class="container">
+		  <!-- LEFT SIDEBAR -->
+		  <div class="left-sidebar">
+		    <style>
+		      .imp-links a {
+		        display: flex;
+		        align-items: center;
+		        padding: 10px 16px;
+		        border-left: 4px solid transparent;
+		        color: #256d4a !important;
+		        text-decoration: none;
+		        font-weight: 500;
+		        background: none;
+		        transition: background 0.2s, border-color 0.2s, color 0.2s;
+		      }
+		      .imp-links a.active {
+		        background: #eafaf1;
+		        border-left: 4px solid #28a745;
+		        color: #28a745 !important;
+		      }
+		      .imp-links a img {
+		        margin-right: 10px;
+		      }
+		    </style>
+		    <div class="imp-links">
+		      <a href="{% url 'feed:artigos' %}" class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"><img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos</a>
+		      <a href="{% url 'feed:conexao' %}" class="{% if request.resolver_match.url_name == 'conexao' %}active{% endif %}"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
+		      <a href="{% url 'feed:community' %}" class="{% if request.resolver_match.url_name == 'community' %}active{% endif %}"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
+		    </div>
+		  </div>
+				<!-- MAIN CONTENT -->
+				<div class="main-content" style="margin: 0 auto; float: none; display: flex; flex-direction: column; align-items: center;">
+					<div class="post-container" style="text-align:center; padding:0; overflow:visible;">
+						<div style="background:#256d4a; height:120px; border-top-left-radius:10px; border-top-right-radius:10px; position:relative;">
+							<!-- Foto da comunidade -->
+							<img src="{{ community.get_community_picture_url }}" alt="Foto da comunidade" style="width: 120px; height: 120px; border-radius: 50%; border:4px solid #fff; position:absolute; left:50%; transform:translateX(-50%); bottom:-60px; box-shadow:0 2px 8px rgba(0,0,0,0.10); background:#fff;">
+						</div>
+						<!-- Nome da comunidade -->
+						<div id="community-name" style="font-size:1.4em; font-weight:700; color:#222; margin-top:80px;">{{ community.name }}</div>
+						<!-- Descrição da comunidade -->
+						{% if community.description %}
+							<div id="community-description" style="font-size:1.1em; color:#256d4a; margin-top:4px;">{{ community.description }}</div>
+						{% endif %}
 
-  body { overflow: auto; }
+						<!-- Abas de Mensagens e Compartilhamento -->
+						<div style="margin-top:32px;">
+							<div style="display:flex; justify-content:center; gap:16px;">
+								<button id="tab-messages" class="tab-btn active" style="padding:10px 24px; border:none; border-radius:8px 8px 0 0; background:#256d4a; color:#fff; font-weight:600; cursor:pointer;">Mensagens</button>
+								<button id="tab-files" class="tab-btn" style="padding:10px 24px; border:none; border-radius:8px 8px 0 0; background:#eafaf1; color:#256d4a; font-weight:600; cursor:pointer;">Compartilhamento de Arquivos</button>
+							</div>
+							<div id="tab-content-messages" class="tab-content" style="background:#fafafa; border-radius:0 0 8px 8px; box-shadow:0 2px 8px rgba(0,0,0,0.05); padding:24px;">
+											<!-- Conteúdo de mensagens entre membros -->
+											<h4 style="color:#256d4a; margin-bottom:12px;">Mensagens entre membros</h4>
+											<div class="messages-main" style="background:#fff; border-radius:8px; min-height:300px; box-shadow:0 2px 8px rgba(0,0,0,0.07); display:flex; overflow:hidden; margin:0 auto; max-width:600px;">
+															<div class="chat-area" style="flex:1; display:flex; flex-direction:column; background:#fff; min-width:0; min-height:500px;">
+													<div class="chat-messages" style="flex:1; padding:22px; overflow-y:auto; background:#fff; display:flex; flex-direction:column; gap:12px;">
+																		<!-- Mensagens fictícias para exemplo -->
+																		<div style="display:flex; flex-direction:column; align-items:flex-start;">
+																			<span style="font-size:0.97em; color:#256d4a; font-weight:600; margin-bottom:2px;">Maria Silva</span>
+																			<div class="message" style="max-width:70%; padding:10px 16px; border-radius:18px; font-size:1em; background:#eafaf1; color:#222; align-self:flex-start; box-shadow:0 1px 3px rgba(0,0,0,0.04);">Olá comunidade! 👋</div>
+																		</div>
+																		<div class="message me" style="max-width:70%; padding:10px 16px; border-radius:18px; font-size:1em; background:#256d4a; color:#fff; align-self:flex-end; box-shadow:0 1px 3px rgba(0,0,0,0.04);">Bem-vindo ao grupo!</div>
+																		<div style="display:flex; flex-direction:column; align-items:flex-start;">
+																			<span style="font-size:0.97em; color:#256d4a; font-weight:600; margin-bottom:2px;">João Souza</span>
+																			<div class="message" style="max-width:70%; padding:10px 16px; border-radius:18px; font-size:1em; background:#eafaf1; color:#222; align-self:flex-start; box-shadow:0 1px 3px rgba(0,0,0,0.04);">Aqui podemos trocar ideias e arquivos.</div>
+																		</div>
+													</div>
+													<div class="chat-input-area" style="padding:16px 22px; border-top:1px solid #e0e0e0; background:#fafafa;">
+														<form style="display:flex; gap:10px;">
+															<input type="text" placeholder="Digite uma mensagem..." style="flex:1; padding:10px 16px; border-radius:18px; border:1px solid #e0e0e0; font-size:1em; outline:none;">
+															<button type="submit" style="background:#256d4a; color:#fff; border:none; border-radius:18px; padding:10px 22px; font-weight:600; cursor:pointer;">Enviar</button>
+														</form>
+													</div>
+												</div>
+											</div>
+							</div>
+							<div id="tab-content-files" class="tab-content" style="display:none; background:#fafafa; border-radius:0 0 8px 8px; box-shadow:0 2px 8px rgba(0,0,0,0.05); padding:24px;">
+								<!-- Conteúdo de compartilhamento de arquivos -->
+								<h4 style="color:#256d4a; margin-bottom:12px;">Compartilhamento de Arquivos</h4>
+								<div style="min-height:80px; color:#888;">(Compartilhar arquivos PDF, docs, etc.)</div>
+							</div>
+						</div>
+					</div>
+		
+				</div>
+				<!-- RIGHT SIDEBAR -->
+				<div class="right-sidebar">
+					<h3 style="color:#256d4a; margin-bottom:18px;">Membros da Comunidade</h3>
+						{% if community.members.all %}
+							<ul style="list-style:none; padding:0;">
+								{% for member in community.members.all %}
+									<li style="margin-bottom:18px; display:flex; align-items:center;">
+										<img src="{{ member.get_profile_picture_url }}" alt="Foto de perfil" style="width:40px; height:40px; border-radius:50%; margin-right:12px; object-fit:cover;">
+										<div>
+											<div style="font-weight:600; color:#256d4a;">{{ member.fullname }}</div>
+											{% if member.institution %}
+												<div style="font-size:0.95em; color:#555;">{{ member.institution }}</div>
+											{% endif %}
+										</div>
+									</li>
+								{% endfor %}
+							</ul>
+						{% else %}
+							<p style="color:#888;">Nenhum membro encontrado.</p>
+						{% endif %}
 
-  .container { padding: 13px 5%; }
-  /* Espaçamento entre colunas */
-  .container { gap: 24px; }
-  .left-sidebar { flex-basis: 20% !important; }
-  .main-content { flex-basis: 60% !important; }
-  .right-sidebar { flex-basis: 20% !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; }
-  .right-sidebar { margin-left: 24px; }
-
-  /* Mensagens como cards */
-  .chat-messages { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-  .message { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); max-width: 75%; align-self: flex-start; line-height: 1.35; color: #222; }
-  .message.me { background: #eafaf1; border-color: rgba(40, 167, 69, 0.25); align-self: flex-end; }
-  /* Opcional: ajustar espaçamento interno do chat quando há input fixo */
-  .messages-main .chat-messages { padding-bottom: 70px; }
-</style>
-{% endblock %}
-{% block content %}
-<!-- Notification bar for invite feedback -->
-<div id="invite-notification" style="display:none; position:fixed; top:0; left:0; right:0; z-index:9999; background:#256d4a; color:#fff; padding:14px 0; text-align:center; font-size:1.08em; font-weight:500; box-shadow:0 2px 8px rgba(0,0,0,0.10);">
-  <span id="invite-notification-text"></span>
-</div>
-<!-- Navbar -->
-<nav>
-    <div class="nav-left">
-      <a href="{% url 'feed:artigos' %}"><img src="{% static 'assets/img/logo.png' %}" class="logo"></a>
-      <ul>
-        <li><img src="{% static 'assets/img/notification.png' %}"></li>
-        <li><a href="{% url 'feed:mensagens' %}"><img src="{% static 'assets/img/inbox.png' %}" alt="Mensagens" style="cursor:pointer;"></a></li>
-      </ul>
-    </div>
-    <div class="nav-right">
-      <div class="nav-user-icon online" onclick="settingsMenuToggle()">
-        <img src="{{ request.user.get_profile_picture_url }}">
-      </div>
-      <div class="settings-menu">
-        <div id="dark-btn"><span></span></div>
-        <div class="settings-menu-inner">
-          <div class="user-profile">
-            <img src="{{ request.user.get_profile_picture_url }}">
-            <div>
-              <p>{{ request.user.fullname }}</p>
-              <a href="{% url 'feed:perfil' %}">Ver Perfil</a>
-            </div>
-          </div>
-          <hr>
-          <div class="user-profile">
-            <img src="{% static 'assets/img/feedback.png' %}">
-            <div>
-              <p>Nos dê seu feedback</p>
-              <a href="#">Ajude a melhorar nosso site</a>
-            </div>
-          </div>
-          <hr>
-          <div class="settings-links">
-            <img src="{% static 'assets/img/setting.png' %}" class="settings-icon">
-            <a href="{% url 'feed:settings' %}">Configuração & Privacidade <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
-          </div>
-          <div class="settings-links">
-            <img src="{% static 'assets/img/help.png' %}" class="settings-icon">
-            <a href="#">Ajuda <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
-          </div>
-          <div class="settings-links">
-            <img src="{% static 'assets/img/logout.png' %}" class="settings-icon">
-            <a href="{% url 'logout' %}">Sair <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </nav>
-
-<div class="container">
-    <!-- LEFT SIDEBAR -->
-    <div class="left-sidebar">
-      <style>
-        .imp-links a {
-          display: flex;
-          align-items: center;
-          padding: 10px 16px;
-          border-left: 4px solid transparent;
-          color: #256d4a !important;
-          text-decoration: none;
-          font-weight: 500;
-          background: none;
-          transition: background 0.2s, border-color 0.2s, color 0.2s;
-        }
-        .imp-links a.active {
-          background: #eafaf1;
-          border-left: 4px solid #28a745;
-          color: #28a745 !important;
-        }
-        .imp-links a img {
-          margin-right: 10px;
-        }
-      </style>
-      <div class="imp-links">
-        <a href="{% url 'feed:artigos' %}" class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"><img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos</a>
-        <a href="{% url 'feed:conexao' %}" class="{% if request.resolver_match.url_name == 'conexao' %}active{% endif %}"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
-        <a href="{% url 'feed:community' %}" class="active"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
-      </div>
-    </div>
-    
-    <!-- MAIN CONTENT -->
-    <div class="messages-main">
-      <!-- MEMBERS LIST -->
-      <div class="members-list">
-        <div style="padding: 18px 18px 0 18px; background: #fafafa; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center;">
-          <h4 style="margin: 0; color: #256d4a;">Membros ({{ community.members.count }})</h4>
-          <button id="invite-members-btn" class="plus-btn" title="Adicionar membros">+</button>
-        </div>
-        {% for member in community.members.all %}
-          <div class="member-item">
-            <img src="{{ member.get_profile_picture_url }}" alt="{{ member.fullname }}">
-            <div class="member-info">
-              <div class="member-name">{{ member.fullname }}</div>
-              <div class="member-status">{{ member.research_area|default:'Membro' }}</div>
-            </div>
-          </div>
-        {% empty %}
-          <div style="padding: 20px; color: #888;">Nenhum membro ainda.</div>
-        {% endfor %}
-      </div>
-      
-      <!-- CHAT AREA -->
-      <div class="chat-area">
-        <div class="chat-header">
-          <div class="community-info">
-            <img src="{{ community.get_community_picture_url }}" alt="{{ community.name }}">
-            <div>
-              <div class="chat-name">{{ community.name }}</div>
-              <div style="font-size: 0.9em; color: #888;">{{ community.description|default:'Comunidade' }}</div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="chat-messages">
-          {% if error %}<div style="color: #dc3545; margin-bottom: 10px;">{{ error }}</div>{% endif %}
-          {% for msg in messages %}
-            <div class="message{% if msg.user == request.user %} me{% endif %}">
-              {% if msg.user != request.user %}
-                <div class="message-author">{{ msg.user.fullname }}</div>
-              {% endif %}
-              {% if msg.body %}
-                <div class="message-text">{{ msg.body }}</div>
-              {% endif %}
-              {% if msg.has_pdf %}
-                <div class="pdf-attachment" style="margin-top: 8px; padding: 8px 12px; background: rgba(255,255,255,0.1); border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);">
-                  <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 1.2em;">📄</span>
-                    <div style="flex: 1;">
-                      <div style="font-weight: 600; font-size: 0.9em;">{{ msg.pdf_filename }}</div>
-                      {% if msg.pdf_size %}<div style="font-size: 0.8em; opacity: 0.8;">{{ msg.pdf_size }}</div>{% endif %}
-                    </div>
-                    <a href="{{ msg.get_pdf_url }}" target="_blank" style="background: rgba(255,255,255,0.2); color: inherit; text-decoration: none; padding: 4px 8px; border-radius: 4px; font-size: 0.8em; font-weight: 600;">Abrir</a>
-                  </div>
-                </div>
-              {% endif %}
-              <div class="message-time" style="font-size: 0.75em; opacity: 0.7; margin-top: 4px;">
-                {{ msg.created_at|date:"H:i" }}
-              </div>
-            </div>
-          {% empty %}
-            <div style="color:#888; text-align: center; margin-top: 50px;">Nenhuma mensagem ainda. Seja o primeiro a enviar uma mensagem!</div>
-          {% endfor %}
-        </div>
-        
-        <div class="chat-input-area">
-          <div id="pdf-preview" style="display: none; padding: 8px 12px; background: #f0f0f0; border-radius: 8px; margin-bottom: 8px; font-size: 0.9em;">
-            <span style="font-weight: 600;">📄 PDF selecionado: </span>
-            <span id="pdf-name"></span>
-            <button type="button" id="remove-pdf" style="background: none; border: none; color: #dc3545; cursor: pointer; margin-left: 8px;">✕</button>
-          </div>
-          <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="text" name="message" class="chat-input" placeholder="Digite uma mensagem para a comunidade...">
-            <label for="pdf-upload" style="cursor:pointer; color:#28a745; font-weight:bold; margin-right:8px; transition: color 0.3s;" title="Anexar PDF">📎
-              <input type="file" id="pdf-upload" name="pdf" accept="application/pdf" style="display:none;">
-            </label>
-            <button type="submit" class="send-btn">Enviar</button>
-          </form>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Right Sidebar invisible -->
-    <div class="right-sidebar" style="visibility:hidden; opacity:0; pointer-events:none;"></div>
-  </div>
-
-  <!-- Modal para convidar membros -->
-  <div id="invite-modal" class="modal" style="display:none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
-    <div class="modal-content" style="background-color: white; margin: 5% auto; padding: 20px; border-radius: 10px; width: 500px; max-width: 95%; box-shadow: 0 2px 10px rgba(0,0,0,0.2); position: relative;">
-      <span class="close-modal" id="close-invite-modal" style="color: #aaa; font-size: 24px; font-weight: bold; position: absolute; top: 10px; right: 20px; cursor: pointer;">&times;</span>
-      <h4 style="margin-top: 0; color: #256d4a;">Convidar pessoas que você segue</h4>
-      <div style="max-height: 300px; overflow-y: auto;">
-        {% for user in possible_invites %}
-          <div style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
-            <img src="{{ user.get_profile_picture_url }}" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 12px;">
-            <div style="flex: 1;">
-              <div style="font-weight: 600; color: #256d4a;">{{ user.fullname }}</div>
-              <div style="color: #888; font-size: 0.9em;">{{ user.research_area|default:'Pesquisador' }}</div>
-            </div>
-            <form method="get" style="display:inline;">
-              <input type="hidden" name="invite" value="{{ user.id }}">
-              <button type="submit" style="background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Convidar</button>
-            </form>
-          </div>
-        {% empty %}
-          <div style="padding: 20px; color: #888; text-align: center;">Você já convidou todos que segue.</div>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-
-  <script src="{% static 'js/home.js' %}"></script>
-    <!-- Modal para convidar membros -->
-=======
-{% block extra_head %}
-<link rel="stylesheet" href="{% static 'styles/home.css' %}">
-<link rel="stylesheet" href="{% static 'styles/conexao.css' %}">
-<link rel="stylesheet" href="{% static 'styles/artigos.css' %}">
-<!-- Boxicons for icons used in chat input -->
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-<style>
-
-  body { overflow: auto; }
-
-  .container { padding: 13px 5%; }
-  /* Espaçamento entre colunas */
-  .container { gap: 24px; }
-  .left-sidebar { flex-basis: 20% !important; }
-  .main-content { flex-basis: 60% !important; }
-  .right-sidebar { flex-basis: 20% !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; }
-  .right-sidebar { margin-left: 24px; }
-
-  /* Mensagens como cards */
-  .chat-messages { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-  .message { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); max-width: 75%; align-self: flex-start; line-height: 1.35; color: #222; }
-  .message.me { background: #eafaf1; border-color: rgba(40, 167, 69, 0.25); align-self: flex-end; }
-  /* Opcional: ajustar espaçamento interno do chat quando há input fixo */
-  .messages-main .chat-messages { padding-bottom: 70px; }
-</style>
-{% endblock %}
-
-{% block content %}
-<!-- Notification bar for invite feedback -->
-<div id="invite-notification" style="display:none; position:fixed; top:0; left:0; right:0; z-index:9999; background:#256d4a; color:#fff; padding:14px 0; text-align:center; font-size:1.08em; font-weight:500; box-shadow:0 2px 8px rgba(0,0,0,0.10);">
-  <span id="invite-notification-text"></span>
-</div>
-<!-- Navbar -->
-<nav>
-  <div class="nav-left">
-    <a href="{% url 'feed:artigos' %}"><img src="{% static 'assets/img/logo.png' %}" class="logo"></a>
-    <ul>
-      <li><img src="{% static 'assets/img/notification.png' %}"></li>
-      <li><a href="{% url 'feed:mensagens' %}"><img src="{% static 'assets/img/inbox.png' %}" alt="Mensagens" style="cursor:pointer;"></a></li>
-    </ul>
-  </div>
-  <div class="nav-right">
-    <form class="search-box" method="get" action="">
-      <img src="{% static 'assets/img/search.png' %}">
-      <input type="text" name="q" placeholder="Pesquisar comunidades" value="">
-    </form>
-    <div class="nav-user-icon online" onclick="settingsMenuToggle()">
-      <img src="{{ request.user.get_profile_picture_url }}">
-    </div>
-    <div class="settings-menu">
-      <div id="dark-btn"><span></span></div>
-      <div class="settings-menu-inner">
-        <div class="user-profile">
-          <img src="{{ request.user.get_profile_picture_url }}">
-          <div>
-            <p>{{ request.user.fullname }}</p>
-            <a href="{% url 'feed:perfil' %}">Ver Perfil</a>
-          </div>
-        </div>
-        <hr>
-        <div class="user-profile">
-          <img src="{% static 'assets/img/feedback.png' %}">
-          <div>
-            <p>Nos dê seu feedback</p>
-            <a href="#">Ajude a melhorar nosso site</a>
-          </div>
-        </div>
-        <hr>
-        <div class="settings-links">
-          <img src="{% static 'assets/img/setting.png' %}" class="settings-icon">
-          <a href="{% url 'feed:settings' %}">Configuração & Privacidade <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
-        </div>
-        <div class="settings-links">
-          <img src="{% static 'assets/img/help.png' %}" class="settings-icon">
-          <a href="#">Ajuda <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
-        </div>
-        <div class="settings-links">
-          <img src="{% static 'assets/img/logout.png' %}" class="settings-icon">
-          <a href="{% url 'logout' %}">Sair <img src="{% static 'assets/img/arrow.png' %}" width="10px"></a>
-        </div>
-      </div>
-    </div>
-  </div>
-</nav>
-
-<div class="container">
-  <!-- Left Sidebar -->
-  <div class="left-sidebar">
-    <style>
-      .imp-links a {
-        display: flex;
-        align-items: center;
-        padding: 10px 16px;
-        border-left: 4px solid transparent;
-        color: #256d4a !important;
-        text-decoration: none;
-        font-weight: 500;
-        background: none;
-        transition: background 0.2s, border-color 0.2s, color 0.2s;
-      }
-      .imp-links a.active {
-        background: #eafaf1;
-        border-left: 4px solid #28a745;
-        color: #28a745 !important;
-      }
-      .imp-links a img {
-        margin-right: 10px;
-      }
-    </style>
-    <div class="imp-links">
-      <a href="{% url 'feed:artigos' %}" class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"><img src="{% static 'assets/img/newspaper.png' %}"> Artigos Científicos</a>
-      <a href="{% url 'feed:conexao' %}" class="{% if request.resolver_match.url_name == 'conexao' %}active{% endif %}"><img src="{% static 'assets/img/friends.png' %}"> Conexões</a>
-      <a href="{% url 'feed:community' %}" class="{% if request.resolver_match.url_name == 'community' %}active{% endif %}"><img src="{% static 'assets/img/people.png' %}"> Comunidades</a>
-    </div>
-  </div>
-
-  <!-- Conteúdo principal -->
-  <div class="main-content">
-    <!-- Banner da comunidade centralizado -->
-    <div style="background:#256d4a; height:120px; border-top-left-radius:10px; border-top-right-radius:10px; position:relative; margin-bottom:40px; display:flex; justify-content:center; align-items:flex-end;">
-      <img src="{{ community.get_community_picture_url }}" alt="Foto da comunidade" style="width:120px; height:120px; border-radius:50%; border:4px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.10); background:#fff; margin-bottom:-60px;">
-    </div>
-    <div style="text-align:center; margin-top:80px; margin-bottom:32px;">
-      <div style="font-size:1.4em; font-weight:700; color:#222;">{{ community.name }}</div>
-      <div style="font-size:1.1em; color:#256d4a; margin-top:4px;">{{ community.description }}</div>
-    </div>
-      <!-- Tabs navigation -->
-  <div class="tabs" style="display:flex; gap:10px; border-bottom:1px solid #cfcfcf; margin-bottom:16px;">
-      <button class="tab-btn active" data-tab="messages" style="background:#fff; border:1px solid #e0e0e0; border-bottom:none; padding:8px 12px; border-top-left-radius:6px; border-top-right-radius:6px; color:#256d4a; font-weight:600;">Mensagens</button>
-      <button class="tab-btn" data-tab="articles" style="background:#fff; border:1px solid #e0e0e0; border-bottom:none; padding:8px 12px; border-top-left-radius:6px; border-top-right-radius:6px; color:#256d4a; font-weight:600;">Artigos</button>
-  </div>
-
-      <!--Mensagens -->
-      <div id="tab-messages" class="tab-content" style="display:block; position:relative; min-height:400px;">
-        <div class="chat-messages" style="padding-bottom:70px;">
-          {% if messages %}
-            {% for msg in messages %}
-              <div class="message{% if msg.user.id == request.user.id %} me{% endif %}">
-                {% if msg.body %}{{ msg.body }}{% endif %}
-              </div>
-            {% endfor %}
-          {% else %}
-            <div style="color:#888; text-align:center; margin-top:20px; font-size:1.05em;">Nenhuma mensagem ainda.</div>
-          {% endif %}
-        </div>
-        <form method="post" enctype="multipart/form-data" class="chat-input-area" style="position:absolute; left:0; right:0; bottom:0; padding:12px 18px; background:#f8f8f8; border-top:1px solid #e0e0e0; display:flex; gap:10px; align-items:center;">
-          {% csrf_token %}
-          <input type="text" name="message" placeholder="Digite sua mensagem..." style="flex:1; padding:10px 14px; border-radius:6px; border:1px solid #e0e0e0; font-size:1em;">
-          <label for="chat-pdf" style="background:#fff; color:#256d4a; border:1px solid #e0e0e0; border-radius:6px; padding:10px 12px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px;">
-            <i class='bx bx-paperclip'></i>
-          </label>
-          <input id="chat-pdf" type="file" name="pdf" accept="application/pdf" style="display:none;">
-          <button type="submit" style="background:#28a745; color:#fff; border:none; border-radius:6px; padding:10px 18px; font-weight:600; cursor:pointer;">Enviar</button>
-        </form>
-      </div>
-
-      <!--Artigos compartilhados-->
-      <div id="tab-articles" class="tab-content" style="display:none;">
-        <div class="post-container">
-          <h3>Artigos compartilhados</h3>
-          {% if community_articles %}
-            <ul style="list-style:none; padding:0;">
-              {% for article in community_articles %}
-                <li style="margin-bottom:12px; padding:12px; border:1px solid #e0e0e0; border-radius:8px; background:#fafafa;">
-                  <div style="font-weight:600; color:#256d4a;">{{ article.title }}</div>
-                  <div style="color:#555;">{{ article.research_area }}</div>
-                  {% if article.description %}
-                    <div style="color:#333; font-size:0.95em; margin-top:6px;">{{ article.description|truncatechars:220 }}</div>
-                  {% endif %}
-                  {% if article.pdf %}
-                    <a href="{{ article.pdf.url }}" target="_blank" style="color:#28a745; text-decoration:underline;">Ver PDF</a>
-                  {% endif %}
-                  <div style="font-size:0.9em; color:#777; margin-top:4px;">Compartilhado por {{ article.user.fullname }}</div>
-                </li>
-              {% endfor %}
-            </ul>
-          {% else %}
-            <p style="color:#888;">Nenhum artigo compartilhado ainda.</p>
-          {% endif %}
-        </div>
-      </div>
-          modal.style.display = 'flex'; 
-          modal.style.alignItems = 'center'; 
-          modal.style.justifyContent = 'center'; 
-        };
-        closeModal.onclick = () => { modal.style.display = 'none'; };
-        window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
-      }
-    });
-  </script>
+						<hr style="margin:18px 0;">
+						<div style="display:flex; align-items:center; justify-content:space-between;">
+											<span style="font-weight:600; color:#256d4a;">Convidar pessoas que você segue</span>
+											<button id="invite-btn" style="background:#28a745; color:#fff; border:none; border-radius:50%; width:32px; height:32px; font-size:1.5em; cursor:pointer; display:flex; align-items:center; justify-content:center;">+</button>
+	<!-- Script para botão de convite -->
+						</div>
+						<div id="invite-list" style="display:none; margin-top:12px;">
+							{% if possible_invites %}
+								<ul style="list-style:none; padding:0;">
+									{% for user in possible_invites %}
+										<li style="margin-bottom:14px; display:flex; align-items:center;">
+											<img src="{{ user.get_profile_picture_url }}" alt="Foto de perfil" style="width:32px; height:32px; border-radius:50%; margin-right:10px; object-fit:cover;">
+											<span style="font-weight:500; color:#256d4a; margin-right:8px;">{{ user.fullname }}</span>
+											<form method="get" action="">
+												<input type="hidden" name="invite" value="{{ user.id }}">
+												<button type="submit" style="background:#256d4a; color:#fff; border:none; border-radius:4px; padding:4px 10px; font-size:0.95em; cursor:pointer;">Convidar</button>
+											</form>
+										</li>
+									{% endfor %}
+								</ul>
+							{% else %}
+								<p style="color:#888;">Você já convidou todos que segue.</p>
+							{% endif %}
+						</div>
+				</div>
+		</div>
+		<script src="{% static 'js/home.js' %}"></script>
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+				var inviteBtn = document.getElementById('invite-btn');
+				var inviteList = document.getElementById('invite-list');
+				var hasInvites = Number("{{ possible_invites|length }}");
+				inviteBtn.addEventListener('click', function() {
+					if (hasInvites > 0) {
+						inviteList.classList.toggle('show');
+						inviteList.style.display = inviteList.classList.contains('show') ? 'block' : 'none';
+					} else {
+						if (typeof toastr !== 'undefined') {
+							toastr.options = {
+								"closeButton": true,
+								"progressBar": true,
+								"positionClass": "toast-top-center"
+							};
+							toastr.info("Você não segue ninguém para convidar.");
+						} else {
+							alert("Você não segue ninguém para convidar.");
+						}
+					}
+				});
+			});
+		</script>
 </body>
 </html>
-=======
-  (function() {
-    var btns = document.querySelectorAll('.tab-btn');
-    var tabs = { messages: document.getElementById('tab-messages'), articles: document.getElementById('tab-articles') };
-    btns.forEach(function(btn){
-      btn.addEventListener('click', function(){
-        btns.forEach(function(b){ b.classList.remove('active'); });
-        btn.classList.add('active');
-        var t = btn.getAttribute('data-tab');
-        if (t === 'messages') {
-          tabs.messages.style.display = 'block';
-          tabs.articles.style.display = 'none';
-        } else {
-          tabs.messages.style.display = 'none';
-          tabs.articles.style.display = 'block';
-        }
-      });
-    });
-  })();
-  document.getElementById('invite-members-btn').onclick = function() {
-  var btn = document.getElementById('invite-members-btn');
-  var countAttr = btn ? btn.getAttribute('data-count') : '0';
-  var hasInvites = parseInt(countAttr || '0', 10) > 0;
-    if (!hasInvites) {
-      var notif = document.getElementById('invite-notification');
-      var notifText = document.getElementById('invite-notification-text');
-      notifText.textContent = 'Você não tem pessoas que segue para convidar.';
-      notif.style.display = 'block';
-      setTimeout(function(){ notif.style.display = 'none'; }, 3500);
-      return;
-    }
-    // Open modal with search
-    document.getElementById('invite-modal').style.display = 'block';
-    var searchInput = document.getElementById('invite-search');
-    var list = document.getElementById('invite-list');
-    searchInput.oninput = function(){
-      var q = this.value.trim().toLowerCase();
-      Array.prototype.forEach.call(list.querySelectorAll('li'), function(li){
-        var name = li.getAttribute('data-name');
-        li.style.display = (!q || name.indexOf(q) !== -1) ? '' : 'none';
-      });
-    };
-  };
-  document.getElementById('close-invite-modal').onclick = function() {
-    document.getElementById('invite-modal').style.display = 'none';
-  };
-</script>
-{% endblock %}
-
-{% block extra_js %}
-<script src="{% static 'js/home.js' %}"></script>
-{% endblock %}
->>>>>>> Stashed changes
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+				var inviteBtn = document.getElementById('invite-btn');
+				var inviteList = document.getElementById('invite-list');
+				var hasInvites = parseInt("{{ possible_invites|length }}");
+				inviteBtn.addEventListener('click', function() {
+					if (hasInvites > 0) {
+						inviteList.classList.toggle('show');
+						inviteList.style.display = inviteList.classList.contains('show') ? 'block' : 'none';
+					} else {
+						if (typeof toastr !== 'undefined') {
+							toastr.options = {
+								"closeButton": true,
+								"progressBar": true,
+								"positionClass": "toast-top-center"
+							};
+							toastr.info("Você não segue ninguém para convidar.");
+						} else {
+							alert("Você não segue ninguém para convidar.");
+						}
+					}
+				});
+			});
+		</script>

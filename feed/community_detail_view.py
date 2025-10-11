@@ -53,4 +53,5 @@ def community_detail(request, community_id):
         'community': community,
         'messages': messages,
         'possible_invites': possible_invites,
+        'profile_user': request.user,
     })

@@ -297,24 +297,20 @@
       <div class="post-container">
         <h3> Suas Comunidades  você participa</h3>
         <div class="seguindo-lista">
-          {% with found=0 %}
-            {% for community in communities %}
-              {% if request.user in community.members.all %}
-                {% if found == 0 %}{% with found=1 %}{% endwith %}{% endif %}
-                <div class="seguindo-item" id="community-{{ community.id }}">
-                  <img src="{{ community.get_community_picture_url }}" alt="Foto da comunidade" class="profile-pic" style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:8px;">
-                  <p class="community-title"><a href="{% url 'feed:community_detail' community.id %}">{{ community.name }}</a></p>
-                  <form method="post" action="?leave={{ community.id }}" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="seguir-link follow-btn following">Sair</button>
-                  </form>
-                </div>
-              {% endif %}
+          {% if user_communities %}
+            {% for community in user_communities %}
+              <div class="seguindo-item" id="community-{{ community.id }}">
+                <img src="{{ community.get_community_picture_url }}" alt="Foto da comunidade" class="profile-pic" style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:8px;">
+                <p class="community-title"><a href="{% url 'feed:community_detail' community.id %}">{{ community.name }}</a></p>
+                <form method="post" action="?leave={{ community.id }}" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="seguir-link follow-btn following">Sair</button>
+                </form>
+              </div>
             {% endfor %}
-            {% if found == 0 %}
-              <p>Você ainda não participa de nenhuma comunidade.</p>
-            {% endif %}
-          {% endwith %}
+          {% else %}
+            <p>Você ainda não participa de nenhuma comunidade.</p>
+          {% endif %}
         </div>
       </div>
       <div class="post-container">

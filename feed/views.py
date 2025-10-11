@@ -295,8 +295,10 @@ def community(request):
             community.members.remove(request.user)
             return redirect('feed:community')
 
+    user_communities = communities.filter(members=request.user)
     return render(request, "feed/community.html", {
         "communities": communities,
+        "user_communities": user_communities,
         "form": form,
         "search_query": query,
     })
