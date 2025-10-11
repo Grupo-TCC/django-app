@@ -1,0 +1,224 @@
+{% load static %}
+<!-- LEFT SIDEBAR -->
+<div class="left-sidebar">
+  <style>
+    .imp-links a {
+      display: flex;
+      align-items: center;
+      padding: 10px 16px;
+      border-left: 4px solid transparent;
+      color: #256d4a !important;
+      text-decoration: none;
+      font-weight: 500;
+      background: none;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .imp-links a.active {
+      background: #eafaf1;
+      border-left: 4px solid #28a745;
+      color: #28a745 !important;
+    }
+    .imp-links a img {
+      margin-right: 10px;
+    }
+
+    /* Professional Modal Styles */
+    .modal {
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .close-modal:hover {
+      color: #000;
+    }
+
+    .modal-content h3 {
+      margin-top: 0;
+      margin-bottom: 25px;
+      color: #333;
+      font-size: 24px;
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+      font-size: 14px;
+    }
+
+    .form-group input[type="text"],
+    .form-group textarea,
+    .form-group input[type="file"],
+    .form-group input[type="number"],
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e1e5e9;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .form-group input[type="text"]:focus,
+    .form-group textarea:focus,
+    .form-group input[type="number"]:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #28a745;
+      box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-group input[type="file"] {
+      padding: 8px 12px;
+      background-color: #f8f9fa;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 16px;
+      margin-top: 5px;
+    }
+
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: normal;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .radio-label input[type="radio"] {
+      width: auto;
+      margin: 0;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e1e5e9;
+    }
+
+    .btn-cancel {
+      padding: 12px 24px;
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-cancel:hover {
+      background-color: #5a6268;
+    }
+
+    .btn-submit {
+      padding: 12px 24px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: #218838;
+    }
+
+    .form-errors,
+    .field-errors {
+      color: #dc3545;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .form-errors {
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+  </style>
+  <div class="imp-links">
+    <a
+      href="{% url 'feed:artigos' %}"
+      class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"
+      ><img src="{% static 'assets/img/newspaper.png' %}" /> Artigos
+      Científicos</a
+    >
+    <a
+      href="{% url 'feed:media_post' %}"
+      class="{% if request.resolver_match.url_name == 'media_post' %}active{% endif %}"
+      ><img src="{% static 'assets/img/conhecimento.png' %}" /> Tradução de Conhecimento</a
+    >
+    <a
+      href="{% url 'feed:produtos' %}"
+      class="{% if request.resolver_match.url_name == 'produtos' %}active{% endif %}"
+      ><img src="{% static 'assets/img/package.png' %}" /> Produtos</a
+    >
+    <a
+      href="{% url 'feed:conexao' %}"
+      class="{% if request.resolver_match.url_name == 'conexao' %}active{% endif %}"
+      ><img src="{% static 'assets/img/friends.png' %}" /> Conexões</a
+    >
+    <a
+      href="{% url 'feed:community' %}"
+      class="{% if request.resolver_match.url_name == 'community' %}active{% endif %}"
+      ><img src="{% static 'assets/img/people.png' %}" /> Comunidades</a
+    >
+    
+  </div>
+</div>

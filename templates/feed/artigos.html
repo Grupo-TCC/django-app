@@ -11,337 +11,24 @@
     <link rel="stylesheet" href="{% static 'styles/artigos.css' %}" />
   </head>
   <body>
-    <!-- NAV -->
-    <nav>
-      <div class="nav-left">
-        <a href="{% url 'feed:artigos' %}"
-          ><img src="{% static 'assets/img/logo.png' %}" class="logo"
-        /></a>
-        <ul>
-          <li style="position:relative;">
-            <img src="{% static 'assets/img/notification.png' %}" id="notification-bell" style="cursor:pointer;">
-            <div id="notification-dropdown" style="display:none; position:absolute; top:40px; left:50%; transform:translateX(-50%); background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.12); border-radius:8px; min-width:280px; z-index:200;">
-              <div style="padding:14px 18px; border-bottom:1px solid #e0e0e0; font-weight:600; color:#256d4a;">Notificações</div>
-              <div style="max-height:260px; overflow-y:auto;">
-                <div style="padding:12px 18px; border-bottom:1px solid #f0f0f0;">
-                  <span style="font-weight:500; color:#256d4a;">Atividades das pessoas que você segue</span>
-                  <ul style="margin:8px 0 0 0; padding:0; list-style:none;">
-                    <li style="color:#555; font-size:0.97em; margin-bottom:6px;">Maria Silva publicou um artigo novo.</li>
-                    <li style="color:#555; font-size:0.97em; margin-bottom:6px;">João Souza entrou em uma comunidade.</li>
-                  </ul>
-                </div>
-                <div style="padding:12px 18px;">
-                  <span style="font-weight:500; color:#256d4a;">Mensagens recebidas</span>
-                  <ul style="margin:8px 0 0 0; padding:0; list-style:none;">
-                    <li style="color:#555; font-size:0.97em; margin-bottom:6px;">Nova mensagem de Ana Paula.</li>
-                    <li style="color:#555; font-size:0.97em; margin-bottom:6px;">Carlos enviou um arquivo.</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li>
-            <a href="{% url 'feed:mensagens' %}"
-              ><img
-                src="{% static 'assets/img/inbox.png' %}"
-                alt="Mensagens"
-                style="cursor: pointer"
-            /></a>
-          </li>
-        </ul>
-      </div>
-      <div class="nav-right">
-        <!-- Pesquisa removida da navbar -->
-        <div class="nav-user-icon online" onclick="settingsMenuToggle()">
-          <img src="{{ request.user.get_profile_picture_url }}" />
-        </div>
-        <div class="settings-menu">
-          <div id="dark-btn"><span></span></div>
-          <div class="settings-menu-inner">
-            <div class="user-profile">
-              <img src="{{ request.user.get_profile_picture_url }}" />
-              <div>
-                <p>{{ request.user.fullname }}</p>
-                <a href="{% url 'feed:perfil' %}">Ver Perfil</a>
-              </div>
-            </div>
-            <hr />
-            <div class="user-profile">
-              <img src="{% static 'assets/img/feedback.png' %}" />
-              <div>
-                <p>Nos dê seu feedback</p>
-                <a href="#">Ajude a melhorar nosso site</a>
-              </div>
-            </div>
-            <hr />
-            <div class="settings-links">
-              <img
-                src="{% static 'assets/img/setting.png' %}"
-                class="settings-icon"
-              />
-              <a href="{% url 'feed:settings' %}"
-                >Configuração & Privacidade
-                <img src="{% static 'assets/img/arrow.png' %}" width="10px"
-              /></a>
-            </div>
-            <div class="settings-links">
-              <img
-                src="{% static 'assets/img/help.png' %}"
-                class="settings-icon"
-              />
-              <a href="#"
-                >Ajuda
-                <img src="{% static 'assets/img/arrow.png' %}" width="10px"
-              /></a>
-            </div>
-            <div class="settings-links">
-              <img
-                src="{% static 'assets/img/logout.png' %}"
-                class="settings-icon"
-              />
-              <a href="{% url 'logout' %}"
-                >Sair
-                <img src="{% static 'assets/img/arrow.png' %}" width="10px"
-              /></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
+    {% include 'components/topbar.html' %}
 
     <div class="container">
-      <!-- LEFT SIDEBAR -->
-      <div class="left-sidebar">
-        <style>
-          .imp-links a {
-            display: flex;
-            align-items: center;
-            padding: 10px 16px;
-            border-left: 4px solid transparent;
-            color: #256d4a !important;
-            text-decoration: none;
-            font-weight: 500;
-            background: none;
-            transition: background 0.2s, border-color 0.2s, color 0.2s;
-          }
-          .imp-links a.active {
-            background: #eafaf1;
-            border-left: 4px solid #28a745;
-            color: #28a745 !important;
-          }
-          .imp-links a img {
-            margin-right: 10px;
-          }
-
-          /* Professional Modal Styles */
-          .modal {
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-
-          .modal-content {
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-          }
-
-          .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            line-height: 1;
-          }
-
-          .close-modal:hover {
-            color: #000;
-          }
-
-          .modal-content h3 {
-            margin-top: 0;
-            margin-bottom: 25px;
-            color: #333;
-            font-size: 24px;
-          }
-
-          /* Form Styles */
-          .form-group {
-            margin-bottom: 20px;
-          }
-
-          .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-            font-size: 14px;
-          }
-
-          .form-group input[type="text"],
-          .form-group textarea,
-          .form-group input[type="file"],
-          .form-group input[type="number"],
-          .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
-            box-sizing: border-box;
-          }
-
-          .form-group input[type="text"]:focus,
-          .form-group textarea:focus,
-          .form-group input[type="number"]:focus,
-          .form-group select:focus {
-            outline: none;
-            border-color: #28a745;
-            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
-          }
-
-          .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-          }
-
-          .form-group input[type="file"] {
-            padding: 8px 12px;
-            background-color: #f8f9fa;
-          }
-
-          .radio-group {
-            display: flex;
-            gap: 16px;
-            margin-top: 5px;
-          }
-
-          .radio-label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-weight: normal;
-            font-size: 14px;
-            cursor: pointer;
-          }
-
-          .radio-label input[type="radio"] {
-            width: auto;
-            margin: 0;
-          }
-
-          .form-actions {
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #e1e5e9;
-          }
-
-          .btn-cancel {
-            padding: 12px 24px;
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-          }
-
-          .btn-cancel:hover {
-            background-color: #5a6268;
-          }
-
-          .btn-submit {
-            padding: 12px 24px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-          }
-
-          .btn-submit:hover {
-            background-color: #218838;
-          }
-
-          .form-errors,
-          .field-errors {
-            color: #dc3545;
-            font-size: 12px;
-            margin-top: 5px;
-          }
-
-          .form-errors {
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            border-radius: 4px;
-            padding: 10px;
-            margin-bottom: 20px;
-          }
-        </style>
-        <div class="imp-links">
-          <a
-            href="{% url 'feed:artigos' %}"
-            class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"
-            ><img src="{% static 'assets/img/newspaper.png' %}" /> Artigos
-            Científicos</a
-          >
-          <a
-            href="{% url 'feed:conexao' %}"
-            class="{% if request.resolver_match.url_name == 'conexao' %}active{% endif %}"
-            ><img src="{% static 'assets/img/friends.png' %}" /> Conexões</a
-          >
-          <a
-            href="{% url 'feed:community' %}"
-            class="{% if request.resolver_match.url_name == 'community' %}active{% endif %}"
-            ><img src="{% static 'assets/img/people.png' %}" /> Comunidades</a
-          >
-        </div>
-      </div>
+      {% include 'components/sidebar.html' %}
 
       <!-- MAIN CONTENT -->
       <div class="main-content">
-        <h2>Publique Seus Artigos</h2>
+        
         <div class="artigos-header">
           <form method="get" class="search-box search-form" style="flex: 1">
-            {% comment %} <img
-              src="{% static 'assets/img/search.png' %}"
-              class="search-icon"
-              alt="Buscar"
-            /> {% endcomment %}
             <input
               type="text"
               id="search-input"
               name="q"
               placeholder="Pesquisar por pesquisador, título ou área"
               value="{{ search_query|default:'' }}"
-              class="search-bar"
+              style="width: 100%; border: 1px solid #ccc; border-radius: 20px; padding: 10px 16px; outline: none;"
             />
-            <button type="submit" class="search-btn">Buscar</button>
           </form>
           <button
             id="add-article-btn"
@@ -390,6 +77,15 @@
               </div>
 
               <div class="form-group">
+                <label for="{{ form.qualis_capes.id_for_label }}"
+                  >Qualis Capes:</label
+                >
+                {{ form.qualis_capes }} {% if form.qualis_capes.errors %}
+                <div class="field-errors">{{ form.qualis_capes.errors }}</div>
+                {% endif %}
+              </div>
+
+              <div class="form-group">
                 <label for="{{ form.description.id_for_label }}"
                   >Descrição:</label
                 >
@@ -398,26 +94,7 @@
                 {% endif %}
               </div>
 
-              <div class="form-group">
-                <label>Tipo de Acesso:</label>
-                <div class="radio-group">
-                  {% for radio in form.access_type %}
-                  <label class="radio-label"
-                    >{{ radio.tag }} {{ radio.choice_label }}</label
-                  >
-                  {% endfor %}
-                </div>
-                {% if form.access_type.errors %}
-                <div class="field-errors">{{ form.access_type.errors }}</div>
-                {% endif %}
-              </div>
 
-              <div class="form-group" id="price-group" style="display: none">
-                <label for="{{ form.price.id_for_label }}">Preço (R$):</label>
-                {{ form.price }} {% if form.price.errors %}
-                <div class="field-errors">{{ form.price.errors }}</div>
-                {% endif %}
-              </div>
 
               <div class="form-actions">
                 <button type="button" id="cancel-article" class="btn-cancel">
@@ -428,101 +105,77 @@
                 </button>
               </div>
             </form>
-            <script>
-              function togglePriceField() {
-                var radios = document.getElementsByName("access_type");
-                var priceGroup = document.getElementById("price-group");
-                var paidSelected = false;
-                for (var i = 0; i < radios.length; i++) {
-                  if (radios[i].checked && radios[i].value === "paid") {
-                    paidSelected = true;
-                  }
-                }
-                priceGroup.style.display = paidSelected ? "block" : "none";
-              }
-              document.addEventListener("DOMContentLoaded", function () {
-                var radios = document.getElementsByName("access_type");
-                for (var i = 0; i < radios.length; i++) {
-                  radios[i].addEventListener("change", togglePriceField);
-                }
-                togglePriceField();
-              });
-            </script>
           </div>
         </div>
-        <div class="articles-list">
+        <!-- Lista de artigos -->
+        <div class="artigos-lista">
           {% for article in articles %}
-          <div class="article-card searchable">
-            <div class="article-title">{{ article.title }}</div>
-            <small class="article-meta">
-              <a
-                href="{% url 'feed:perfil' article.user.id %}"
-                style="color: inherit; text-decoration: underline"
-                >{{ article.user.fullname }}</a
-              >
-              &middot; {{ article.research_area }}
-            </small>
-            {% if article.description %}
-            <div
-              class="article-description"
-              style="margin: 8px 0; position: relative"
-            >
-              <span class="desc-text" style="display: inline">
-                {% if article.description|length > 220 %}
-                <span class="desc-short"
-                  >{{ article.description|slice:":220" }}...</span
-                >
-                <span class="desc-full" style="display: none"
-                  >{{ article.description }}</span
-                >
-                <button
-                  class="desc-toggle"
-                  onclick="toggleDesc(this); return false;"
-                  style="
-                    background: none;
-                    border: none;
-                    color: #28a745;
-                    cursor: pointer;
-                    padding: 0;
-                  "
-                >
-                  mais
-                </button>
-                {% else %} {{ article.description }} {% endif %}
-              </span>
+            <!-- Post -->
+            <div class="post-container">
+              <div class="post-row">
+                <div class="user-profile">
+                  <img src="{{ article.user.get_profile_picture_url }}" alt="{{ article.user.fullname }}">
+                  <div>
+                    <p>{{ article.user.fullname }}</p>
+                    {% if article.user.innovator_verification and article.user.innovator_verification.title %}
+                      <small>{{ article.user.innovator_verification.title }}</small>
+                    {% else %}
+                      <small>{{ article.user.research_area|default:"Pesquisador" }}</small>
+                    {% endif %}
+                    <small style="color: #666;">{{ article.created_at|date:"d/m/Y H:i" }}</small>
+                  </div>
+                </div>
+              </div>
+              <p class="post-text">{{ article.title }}</p>
+              {% if article.description %}
+                <div class="post-description">
+                  {% if article.description|length > 220 %}
+                    <span class="desc-short">{{ article.description|slice:":220" }}...</span>
+                    <span class="desc-full" style="display: none;">{{ article.description }}</span>
+                    <button class="desc-toggle" onclick="toggleDesc(this); return false;" style="background: none; border: none; color: #28a745; cursor: pointer; padding: 0; margin-left: 4px;">mais</button>
+                  {% else %}
+                    <p>{{ article.description }}</p>
+                  {% endif %}
+                </div>
+              {% endif %}
+              
+              <small style="color: #666; display: block; margin: 10px 0;">
+                📚 {{ article.get_research_area_display }} • Qualis: {{ article.qualis_capes }}
+              </small>
+              
+              <div class="post-activity">
+                <a href="{{ article.pdf.url }}" target="_blank" class="activity-link" style="display: inline-block; padding: 8px 16px; background-color: #256d4a; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;">
+                  📄 Ver PDF
+                </a>
+              </div>
             </div>
-            {% endif %}
-            <script>
-              function toggleDesc(btn) {
-                var card = btn.closest(".article-description");
-                var shortDesc = card.querySelector(".desc-short");
-                var fullDesc = card.querySelector(".desc-full");
-                if (shortDesc.style.display !== "none") {
-                  shortDesc.style.display = "none";
-                  fullDesc.style.display = "inline";
-                  btn.textContent = "menos";
-                  btn.style.color = "#28a745";
-                } else {
-                  shortDesc.style.display = "inline";
-                  fullDesc.style.display = "none";
-                  btn.textContent = "mais";
-                  btn.style.color = "#28a745";
-                }
-              }
-            </script>
-            {% if article.access_type == 'free' or article_access|get_item:article.id %}
-              <a href="{{ article.pdf.url }}" target="_blank" class="article-link">Ver PDF</a>
-            {% else %}
-              <span class="article-link" style="color:#888;cursor:not-allowed;">PDF Bloqueado</span>
-              <span class="article-price" style="color:#28a745; font-weight:bold; margin-left:8px;">R$ {{ article.price }}</span>
-              <button class="pay-btn" onclick="showPayModal('{{ article.title|escapejs }}', '{{ article.price }}')">Pagar</button>
-              <button class="access-btn" onclick="showAccessModal({{ article.id }})">Pedir acesso</button>
-            {% endif %}
-          </div>
           {% empty %}
-          <p>Nenhum artigo publicado ainda.</p>
+            <div class="post-container">
+              <p style="text-align: center; color: #666; padding: 40px;">
+                Nenhum artigo publicado ainda.
+              </p>
+            </div>
           {% endfor %}
         </div>
+        
+        <script>
+          function toggleDesc(btn) {
+            var container = btn.closest(".post-description");
+            var shortDesc = container.querySelector(".desc-short");
+            var fullDesc = container.querySelector(".desc-full");
+            if (shortDesc.style.display !== "none") {
+              shortDesc.style.display = "none";
+              fullDesc.style.display = "inline";
+              btn.textContent = "menos";
+              btn.style.color = "#28a745";
+            } else {
+              shortDesc.style.display = "inline";
+              fullDesc.style.display = "none";
+              btn.textContent = "mais";
+              btn.style.color = "#28a745";
+            }
+          }
+        </script>
       </div>
 
       <!-- RIGHT SIDEBAR -->

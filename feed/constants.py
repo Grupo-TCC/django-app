@@ -1,0 +1,32 @@
+# Shared constants for the feed app
+
+# Research area choices - in alphabetical order by display name
+RESEARCH_AREA_CHOICES = [
+    ('anestesiologia', 'Anestesiologia'),
+    ('cardiologia', 'Cardiologia'),
+    ('dermatologia', 'Dermatologia'),
+    ('endocrinologia', 'Endocrinologia'),
+    ('enfermagem', 'Enfermagem'),
+    ('farmacia', 'Farmácia'),
+    ('fisioterapia', 'Fisioterapia'),
+    ('gastroenterologia', 'Gastroenterologia'),
+    ('ginecologia', 'Ginecologia e Obstetrícia'),
+    ('medicina_geral', 'Medicina Geral'),
+    ('medicina_veterinaria', 'Medicina Veterinária'),
+    ('neurologia', 'Neurologia'),
+    ('nutricao', 'Nutrição'),
+    ('odontologia', 'Odontologia'),
+    ('oftalmologia', 'Oftalmologia'),
+    ('oncologia', 'Oncologia'),
+    ('ortopedia', 'Ortopedia'),
+    ('patologia', 'Patologia'),
+    ('pediatria', 'Pediatria'),
+    ('pneumologia', 'Pneumologia'),
+    ('psiquiatria', 'Psiquiatria'),
+    ('radiologia', 'Radiologia'),
+    ('saude_coletiva', 'Saúde Coletiva'),
+    ('saude_publica', 'Saúde Pública'),
+    ('tecnologia_saude', 'Tecnologia em Saúde'),
+    ('urologia', 'Urologia'),
+    ('outros', 'Outros'),
+]

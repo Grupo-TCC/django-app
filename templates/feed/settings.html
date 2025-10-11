@@ -117,48 +117,7 @@
     </nav>
 
     <div class="container">
-      <!-- LEFT SIDEBAR -->
-      <div class="left-sidebar">
-        <style>
-          .imp-links a {
-            display: flex;
-            align-items: center;
-            padding: 10px 16px;
-            border-left: 4px solid transparent;
-            color: #256d4a !important;
-            text-decoration: none;
-            font-weight: 500;
-            background: none;
-            transition: background 0.2s, border-color 0.2s, color 0.2s;
-          }
-          .imp-links a.active {
-            background: #eafaf1;
-            border-left: 4px solid #28a745;
-            color: #28a745 !important;
-          }
-          .imp-links a img {
-            margin-right: 10px;
-          }
-        </style>
-        <div class="imp-links">
-          <a
-            href="{% url 'feed:artigos' %}"
-            class="{% if request.resolver_match.url_name == 'artigos' %}active{% endif %}"
-            ><img src="{% static 'assets/img/newspaper.png' %}" /> Artigos
-            Científicos</a
-          >
-          <a
-            href="{% url 'feed:conexao' %}"
-            class="{% if request.resolver_match.url_name == 'conexao' %}active{% endif %}"
-            ><img src="{% static 'assets/img/friends.png' %}" /> Conexões</a
-          >
-          <a
-            href="{% url 'feed:community' %}"
-            class="{% if request.resolver_match.url_name == 'community' %}active{% endif %}"
-            ><img src="{% static 'assets/img/people.png' %}" /> Comunidades</a
-          >
-        </div>
-      </div>
+      {% include 'components/sidebar.html' %}
 
       <!-- MAIN CONTENT -->
       <div class="main-content">
@@ -195,7 +154,7 @@
               </form>
               <div class="settings-info">
                 <h2>{{ request.user.fullname }}</h2>
-                {{ request.user.research_area}}, {{ request.user.institution}}
+                {{ request.user.research_area}}{% if request.user.institution %}, {{ request.user.institution}}{% endif %}{% if request.user.cidade or request.user.estado %}<br><small style="color: #666;">{% if request.user.cidade %}{{ request.user.cidade }}{% endif %}{% if request.user.cidade and request.user.estado %}, {% endif %}{% if request.user.estado %}{{ request.user.estado }}{% endif %}</small>{% endif %}
               </div>
               <button
                 type="button"
@@ -217,7 +176,7 @@
                 {% csrf_token %}
                 <div style="margin-bottom: 16px">
                   <label
-                    for="id_research_area"
+                    for="id_research_area_select"
                     style="
                       display: block;
                       font-weight: 500;
@@ -226,7 +185,9 @@
                     "
                     >Título/Área de pesquisa</label
                   >
-                  {{ area_form.research_area|add_class:'settings-input' }}
+                  {{ area_form.research_area_select|add_class:'settings-input' }}
+                  {{ area_form.research_area_custom|add_class:'settings-input' }}
+                  {{ area_form.research_area }}
                 </div>
                 <div style="margin-bottom: 16px">
                   <label
@@ -240,6 +201,32 @@
                     >Instituição</label
                   >
                   {{ area_form.institution|add_class:'settings-input' }}
+                </div>
+                <div style="margin-bottom: 16px">
+                  <label
+                    for="id_estado"
+                    style="
+                      display: block;
+                      font-weight: 500;
+                      margin-bottom: 4px;
+                      text-align: left;
+                    "
+                    >Estado</label
+                  >
+                  {{ area_form.estado|add_class:'settings-input' }}
+                </div>
+                <div style="margin-bottom: 16px">
+                  <label
+                    for="id_cidade"
+                    style="
+                      display: block;
+                      font-weight: 500;
+                      margin-bottom: 4px;
+                      text-align: left;
+                    "
+                    >Cidade</label
+                  >
+                  {{ area_form.cidade|add_class:'settings-input' }}
                 </div>
                 <button
                   type="submit"
@@ -272,6 +259,45 @@
     <script src="{% static 'js/home.js' %}"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function() {
+        // Research area select functionality
+        var researchAreaSelect = document.getElementById('research_area_select');
+        var researchAreaCustom = document.getElementById('research_area_custom');
+        var hiddenResearchArea = document.getElementById('id_research_area');
+        
+        if (researchAreaSelect && researchAreaCustom) {
+          function toggleCustomInput() {
+            if (researchAreaSelect.value === 'custom') {
+              researchAreaCustom.style.display = 'block';
+              researchAreaCustom.required = true;
+            } else {
+              researchAreaCustom.style.display = 'none';
+              researchAreaCustom.required = false;
+              researchAreaCustom.value = '';
+            }
+          }
+          
+          // Initialize on page load
+          toggleCustomInput();
+          
+          // Handle changes
+          researchAreaSelect.addEventListener('change', toggleCustomInput);
+          
+          // Handle form submission to set the hidden field value
+          var form = document.querySelector('form');
+          if (form) {
+            form.addEventListener('submit', function() {
+              if (researchAreaSelect.value === 'custom') {
+                hiddenResearchArea.value = researchAreaCustom.value;
+              } else {
+                // Find the display name for the selected choice
+                var selectedOption = researchAreaSelect.options[researchAreaSelect.selectedIndex];
+                hiddenResearchArea.value = selectedOption.text;
+              }
+            });
+          }
+        }
+        
+        // Notification functionality
         var bell = document.getElementById('notification-bell');
         var dropdown = document.getElementById('notification-dropdown');
         if (bell && dropdown) {

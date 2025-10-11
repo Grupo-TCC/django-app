@@ -1,0 +1,11 @@
+<!-- Search Bar Component -->
+<form method="get" class="search-box search-form" style="flex: 1">
+  <input
+    type="text"
+    id="search-input"
+    name="q"
+    placeholder="{{ placeholder|default:'Pesquisar por pesquisador, título ou área' }}"
+    value="{{ search_query|default:'' }}"
+    style="width: 100%; border: 1px solid #ccc; border-radius: 20px; padding: 10px 16px; outline: none;"
+  />
+</form>

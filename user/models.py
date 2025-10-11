@@ -44,6 +44,8 @@ class User(AbstractUser):
     fullname = models.CharField('full name', max_length=100)
     research_area = models.CharField('Área de Pesquisa', max_length=100, blank=True, null=True)
     institution = models.CharField('Instituição', max_length=100, blank=True, null=True)
+    estado = models.CharField('Estado', max_length=100, blank=True, null=True)
+    cidade = models.CharField('Cidade', max_length=100, blank=True, null=True)
     profile_picture = models.ImageField(
         upload_to="profile_pics/",
         blank=True,

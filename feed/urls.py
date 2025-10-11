@@ -21,4 +21,10 @@ urlpatterns = [
     path("mensagens/", views.mensagens, name="mensagens"),
     path("mensagens/api/get_messages/", views_message_api.get_messages_api, name="get_messages_api"),
     path("mensagens/api/send_message/", views_message_api.send_message_api, name="send_message_api"),
+    path("traducao/", views.media_post, name="media_post"),
+    path("media/<int:media_id>/request-access/", views.request_media_access, name="request_media_access"),
+    path("media/<int:media_id>/like/", views.toggle_media_like, name="toggle_media_like"),
+    path("media/<int:media_id>/comment/", views.add_media_comment, name="add_media_comment"),
+    path("media/<int:media_id>/comments/", views.get_media_comments, name="get_media_comments"),
+    path("produtos/", views.produtos, name="produtos"),
 ]

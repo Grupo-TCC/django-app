@@ -1,5 +1,5 @@
 # Página de mensagens
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.db import models
 from django.contrib.auth.decorators import login_required
@@ -47,9 +47,12 @@ def mensagens(request):
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseBadRequest
+from django.utils import timezone
+from django.contrib import messages
 
 from user.models import User, Follow
-from .forms import CommunityForm
+from .forms import CommunityForm, MediaPostForm
+from .models import MediaPost
 
 
 from django.conf import settings
@@ -60,6 +63,7 @@ from .community_models import Community
 from .community_detail_view import community_detail
 from .article_access_models import ArticleAccess
 from user.forms_settings import UserResearchInstitutionForm
+from .constants import RESEARCH_AREA_CHOICES
 from feed.article_models import Article
 from user.models import Follow
 from feed.community_models import Community
@@ -140,19 +144,8 @@ def settings_view(request):
 def artigos(request):
     from .forms import ArticleForm
     form = ArticleForm()
-    from .article_access_models import ArticleAccessRequest
+    
     if request.method == 'POST':
-        # Handle ArticleAccessRequest (payment slip upload)
-        if 'slip' in request.FILES and 'article_id' in request.POST:
-            article_id = request.POST.get('article_id')
-            slip = request.FILES['slip']
-            article = Article.objects.get(id=article_id)
-            ArticleAccessRequest.objects.update_or_create(
-                user=request.user,
-                article=article,
-                defaults={'slip': slip, 'approved': False}
-            )
-            return redirect('feed:artigos')
         # Handle normal article upload
         form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
@@ -160,6 +153,7 @@ def artigos(request):
             article.user = request.user
             article.save()
             return redirect('feed:artigos')
+    
     # Filtering
     query = request.GET.get('q', '').strip()
     articles = Article.objects.select_related('user').order_by('title')
@@ -169,11 +163,8 @@ def artigos(request):
             Q(title__icontains=query) |
             Q(research_area__icontains=query)
         )
+    
     user = request.user if request.user.is_authenticated else None
-    article_access = {}
-    if user:
-        access_qs = ArticleAccess.objects.filter(user=user, has_access=True)
-        article_access = {a.article_id: True for a in access_qs}
     # Top 5 users with most recent messages (for sidebar)
     from .models import Message
     from user.models import Follow
@@ -204,7 +195,6 @@ def artigos(request):
         'articles': articles,
         'search_query': query,
         'form': form,
-        'article_access': article_access,
         'top_message_users': top_message_users,
     })
 
@@ -353,4 +343,293 @@ def community(request):
 #         'search_query': search_query,
 #     }
 #     return render(request, 'artigo/list.html', context)
+
+
+@login_required
+def media_post(request):
+    """View for media posts (photos and videos) - Tradução de Conhecimento"""
+    search_query = request.GET.get('q', '').strip()
+    
+    # Filter media posts based on search query
+    media_posts = MediaPost.objects.all().select_related('user').order_by('-created_at')
+    if search_query:
+        media_posts = media_posts.filter(
+            Q(title__icontains=search_query) |
+            Q(description__icontains=search_query) |
+            Q(user__fullname__icontains=search_query) |
+            Q(user__research_area__icontains=search_query)
+        )
+    
+    # Add access information and like status for each media post
+    for media in media_posts:
+        media.user_has_access = media.user_has_access(request.user)
+        media.is_liked_by_user = media.is_liked_by(request.user)
+    
+    form = MediaPostForm(user=request.user)
+    
+    if request.method == 'POST':
+        form = MediaPostForm(request.POST, request.FILES, user=request.user)
+        if form.is_valid():
+            media_post = form.save()
+            return redirect('feed:media_post')
+        else:
+            # Log form errors for debugging
+            print(f"MediaPost form errors: {form.errors}")
+    
+    context = {
+        'media_posts': media_posts,
+        'form': form,
+        'search_query': search_query,
+    }
+    return render(request, 'feed/traducao.html', context)
+
+
+@login_required
+def request_media_access(request, media_id):
+    """Handle access requests for paid media content with payment slip upload"""
+    if request.method != 'POST':
+        return redirect('feed:media_post')
+    
+    try:
+        from .models import MediaAccessRequest
+        media_post = get_object_or_404(MediaPost, id=media_id)
+        
+        # Check if user already has access
+        if media_post.user_has_access(request.user):
+            messages.error(request, 'Você já tem acesso a este conteúdo')
+            return redirect('feed:media_post')
+        
+        # Check if user is the owner
+        if media_post.user == request.user:
+            messages.error(request, 'Você é o proprietário deste conteúdo')
+            return redirect('feed:media_post')
+        
+        # Check if media post is not paid
+        if media_post.is_free:
+            messages.error(request, 'Este conteúdo é gratuito')
+            return redirect('feed:media_post')
+        
+        # Check if user already has a pending request
+        existing_request = MediaAccessRequest.objects.filter(
+            user=request.user, 
+            media_post=media_post
+        ).first()
+        
+        if existing_request:
+            if existing_request.approved:
+                messages.info(request, 'Sua solicitação já foi aprovada!')
+            else:
+                messages.info(request, 'Você já possui uma solicitação pendente para este conteúdo.')
+            return redirect('feed:media_post')
+        
+        # Handle file upload
+        payment_slip = request.FILES.get('payment_slip')
+        if not payment_slip:
+            messages.error(request, 'É necessário enviar o comprovante de pagamento.')
+            return redirect('feed:media_post')
+        
+        # Create the access request
+        MediaAccessRequest.objects.create(
+            user=request.user,
+            media_post=media_post,
+            payment_slip=payment_slip
+        )
+        
+        messages.success(request, 'Solicitação de acesso enviada com sucesso! Aguarde a aprovação.')
+        return redirect('feed:media_post')
+        
+    except Exception as e:
+        messages.error(request, f'Erro ao processar solicitação: {str(e)}')
+        return redirect('feed:media_post')
+
+
+@login_required
+def toggle_media_like(request, media_id):
+    """Toggle like for a media post"""
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
+    
+    try:
+        from .models import MediaLike
+        media_post = get_object_or_404(MediaPost, id=media_id)
+        
+        # Check if user already liked this post
+        like, created = MediaLike.objects.get_or_create(
+            user=request.user,
+            media_post=media_post
+        )
+        
+        if created:
+            # Like was created
+            liked = True
+        else:
+            # Like already existed, so remove it (unlike)
+            like.delete()
+            liked = False
+        
+        # Get updated like count
+        like_count = media_post.like_count
+        
+        return JsonResponse({
+            'success': True,
+            'liked': liked,
+            'like_count': like_count
+        })
+        
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+@login_required
+def add_media_comment(request, media_id):
+    """Add a comment to a media post"""
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
+    
+    try:
+        import json
+        from .models import MediaComment
+        
+        data = json.loads(request.body)
+        comment_body = data.get('body', '').strip()
+        
+        if not comment_body:
+            return JsonResponse({'success': False, 'error': 'Comentário não pode estar vazio'})
+        
+        media_post = get_object_or_404(MediaPost, id=media_id)
+        
+        # Create new comment
+        comment = MediaComment.objects.create(
+            user=request.user,
+            media_post=media_post,
+            body=comment_body
+        )
+        
+        # Get updated comment count
+        comment_count = media_post.comment_count
+        
+        return JsonResponse({
+            'success': True,
+            'comment': {
+                'id': comment.id,
+                'body': comment.body,
+                'user_name': comment.user.fullname,
+                'created_at': comment.created_at.strftime('%d/%m/%Y %H:%M'),
+            },
+            'comment_count': comment_count
+        })
+        
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+@login_required
+def get_media_comments(request, media_id):
+    """Get comments for a media post"""
+    if request.method != 'GET':
+        return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
+    
+    try:
+        from .models import MediaComment
+        media_post = get_object_or_404(MediaPost, id=media_id)
+        
+        # Get comments for this media post
+        comments = MediaComment.objects.filter(media_post=media_post).select_related('user').order_by('-created_at')
+        
+        comments_data = []
+        for comment in comments:
+            comments_data.append({
+                'id': comment.id,
+                'body': comment.body,
+                'user_name': comment.user.fullname,
+                'user_profile_picture': comment.user.get_profile_picture_url(),
+                'created_at': comment.created_at.strftime('%d/%m/%Y %H:%M'),
+                'is_owner': comment.user == request.user,
+            })
+        
+        return JsonResponse({
+            'success': True,
+            'comments': comments_data,
+            'comment_count': len(comments_data)
+        })
+        
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+def produtos(request):
+    from .forms import ProductForm
+    from .models import Product
+    
+    form = ProductForm()
+    
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.user = request.user
+            product.save()
+            return redirect('feed:produtos')
+    
+    # Filtering
+    query = request.GET.get('q', '').strip()
+    area_filter = request.GET.get('area', '').strip()
+    
+    products = Product.objects.select_related('user').order_by('-created_at')
+    
+    if query:
+        products = products.filter(
+            Q(user__fullname__icontains=query) |
+            Q(titulo__icontains=query) |
+            Q(descricao__icontains=query)
+        )
+    
+    if area_filter:
+        products = products.filter(area_pesquisa=area_filter)
+    
+    # Get research areas for filter dropdown
+    research_areas = RESEARCH_AREA_CHOICES
+    
+    # Top 5 users with most recent messages (for sidebar - consistent with other pages)
+    from .models import Message
+    from user.models import Follow
+    
+    user = request.user if request.user.is_authenticated else None
+    top_message_users = []
+    
+    if user:
+        # Get users the current user follows
+        following_users = [f.following for f in Follow.objects.filter(follower=user).select_related('following')]
+        conversation_data = []
+        
+        for u in following_users:
+            last_msg = Message.objects.filter(
+                (Q(sender=user, recipient=u) | Q(sender=u, recipient=user))
+            ).order_by('-created_at').first()
+            conversation_data.append({
+                'user': u,
+                'last_message_time': last_msg.created_at if last_msg else None,
+            })
+        
+        import datetime
+        import pytz
+        
+        def to_naive_utc(dt):
+            if dt is None:
+                return datetime.datetime(1970, 1, 1)
+            if dt.tzinfo is not None:
+                return dt.astimezone(pytz.UTC).replace(tzinfo=None)
+            return dt
+        
+        conversation_data.sort(key=lambda c: to_naive_utc(c['last_message_time']), reverse=True)
+        top_message_users = [c['user'] for c in conversation_data[:5]]
+    
+    return render(request, 'feed/produtos.html', {
+        'products': products,
+        'search_query': query,
+        'area_filter': area_filter,
+        'research_areas': research_areas,
+        'form': form,
+        'top_message_users': top_message_users,
+    })
 

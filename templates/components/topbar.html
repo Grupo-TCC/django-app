@@ -1,0 +1,124 @@
+{% load static %}
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <a href="{% url 'feed:artigos' %}"
+      ><img src="{% static 'assets/img/logo.png' %}" class="logo"
+    /></a>
+    <ul>
+      <li style="position:relative;">
+        <img src="{% static 'assets/img/notification.png' %}" id="notification-bell" style="cursor:pointer;">
+        <div id="notification-dropdown" style="display:none; position:absolute; top:40px; left:50%; transform:translateX(-50%); background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.12); border-radius:8px; min-width:280px; z-index:200;">
+          <div style="padding:14px 18px; border-bottom:1px solid #e0e0e0; font-weight:600; color:#256d4a;">Notificações</div>
+          <div style="max-height:260px; overflow-y:auto;">
+            <div style="padding:12px 18px; border-bottom:1px solid #f0f0f0;">
+              <span style="font-weight:500; color:#256d4a;">Atividades das pessoas que você segue</span>
+              <ul style="margin:8px 0 0 0; padding:0; list-style:none;">
+                <li style="color:#555; font-size:0.97em; margin-bottom:6px;">Maria Silva publicou um artigo novo.</li>
+                <li style="color:#555; font-size:0.97em; margin-bottom:6px;">João Souza entrou em uma comunidade.</li>
+              </ul>
+            </div>
+            <div style="padding:12px 18px;">
+              <span style="font-weight:500; color:#256d4a;">Mensagens recebidas</span>
+              <ul style="margin:8px 0 0 0; padding:0; list-style:none;">
+                <li style="color:#555; font-size:0.97em; margin-bottom:6px;">Nova mensagem de Ana Paula.</li>
+                <li style="color:#555; font-size:0.97em; margin-bottom:6px;">Carlos enviou um arquivo.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <a href="{% url 'feed:mensagens' %}"
+          ><img
+            src="{% static 'assets/img/inbox.png' %}"
+            alt="Mensagens"
+            style="cursor: pointer"
+        /></a>
+      </li>
+    </ul>
+  </div>
+  <div class="nav-right">
+    <!-- Pesquisa removida da navbar -->
+    <div class="nav-user-icon online" onclick="settingsMenuToggle()">
+      <img src="{{ request.user.get_profile_picture_url }}" />
+    </div>
+    <div class="settings-menu">
+      <div id="dark-btn"><span></span></div>
+      <div class="settings-menu-inner">
+        <div class="user-profile">
+          <img src="{{ request.user.get_profile_picture_url }}" />
+          <div>
+            <p>{{ request.user.fullname }}</p>
+            <a href="{% url 'feed:perfil' %}">Ver Perfil</a>
+          </div>
+        </div>
+        <hr />
+        <div class="user-profile">
+          <img src="{% static 'assets/img/feedback.png' %}" />
+          <div>
+            <p>Nos dê seu feedback</p>
+            <a href="#">Ajude a melhorar nosso site</a>
+          </div>
+        </div>
+        <hr />
+        <div class="settings-links">
+          <img
+            src="{% static 'assets/img/setting.png' %}"
+            class="settings-icon"
+          />
+          <a href="{% url 'feed:settings' %}"
+            >Configuração & Privacidade
+            <img src="{% static 'assets/img/arrow.png' %}" width="10px"
+          /></a>
+        </div>
+        <div class="settings-links">
+          <img
+            src="{% static 'assets/img/help.png' %}"
+            class="settings-icon"
+          />
+          <a href="#"
+            >Ajuda
+            <img src="{% static 'assets/img/arrow.png' %}" width="10px"
+          /></a>
+        </div>
+        <div class="settings-links">
+          <img
+            src="{% static 'assets/img/logout.png' %}"
+            class="settings-icon"
+          />
+          <a href="{% url 'logout' %}"
+            >Sair
+            <img src="{% static 'assets/img/arrow.png' %}" width="10px"
+          /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+// Notification bell toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+  var bell = document.getElementById('notification-bell');
+  var dropdown = document.getElementById('notification-dropdown');
+  
+  if (bell && dropdown) {
+    bell.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+        dropdown.style.display = 'block';
+      } else {
+        dropdown.style.display = 'none';
+      }
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!bell.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.style.display = 'none';
+      }
+    });
+  }
+});
+</script>

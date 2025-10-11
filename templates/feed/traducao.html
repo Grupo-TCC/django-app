@@ -1,0 +1,1413 @@
+<!-- prettier-ignore-start -->
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tradução de Conhecimento - Innovator</title>
+    <link rel="stylesheet" href="{% static 'styles/home.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/artigos.css' %}" />
+  </head>
+  <body>
+    {% include 'components/topbar.html' %}
+
+    <div class="container">
+      {% include 'components/sidebar.html' %}
+      
+      <style>
+        /* Professional Modal Styles for Media Post */
+        .modal {
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .modal-content {
+          background-color: #fff;
+          border-radius: 12px;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+          max-width: 650px;
+          width: 90%;
+          max-height: 90vh;
+          overflow-y: auto;
+          position: relative;
+        }
+
+        .modal-header {
+          padding: 24px 28px 20px;
+          border-bottom: 1px solid #e0e0e0;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .modal-title {
+          font-size: 1.45em;
+          font-weight: 700;
+          color: #256d4a;
+          margin: 0;
+        }
+
+        .close-btn {
+          background: none;
+          border: none;
+          font-size: 1.8em;
+          color: #888;
+          cursor: pointer;
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+          background-color: #f0f0f0;
+          color: #333;
+        }
+
+        .modal-body {
+          padding: 28px;
+        }
+
+        .form-group {
+          margin-bottom: 22px;
+        }
+
+        .form-group label {
+          display: block;
+          margin-bottom: 8px;
+          font-weight: 600;
+          color: #333;
+          font-size: 1.02em;
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group input[type="file"] {
+          width: 100%;
+          padding: 12px 16px;
+          border: 1.5px solid #ddd;
+          border-radius: 8px;
+          font-size: 1em;
+          transition: all 0.2s;
+          box-sizing: border-box;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group textarea:focus {
+          outline: none;
+          border-color: #28a745;
+          box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+        }
+
+        .form-group textarea {
+          resize: vertical;
+          min-height: 100px;
+        }
+
+        .form-group input[type="file"] {
+          padding: 8px 12px;
+          background-color: #f8f9fa;
+        }
+
+        .form-actions {
+          display: flex;
+          gap: 12px;
+          justify-content: flex-end;
+          padding-top: 20px;
+          border-top: 1px solid #e0e0e0;
+        }
+
+        .btn {
+          padding: 12px 24px;
+          border: none;
+          border-radius: 8px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s;
+          font-size: 1em;
+        }
+
+        .btn-cancel {
+          background-color: #f8f9fa;
+          color: #666;
+          border: 1px solid #ddd;
+        }
+
+        .btn-cancel:hover {
+          background-color: #e9ecef;
+          color: #555;
+        }
+
+        .btn-submit {
+          background-color: #28a745;
+          color: #fff;
+        }
+
+        .btn-submit:hover {
+          background-color: #218838;
+        }
+
+        .form-errors,
+        .field-errors {
+          color: #dc3545;
+          font-size: 12px;
+          margin-top: 5px;
+        }
+
+        .form-errors {
+          background-color: #f8d7da;
+          border: 1px solid #f5c6cb;
+          border-radius: 4px;
+          padding: 10px;
+          margin-bottom: 20px;
+        }
+
+        /* Media Preview Styles */
+        .media-preview {
+          margin-top: 15px;
+          padding: 15px;
+          background-color: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #dee2e6;
+        }
+
+        .media-preview img,
+        .media-preview video {
+          max-width: 100%;
+          max-height: 200px;
+          border-radius: 6px;
+          object-fit: cover;
+        }
+
+        .media-info {
+          margin-top: 8px;
+          font-size: 0.9em;
+          color: #666;
+        }
+
+        .remove-media {
+          background: #dc3545;
+          color: white;
+          border: none;
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-size: 0.8em;
+          cursor: pointer;
+          margin-top: 8px;
+        }
+
+        .remove-media:hover {
+          background: #c82333;
+        }
+
+        /* Media display controls */
+        .media-display {
+          max-width: 100%;
+          overflow: hidden;
+        }
+
+        .media-display img,
+        .media-display video {
+          display: block;
+          margin: 0 auto;
+        }
+
+        /* Responsive media sizing */
+        @media (max-width: 768px) {
+          .media-display img,
+          .media-display video {
+            max-width: 100% !important;
+            width: auto !important;
+          }
+        }
+
+        /* Post interaction styles */
+        .post-activity {
+          margin-top: 15px;
+          padding: 10px 0;
+          border-top: 1px solid #eee;
+        }
+
+        .activity-icons {
+          display: flex;
+          gap: 20px;
+          align-items: center;
+        }
+
+        .like-btn, .comment-btn {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          cursor: pointer;
+          padding: 8px 12px;
+          border-radius: 6px;
+          transition: background-color 0.2s;
+        }
+
+        .like-btn:hover, .comment-btn:hover {
+          background-color: #f5f5f5;
+        }
+
+        .like-btn img, .comment-btn img {
+          width: 20px;
+          height: 20px;
+        }
+
+        .like-count, .comment-count {
+          font-size: 14px;
+          color: #666;
+          font-weight: 500;
+        }
+
+        /* Comments panel styles */
+        .comments-panel {
+          border-top: 1px solid #eee;
+          margin-top: 10px;
+          padding-top: 15px;
+        }
+
+        .comments-list {
+          max-height: 300px;
+          overflow-y: auto;
+          margin-bottom: 15px;
+        }
+
+        .comment-item {
+          margin-bottom: 10px;
+        }
+
+        .comment-form {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+        }
+
+        .comment-input {
+          flex: 1;
+          padding: 8px 12px;
+          border: 1px solid #ddd;
+          border-radius: 20px;
+          outline: none;
+          font-size: 14px;
+        }
+
+        .comment-input:focus {
+          border-color: #28a745;
+        }
+
+        .comment-submit {
+          padding: 8px 16px;
+          background: #28a745;
+          color: white;
+          border: none;
+          border-radius: 20px;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: 500;
+        }
+
+        .comment-submit:hover {
+          background: #218838;
+        }
+
+        /* Post container styling */
+        .post-container {
+          background: white;
+          border-radius: 8px;
+          margin-bottom: 20px;
+          padding: 15px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .post-row {
+          margin-bottom: 15px;
+        }
+
+        .user-profile {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .user-profile img {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        .user-profile div p {
+          margin: 0;
+          font-weight: 600;
+          color: #333;
+        }
+
+        .user-profile div small {
+          display: block;
+          color: #666;
+          font-size: 13px;
+          margin-top: 2px;
+        }
+
+        .post-text {
+          font-size: 16px;
+          font-weight: 600;
+          margin: 10px 0;
+          color: #333;
+        }
+
+        .post-description {
+          font-size: 14px;
+          color: #666;
+          margin: 10px 0;
+          line-height: 1.4;
+        }
+
+        /* Dynamic File Upload Styles */
+        #file-inputs-container {
+          margin-bottom: 10px;
+        }
+
+        .file-input-group {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 8px;
+          padding: 8px;
+          background-color: #f8f9fa;
+          border-radius: 6px;
+          border: 1px solid #dee2e6;
+        }
+
+        .file-input-group input[type="file"] {
+          flex: 1;
+          padding: 6px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          background-color: white;
+        }
+
+        .btn-remove-file {
+          background-color: #dc3545;
+          color: white;
+          border: none;
+          border-radius: 50%;
+          width: 24px;
+          height: 24px;
+          font-size: 16px;
+          font-weight: bold;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background-color 0.2s;
+        }
+
+        .btn-remove-file:hover {
+          background-color: #c82333;
+        }
+
+        .btn-add-file {
+          background-color: #007bff;
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          transition: background-color 0.2s;
+          margin-bottom: 10px;
+        }
+
+        .btn-add-file:hover {
+          background-color: #0056b3;
+        }
+
+        .btn-add-file i {
+          font-size: 12px;
+        }
+
+        /* File Previews Styles */
+        .file-previews-container {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-top: 15px;
+        }
+
+        .file-preview-item {
+          position: relative;
+          border: 1px solid #dee2e6;
+          border-radius: 8px;
+          padding: 10px;
+          background-color: #f8f9fa;
+          max-width: 150px;
+        }
+
+        .file-preview-item img {
+          max-width: 100%;
+          max-height: 100px;
+          border-radius: 4px;
+          object-fit: cover;
+        }
+
+        .file-preview-item video {
+          max-width: 100%;
+          max-height: 100px;
+          border-radius: 4px;
+        }
+
+        .file-preview-item .file-icon {
+          font-size: 48px;
+          color: #6c757d;
+          text-align: center;
+          margin-bottom: 5px;
+        }
+
+        .file-preview-item .file-name {
+          font-size: 12px;
+          color: #333;
+          text-align: center;
+          word-break: break-word;
+          margin-top: 5px;
+        }
+
+        .file-preview-item .file-size {
+          font-size: 11px;
+          color: #666;
+          text-align: center;
+          margin-top: 3px;
+        }
+
+        /* Payment and Access Button Styles (from artigos.html) */
+        .pay-btn, .access-btn {
+          background: #28a745;
+          color: #fff;
+          border: none;
+          border-radius: 6px;
+          padding: 6px 14px;
+          cursor: pointer;
+          font-size: 1rem;
+          margin-left: 8px;
+          margin-top: 6px;
+          transition: background 0.2s;
+        }
+
+        .pay-btn:hover, .access-btn:hover {
+          background: #218838;
+        }
+
+        .article-price {
+          color: #28a745;
+          font-weight: bold;
+          margin-left: 8px;
+        }
+
+        /* Modal Styles */
+        .modal {
+          display: none;
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0,0,0,0.5);
+          justify-content: center;
+          align-items: center;
+        }
+
+        .modal-content {
+          background-color: #fefefe;
+          padding: 20px;
+          border-radius: 8px;
+          position: relative;
+          max-width: 500px;
+          width: 90%;
+        }
+
+        .close-modal {
+          position: absolute;
+          top: 10px;
+          right: 15px;
+          font-size: 28px;
+          font-weight: bold;
+          cursor: pointer;
+          color: #aaa;
+        }
+
+        .close-modal:hover {
+          color: #000;
+        }
+      </style>
+
+      <!-- MAIN CONTENT -->
+      <div class="main-content">
+        
+        <div class="artigos-header">
+          <form method="get" class="search-box search-form" style="flex: 1">
+            <input
+              type="text"
+              id="search-input"
+              name="q"
+              placeholder="Pesquisar por pesquisador, título ou área"
+              value="{{ search_query|default:'' }}"
+              style="width: 100%; border: 1px solid #ccc; border-radius: 20px; padding: 10px 16px; outline: none;"
+            />
+          </form>
+          <button id="add-media-btn" class="plus-btn" title="Adicionar">+</button>
+        </div>
+
+        <!-- Modal para adicionar mídia -->
+        <div id="media-modal" class="modal" style="display: none">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title">Compartilhar Mídia</h3>
+              <button type="button" class="close-btn" id="close-modal">&times;</button>
+            </div>
+            <form method="POST" enctype="multipart/form-data" id="media-upload-form">
+              <div class="modal-body">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                  <div class="form-errors">
+                    {{ form.non_field_errors }}
+                  </div>
+                {% endif %}
+                
+                <div class="form-group">
+                  <label for="{{ form.title.id_for_label }}">Título:</label>
+                  {{ form.title }}
+                  {% if form.title.errors %}
+                    <div class="field-errors">{{ form.title.errors }}</div>
+                  {% endif %}
+                </div>
+                
+                <div class="form-group">
+                  <label for="{{ form.description.id_for_label }}">Descrição:</label>
+                  {{ form.description }}
+                  {% if form.description.errors %}
+                    <div class="field-errors">{{ form.description.errors }}</div>
+                  {% endif %}
+                </div>
+
+                <div class="form-group">
+                  <label for="{{ form.research_area.id_for_label }}">Área de Pesquisa:</label>
+                  {{ form.research_area }}
+                  {% if form.research_area.errors %}
+                    <div class="field-errors">{{ form.research_area.errors }}</div>
+                  {% endif %}
+                </div>
+                
+                <div class="form-group">
+                  <label for="{{ form.payment_type.id_for_label }}">Tipo de Acesso:</label>
+                  <div class="radio-group">
+                    {% for choice in form.payment_type %}
+                      <label class="radio-label">
+                        {{ choice.tag }}
+                        {{ choice.choice_label }}
+                      </label>
+                    {% endfor %}
+                  </div>
+                  {% if form.payment_type.errors %}
+                    <div class="field-errors">{{ form.payment_type.errors }}</div>
+                  {% endif %}
+                </div>
+
+                <div class="form-group" id="price-group" style="display: none;">
+                  <label for="{{ form.price.id_for_label }}">Preço (R$):</label>
+                  {{ form.price }}
+                  {% if form.price.errors %}
+                    <div class="field-errors">{{ form.price.errors }}</div>
+                  {% endif %}
+                </div>
+                
+                <div class="form-group">
+                  <label for="{{ form.media_file.id_for_label }}">Arquivos de Mídia (Foto, Vídeo ou Documento):</label>
+                  
+                  <!-- Dynamic file input container -->
+                  <div id="file-inputs-container">
+                    <div class="file-input-group" data-index="0">
+                      <input type="file" 
+                             name="media_files" 
+                             class="form-control file-input" 
+                             accept="image/*,video/*,.pdf,.pptx,.ppt" 
+                             id="id_media_file_0"
+                             onchange="previewFile(this, 0)">
+                      <button type="button" class="btn-remove-file" onclick="removeFileInput(0)" style="display: none;">×</button>
+                    </div>
+                  </div>
+                  
+                  <!-- Add more files button -->
+                  <button type="button" id="add-file-btn" class="btn-add-file" onclick="addFileInput()">
+                    <i class="fas fa-plus"></i> Adicionar outro arquivo
+                  </button>
+                  
+                  {% if form.media_file.errors %}
+                    <div class="field-errors">{{ form.media_file.errors }}</div>
+                  {% endif %}
+                  {% if form.non_field_errors %}
+                    <div class="field-errors">{{ form.non_field_errors }}</div>
+                  {% endif %}
+                  
+                  <small style="color: #666; font-size: 0.9em; margin-top: 5px; display: block;">
+                    Formatos aceitos: JPG, PNG, GIF, MP4, MOV, AVI, PDF, PPTX (máx. 50MB por arquivo, 10 arquivos por post)
+                  </small>
+                  
+                  <!-- File previews container -->
+                  <div id="file-previews-container" class="file-previews-container">
+                    <!-- File previews will be added here dynamically -->
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="button" class="btn btn-cancel" id="cancel-btn">Cancelar</button>
+                <button type="submit" class="btn btn-submit">Publicar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal para solicitar acesso -->
+        <div id="access-modal" class="modal" style="display: none">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title">Solicitar Acesso</h3>
+              <button type="button" class="close-btn" id="close-access-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <p>Para solicitar acesso a este conteúdo pago, envie o comprovante de pagamento:</p>
+              <form method="post" enctype="multipart/form-data" id="access-request-form" action="#" onsubmit="submitAccessRequest(event)">
+                {% csrf_token %}
+                <input type="hidden" name="media_id" id="access-media-id" />
+                <div class="form-group">
+                  <label for="slip-upload">Comprovante de pagamento (PDF ou imagem):</label>
+                  <input type="file" name="payment_slip" id="slip-upload" accept=".pdf,image/*" required 
+                         style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; background-color: #f8f9fa;" />
+                </div>
+                <div class="form-group">
+                  <label for="access-message">Mensagem (opcional):</label>
+                  <textarea name="message" id="access-message" placeholder="Adicione uma mensagem se necessário..." 
+                           style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; resize: vertical; min-height: 80px;"></textarea>
+                </div>
+              </form>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn btn-cancel" onclick="closeAccessModal()">Cancelar</button>
+              <button type="submit" form="access-request-form" class="btn btn-submit">Enviar Solicitação</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal de pagamento -->
+        <div id="payment-modal" class="modal" style="display: none">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title">Pagamento</h3>
+              <button type="button" class="close-btn" id="close-pay-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <p><strong>Conteúdo:</strong> <span id="payment-content-title">Título do conteúdo</span></p>
+              <p>Para acessar este documento, realize o pagamento via Pix:</p>
+              <div style="background: #f8f8f8; padding: 8px 12px; border-radius: 6px; margin: 16px 0;">
+                <input type="text" id="pix-key" value="chave-pix-exemplo@pagamento.com" readonly 
+                       style="width: 100%; border: none; background: transparent; font-size: 1.1em;" />
+                <button onclick="copyPixKey()" style="margin-top: 4px; padding: 6px 12px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                  Copiar chave Pix
+                </button>
+              </div>
+              <p style="color: #666; font-size: 0.9em;">Após o pagamento, clique em "Pedir acesso" para enviar o comprovante e conseguir acessar o documento.</p>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn btn-cancel" onclick="closePaymentModal()">Cancelar</button>
+              <button type="button" class="btn btn-submit" onclick="processPayment()">Pagar Agora</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lista de mídias -->
+        <div class="artigos-lista">
+          {% for media in media_posts %}
+            <!-- Post -->
+            <div class="post-container">
+              <div class="post-row">
+                <div class="user-profile">
+                  <img src="{{ media.user.get_profile_picture_url }}" alt="{{ media.user.fullname }}">
+                  <div>
+                    <p>{{ media.user.fullname }}</p>
+                    {% if media.user.innovator_verification and media.user.innovator_verification.title %}
+                      <small>{{ media.user.innovator_verification.title }}</small>
+                    {% else %}
+                      <small>{{ media.user.research_area|default:"Pesquisador" }}</small>
+                    {% endif %}
+                    <small style="color: #666;">{{ media.created_at|date:"d/m/Y H:i" }}</small>
+                  </div>
+                </div>
+              </div>
+              <p class="post-text">{{ media.title }}</p>
+              {% if media.description %}
+                <p class="post-description">{{ media.description|truncatewords:30 }}</p>
+              {% endif %}
+              
+              <small style="color: #666; display: block; margin: 10px 0;">
+                📚 {{ media.get_research_area_display }}
+              </small>
+              
+              <!-- Multiple Media Display -->
+              {% for media_file in media.files.all %}
+                {% if media_file.is_image %}
+                  <!-- Images are always shown -->
+                  <img src="{{ media_file.media_file.url }}" alt="{{ media.title }}" class="post-img"
+                       onclick="openMediaViewer('{{ media_file.media_file.url }}', 'image', '{{ media.title|escapejs }}')" style="cursor: pointer; margin-bottom: 10px;">
+                {% elif media_file.is_video %}
+                  <!-- Videos are always shown -->
+                  <video controls class="post-img" style="margin-bottom: 10px;">
+                    <source src="{{ media_file.media_file.url }}" type="video/mp4">
+                    <source src="{{ media_file.media_file.url }}" type="video/quicktime">
+                    Seu navegador não suporta o elemento de vídeo.
+                  </video>
+                {% elif media_file.is_document %}
+                  {% if media.is_paid and not media.user_has_access and media.user != request.user %}
+                    <!-- Document is blocked - show blocked content like artigos.html -->
+                    <div class="document-preview post-img" style="padding: 20px; background: #f8f9fa; border-radius: 8px; text-align: center; border: 2px dashed #dee2e6; margin-bottom: 10px;">
+                      <div style="font-size: 48px; color: #6c757d; margin-bottom: 10px;">
+                        {% if media_file.media_file.name|lower|slice:"-4:" == ".pdf" %}
+                          📄
+                        {% else %}
+                          📊
+                        {% endif %}
+                      </div>
+                      <p style="margin: 0; font-weight: 500; color: #495057;">{{ media_file.media_file.name }}</p>
+                      <div style="margin-top: 10px;">
+                        <span style="color:#888;cursor:not-allowed;">Documento Bloqueado</span>
+                        <span class="article-price" style="color:#28a745; font-weight:bold; margin-left:8px;">R$ {{ media.price }}</span>
+                        <br>
+                        <button class="pay-btn" onclick="showPayModal('{{ media.title|escapejs }}', '{{ media.price }}')">Pagar</button>
+                        <button class="access-btn" onclick="showAccessModal({{ media.id }})">Pedir acesso</button>
+                      </div>
+                    </div>
+                  {% else %}
+                      <!-- Document is accessible -->
+                      <div class="document-preview post-img" style="padding: 20px; background: #f8f9fa; border-radius: 8px; text-align: center; border: 2px dashed #dee2e6; margin-bottom: 10px;">
+                        <div style="font-size: 48px; color: #6c757d; margin-bottom: 10px;">
+                          {% if media_file.media_file.name|lower|slice:"-4:" == ".pdf" %}
+                            📄
+                          {% else %}
+                            📊
+                          {% endif %}
+                        </div>
+                        <p style="margin: 0; font-weight: 500; color: #495057;">{{ media_file.media_file.name }}</p>
+                        <div style="margin-top: 10px;">
+                          <a href="{{ media_file.media_file.url }}" target="_blank" class="activity-link" style="display: inline-block; padding: 8px 16px; background-color: #256d4a; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;">
+                            📄 Ver PDF
+                          </a>
+                        </div>
+                        </a>
+                      </div>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+
+              <!-- Post Interaction Buttons -->
+              <div class="post-activity">
+                <div class="activity-icons">
+                  <div class="like-btn" data-media-id="{{ media.id }}" role="button" tabindex="0">
+                    <img id="like-icon-{{ media.id }}" src="{% static 'assets/img/like.png' %}" alt="like" 
+                         {% if media.is_liked_by_user %}style="filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);"{% endif %}>
+                    <span class="like-count" id="like-count-{{ media.id }}">{{ media.like_count }}</span>
+                  </div>
+                  <div class="comment-btn" data-media-id="{{ media.id }}" role="button" tabindex="0">
+                    <img src="{% static 'assets/img/bubble-chat.png' %}" alt="comments" /> 
+                    <span id="comment-count-{{ media.id }}">{{ media.comment_count }}</span>
+                  </div>
+                  <div><img src="{% static 'assets/img/share.png' %}" alt="share" /> </div>
+                </div>
+              </div>
+
+              <!-- Collapsible Comment Panel -->
+              <div id="comments-panel-{{ media.id }}" class="comments-panel" hidden>
+                <div class="comments-list" id="comments-list-{{ media.id }}">
+                  <!-- Comments will be loaded by JavaScript -->
+                </div>
+                <form class="comment-form" data-media-id="{{ media.id }}">
+                  {% csrf_token %}
+                  <input type="text" name="body" class="comment-input" placeholder="Escreva um comentário…">
+                  <button type="submit" class="comment-submit">Enviar</button>
+                </form>
+              </div>
+            </div>
+          {% empty %}
+            <div class="no-results">
+              <p>Nenhuma mídia encontrada.</p>
+              <p>Seja o primeiro a compartilhar fotos ou vídeos!</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="right-sidebar">
+        <!-- Conteúdo da sidebar direita pode ser adicionado aqui -->
+      </div>
+    </div>
+
+    <!-- Media Viewer Modal -->
+    <div id="media-viewer-modal" class="modal" style="display: none;">
+      <div class="modal-content" style="max-width: 90%; max-height: 90%;">
+        <div class="modal-header">
+          <h3 class="modal-title" id="viewer-title">Visualizar Mídia</h3>
+          <button type="button" class="close-btn" onclick="closeMediaViewer()">&times;</button>
+        </div>
+        <div class="modal-body" style="text-align: center;">
+          <div id="media-viewer-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="{% static 'js/home.js' %}"></script>
+    <script src="{% static 'js/artigos.js' %}"></script>
+    <script>
+      // Price field toggle functionality
+      function togglePriceField() {
+        var radios = document.getElementsByName("payment_type");
+        var priceGroup = document.getElementById("price-group");
+        var paidSelected = false;
+        for (var i = 0; i < radios.length; i++) {
+          if (radios[i].checked && radios[i].value === "paid") {
+            paidSelected = true;
+          }
+        }
+        priceGroup.style.display = paidSelected ? "block" : "none";
+      }
+
+      // Media upload functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize price field toggle
+        var radios = document.getElementsByName("payment_type");
+        for (var i = 0; i < radios.length; i++) {
+          radios[i].addEventListener("change", togglePriceField);
+        }
+        togglePriceField();
+
+        const addBtn = document.getElementById('add-media-btn');
+        const modal = document.getElementById('media-modal');
+        const closeBtn = document.getElementById('close-modal');
+        const cancelBtn = document.getElementById('cancel-btn');
+        const form = document.getElementById('media-upload-form');
+        const fileInput = document.querySelector('input[type="file"]');
+
+        // Open modal
+        addBtn.addEventListener('click', function() {
+          modal.style.display = 'flex';
+        });
+
+        // Close modal
+        function closeModal() {
+          modal.style.display = 'none';
+          form.reset();
+          removeMediaPreview();
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', function(e) {
+          if (e.target === modal) {
+            closeModal();
+          }
+        });
+
+        // File input change handler
+        if (fileInput) {
+          fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+              previewMedia(file);
+            }
+          });
+        }
+      });
+
+      function previewMedia(file) {
+        const preview = document.getElementById('media-preview');
+        const content = document.getElementById('preview-content');
+        const info = document.getElementById('media-info');
+        
+        // Check file size (50MB limit)
+        const maxSize = 50 * 1024 * 1024;
+        if (file.size > maxSize) {
+          alert('O arquivo é muito grande. O tamanho máximo é de 50MB.');
+          document.querySelector('input[type="file"]').value = '';
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          content.innerHTML = '';
+          
+          if (file.type.startsWith('image/')) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.style.maxWidth = '100%';
+            img.style.maxHeight = '200px';
+            img.style.borderRadius = '6px';
+            content.appendChild(img);
+          } else if (file.type.startsWith('video/')) {
+            const video = document.createElement('video');
+            video.src = e.target.result;
+            video.controls = true;
+            video.style.maxWidth = '100%';
+            video.style.maxHeight = '200px';
+            video.style.borderRadius = '6px';
+            content.appendChild(video);
+          }
+
+          info.textContent = `${file.name} (${formatFileSize(file.size)})`;
+          preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function removeMediaPreview() {
+        const preview = document.getElementById('media-preview');
+        const content = document.getElementById('preview-content');
+        const info = document.getElementById('media-info');
+        const fileInput = document.querySelector('input[type="file"]');
+        
+        preview.style.display = 'none';
+        content.innerHTML = '';
+        info.textContent = '';
+        fileInput.value = '';
+      }
+
+      function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+      }
+
+      function openMediaViewer(url, type, title) {
+        const modal = document.getElementById('media-viewer-modal');
+        const titleEl = document.getElementById('viewer-title');
+        const content = document.getElementById('media-viewer-content');
+        
+        titleEl.textContent = title;
+        content.innerHTML = '';
+        
+        if (type === 'image') {
+          const img = document.createElement('img');
+          img.src = url;
+          img.style.maxWidth = '100%';
+          img.style.maxHeight = '80vh';
+          img.style.objectFit = 'contain';
+          content.appendChild(img);
+        }
+        
+        modal.style.display = 'flex';
+      }
+
+      function closeMediaViewer() {
+        document.getElementById('media-viewer-modal').style.display = 'none';
+      }
+
+      // Access request functionality
+      let currentMediaId = null;
+
+      function requestMediaAccess(mediaId) {
+        currentMediaId = mediaId;
+        document.getElementById('access-modal').style.display = 'flex';
+      }
+
+      function closeAccessModal() {
+        document.getElementById('access-modal').style.display = 'none';
+        document.getElementById('access-message').value = '';
+        document.getElementById('slip-upload').value = '';
+        document.getElementById("access-media-id").value = '';
+        currentMediaId = null;
+      }
+
+      function submitAccessRequest(event) {
+        event.preventDefault();
+        const mediaId = document.getElementById("access-media-id").value;
+        const form = document.getElementById("access-request-form");
+        const formData = new FormData(form);
+        
+        // Update the form action URL with the media ID
+        form.action = `/feed/media/${mediaId}/request-access/`;
+        
+        // Submit the form normally to handle file upload
+        form.submit();
+      }
+
+      // Payment functionality
+      function showMediaPaymentModal(mediaId, title) {
+        currentMediaId = mediaId;
+        document.getElementById('payment-content-title').textContent = title;
+        document.getElementById('payment-modal').style.display = 'flex';
+      }
+
+      function closePaymentModal() {
+        document.getElementById('payment-modal').style.display = 'none';
+        currentMediaId = null;
+      }
+
+      function processPayment() {
+        if (!currentMediaId) return;
+        
+        // In a real implementation, this would integrate with a payment gateway
+        alert('Redirecionando para pagamento... (Em desenvolvimento)');
+        closePaymentModal();
+        
+        // For now, just simulate successful payment
+        setTimeout(() => {
+          alert('Pagamento processado com sucesso! Recarregando página...');
+          location.reload();
+        }, 2000);
+      }
+
+      // Like functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        // Like button functionality
+        document.querySelectorAll('.like-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const mediaId = this.dataset.mediaId;
+            const likeIcon = document.getElementById(`like-icon-${mediaId}`);
+            const likeCount = document.getElementById(`like-count-${mediaId}`);
+            
+            // Send AJAX request to toggle like
+            fetch(`/feed/media/${mediaId}/like/`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+              }
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                // Update UI based on server response
+                if (data.liked) {
+                  likeIcon.style.filter = 'brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%)';
+                } else {
+                  likeIcon.style.filter = '';
+                }
+                likeCount.textContent = data.like_count;
+              } else {
+                console.error('Error toggling like:', data.error);
+                alert('Erro ao curtir: ' + data.error);
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('Erro ao curtir. Tente novamente.');
+            });
+          });
+        });
+
+        // Comment button functionality
+        document.querySelectorAll('.comment-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const mediaId = this.dataset.mediaId;
+            const commentsPanel = document.getElementById(`comments-panel-${mediaId}`);
+            
+            if (commentsPanel.hidden) {
+              commentsPanel.hidden = false;
+              // Load comments from the backend
+              loadComments(mediaId);
+            } else {
+              commentsPanel.hidden = true;
+            }
+          });
+        });
+
+        // Comment form functionality
+        document.querySelectorAll('.comment-form').forEach(form => {
+          form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const mediaId = this.dataset.mediaId;
+            const commentInput = this.querySelector('.comment-input');
+            const commentText = commentInput.value.trim();
+            
+            if (commentText) {
+              // Send comment to backend
+              fetch(`/feed/media/${mediaId}/comment/`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({ body: commentText })
+              })
+              .then(response => response.json())
+              .then(data => {
+                if (data.success) {
+                  // Add comment to the list
+                  const commentsList = document.getElementById(`comments-list-${mediaId}`);
+                  const commentDiv = document.createElement('div');
+                  commentDiv.className = 'comment-item';
+                  commentDiv.innerHTML = `
+                    <div style="padding: 10px; border-bottom: 1px solid #eee;">
+                      <strong>${data.comment.user_name}:</strong> ${data.comment.body}
+                      <small style="color: #666; display: block;">${data.comment.created_at}</small>
+                    </div>
+                  `;
+                  commentsList.prepend(commentDiv); // Add at the top
+                  
+                  // Update comment count
+                  const commentCount = document.getElementById(`comment-count-${mediaId}`);
+                  commentCount.textContent = data.comment_count;
+                  
+                  // Clear input
+                  commentInput.value = '';
+                } else {
+                  console.error('Error adding comment:', data.error);
+                  alert('Erro ao comentar: ' + data.error);
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                alert('Erro ao comentar. Tente novamente.');
+              });
+            }
+          });
+        });
+
+        // Function to load comments
+        function loadComments(mediaId) {
+          fetch(`/feed/media/${mediaId}/comments/`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              const commentsList = document.getElementById(`comments-list-${mediaId}`);
+              commentsList.innerHTML = ''; // Clear existing comments
+              
+              data.comments.forEach(comment => {
+                const commentDiv = document.createElement('div');
+                commentDiv.className = 'comment-item';
+                commentDiv.innerHTML = `
+                  <div style="padding: 10px; border-bottom: 1px solid #eee;">
+                    <strong>${comment.user_name}:</strong> ${comment.body}
+                    <small style="color: #666; display: block;">${comment.created_at}</small>
+                  </div>
+                `;
+                commentsList.appendChild(commentDiv);
+              });
+            } else {
+              console.error('Error loading comments:', data.error);
+            }
+          })
+          .catch(error => {
+            console.error('Error loading comments:', error);
+          });
+        }
+      });
+
+      // Dynamic File Upload Functions
+      let fileInputCount = 1;
+      
+      function addFileInput() {
+        const container = document.getElementById('file-inputs-container');
+        const newIndex = fileInputCount++;
+        
+        const newInputGroup = document.createElement('div');
+        newInputGroup.className = 'file-input-group';
+        newInputGroup.setAttribute('data-index', newIndex);
+        
+        newInputGroup.innerHTML = `
+          <input type="file" 
+                 name="media_files" 
+                 class="form-control file-input" 
+                 accept="image/*,video/*,.pdf,.pptx,.ppt" 
+                 id="id_media_file_${newIndex}"
+                 onchange="previewFile(this, ${newIndex})">
+          <button type="button" class="btn-remove-file" onclick="removeFileInput(${newIndex})">×</button>
+        `;
+        
+        container.appendChild(newInputGroup);
+        
+        // Show remove button for the first input if it doesn't have one
+        const firstInput = container.querySelector('[data-index="0"]');
+        if (firstInput && container.children.length > 1) {
+          const removeBtn = firstInput.querySelector('.btn-remove-file');
+          if (removeBtn) {
+            removeBtn.style.display = 'flex';
+          }
+        }
+        
+        // Limit to 10 file inputs
+        if (container.children.length >= 10) {
+          document.getElementById('add-file-btn').style.display = 'none';
+        }
+      }
+      
+      function removeFileInput(index) {
+        const container = document.getElementById('file-inputs-container');
+        const inputGroup = container.querySelector(`[data-index="${index}"]`);
+        
+        if (inputGroup) {
+          // Remove the file preview if it exists
+          const previewContainer = document.getElementById('file-previews-container');
+          const preview = previewContainer.querySelector(`[data-preview-index="${index}"]`);
+          if (preview) {
+            preview.remove();
+          }
+          
+          inputGroup.remove();
+          
+          // Hide remove button for first input if it's the only one left
+          if (container.children.length === 1) {
+            const firstInput = container.querySelector('[data-index="0"]');
+            if (firstInput) {
+              const removeBtn = firstInput.querySelector('.btn-remove-file');
+              if (removeBtn) {
+                removeBtn.style.display = 'none';
+              }
+            }
+          }
+          
+          // Show add button if we're under the limit
+          if (container.children.length < 10) {
+            document.getElementById('add-file-btn').style.display = 'flex';
+          }
+        }
+      }
+      
+      function previewFile(input, index) {
+        const file = input.files[0];
+        if (!file) return;
+        
+        const previewContainer = document.getElementById('file-previews-container');
+        
+        // Remove existing preview for this input
+        const existingPreview = previewContainer.querySelector(`[data-preview-index="${index}"]`);
+        if (existingPreview) {
+          existingPreview.remove();
+        }
+        
+        const previewItem = document.createElement('div');
+        previewItem.className = 'file-preview-item';
+        previewItem.setAttribute('data-preview-index', index);
+        
+        const fileSize = formatFileSize(file.size);
+        const fileName = file.name;
+        
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            previewItem.innerHTML = `
+              <img src="${e.target.result}" alt="${fileName}">
+              <div class="file-name">${fileName}</div>
+              <div class="file-size">${fileSize}</div>
+            `;
+          };
+          reader.readAsDataURL(file);
+        } else if (file.type.startsWith('video/')) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            previewItem.innerHTML = `
+              <video controls>
+                <source src="${e.target.result}" type="${file.type}">
+              </video>
+              <div class="file-name">${fileName}</div>
+              <div class="file-size">${fileSize}</div>
+            `;
+          };
+          reader.readAsDataURL(file);
+        } else {
+          // Document files
+          const fileExtension = fileName.split('.').pop().toLowerCase();
+          let iconClass = 'fas fa-file';
+          
+          if (fileExtension === 'pdf') {
+            iconClass = 'fas fa-file-pdf';
+          } else if (['pptx', 'ppt'].includes(fileExtension)) {
+            iconClass = 'fas fa-file-powerpoint';
+          }
+          
+          previewItem.innerHTML = `
+            <div class="file-icon">
+              <i class="${iconClass}"></i>
+            </div>
+            <div class="file-name">${fileName}</div>
+            <div class="file-size">${fileSize}</div>
+          `;
+        }
+        
+        previewContainer.appendChild(previewItem);
+      }
+      
+      function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+      }
+      
+      // Add preview functionality to the initial file input
+      document.addEventListener('DOMContentLoaded', function() {
+        const initialInput = document.getElementById('id_media_file_0');
+        if (initialInput) {
+          initialInput.addEventListener('change', function() {
+            previewFile(this, 0);
+          });
+        }
+      });
+
+      // Payment Modal Functions
+      function showPayModal(title, price) {
+        document.getElementById("payment-modal").style.display = "flex";
+        document.getElementById('payment-content-title').textContent = title;
+      }
+      
+      function showAccessModal(mediaId) {
+        document.getElementById("access-modal").style.display = "flex";
+        document.getElementById("access-media-id").value = mediaId;
+        currentMediaId = mediaId;
+      }
+      
+      document.getElementById("close-pay-modal").onclick = function () {
+        document.getElementById("pay-modal").style.display = "none";
+      };
+      
+      document.getElementById("close-access-modal").onclick = function () {
+        document.getElementById("access-modal").style.display = "none";
+      };
+      
+      function copyPixKey() {
+        var pixInput = document.getElementById("pix-key");
+        pixInput.select();
+        pixInput.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        alert("Chave Pix copiada!");
+      }
+      
+      function copyPixKey() {
+        var pixInput = document.getElementById("pix-key");
+        pixInput.select();
+        pixInput.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        alert("Chave Pix copiada!");
+      }
+
+    </script>
+  </body>
+</html>
+<!-- prettier-ignore-end -->
