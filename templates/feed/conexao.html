@@ -69,8 +69,31 @@
     <div class="nav-left">
   <a href="{% url 'feed:artigos' %}"><img src="{% static 'assets/img/logo.png' %}" class="logo"></a>
       <ul>
-      <li><img src="{% static 'assets/img/notification.png' %}"></li>
-      <li><a href="{% url 'feed:mensagens' %}"><img src="{% static 'assets/img/inbox.png' %}" alt="Mensagens" style="cursor:pointer;"></a></li>
+        <li style="position:relative;">
+          <img src="{% static 'assets/img/notification.png' %}" id="notification-bell" style="cursor:pointer;">
+          <div id="notification-dropdown" style="display:none; position:absolute; top:40px; left:50%; transform:translateX(-50%); background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.12); border-radius:8px; min-width:280px; z-index:200;">
+            <div style="padding:14px 18px; border-bottom:1px solid #e0e0e0; font-weight:600; color:#256d4a;">Notificações</div>
+            <div style="max-height:260px; overflow-y:auto;">
+              <!-- Notificações de pessoas seguidas -->
+              <div style="padding:12px 18px; border-bottom:1px solid #f0f0f0;">
+                <span style="font-weight:500; color:#256d4a;">Atividades das pessoas que você segue</span>
+                <ul style="margin:8px 0 0 0; padding:0; list-style:none;">
+                  <li style="color:#555; font-size:0.97em; margin-bottom:6px;">Maria Silva publicou um artigo novo.</li>
+                  <li style="color:#555; font-size:0.97em; margin-bottom:6px;">João Souza entrou em uma comunidade.</li>
+                </ul>
+              </div>
+              <!-- Notificações de mensagens recebidas -->
+              <div style="padding:12px 18px;">
+                <span style="font-weight:500; color:#256d4a;">Mensagens recebidas</span>
+                <ul style="margin:8px 0 0 0; padding:0; list-style:none;">
+                  <li style="color:#555; font-size:0.97em; margin-bottom:6px;">Nova mensagem de Ana Paula.</li>
+                  <li style="color:#555; font-size:0.97em; margin-bottom:6px;">Carlos enviou um arquivo.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li><a href="{% url 'feed:mensagens' %}"><img src="{% static 'assets/img/inbox.png' %}" alt="Mensagens" style="cursor:pointer;"></a></li>
       </ul>
     </div>
     <div class="nav-right">
@@ -228,5 +251,22 @@
 
   <script src="{% static 'js/home.js' %}"></script>
   <script src="{% static 'js/conexao.js' %}"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var bell = document.getElementById('notification-bell');
+      var dropdown = document.getElementById('notification-dropdown');
+      if (bell && dropdown) {
+        bell.addEventListener('click', function(e) {
+          e.stopPropagation();
+          dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        });
+        document.addEventListener('mousedown', function(e) {
+          if (dropdown.style.display === 'block' && !dropdown.contains(e.target) && e.target !== bell) {
+            dropdown.style.display = 'none';
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
