@@ -9,6 +9,11 @@
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
     />
+    <!-- Font Awesome CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <!-- Toastr CSS -->
     <link
       rel="stylesheet"
@@ -71,9 +76,12 @@
               {{ login_form.email }}
             </div>
 
-            <div class="input-field">
+            <div class="input-field password-field">
               <i class="bx bxs-lock-alt"></i>
               {{ login_form.password }}
+              <span class="password-toggle" onclick="togglePassword(this)">
+                <i class="fa-solid fa-eye-slash"></i>
+              </span>
             </div>
 
             <p style="margin-top: 12px; text-align: center">
@@ -126,13 +134,19 @@
               <i class="bx bxs-envelope"></i>
               {{register_form.email}}
             </div>
-            <div class="input-field">
+            <div class="input-field password-field">
               <i class="bx bxs-lock-alt"></i>
               {{register_form.password1}}
+              <span class="password-toggle" onclick="togglePassword(this)">
+                <i class="fa-solid fa-eye-slash"></i>
+              </span>
             </div>
-            <div class="input-field">
+            <div class="input-field password-field">
               <i class="bx bxs-lock-alt"></i>
               {{register_form.password2}}
+              <span class="password-toggle" onclick="togglePassword(this)">
+                <i class="fa-solid fa-eye-slash"></i>
+              </span>
             </div>
             <div class="input-field">
               <i class="bx bx-link-external"></i>
@@ -195,6 +209,22 @@
           });
         }
       });
+
+      // Toggle password visibility
+      function togglePassword(toggle) {
+        const passwordField = toggle.parentElement.querySelector('input[type="password"], input[type="text"]');
+        const icon = toggle.querySelector('i');
+        
+        if (passwordField.type === 'password') {
+          passwordField.type = 'text';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        } else {
+          passwordField.type = 'password';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        }
+      }
     </script>
   </body>
 </html>
