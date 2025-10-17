@@ -1,52 +1,149 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
-    <title>Document</title>
-  </head>
-  <body>
-    <header>
-      <a href="#" class="logo">
-        <img
-          src="{% static 'assets/img/newlogo.png' %}"
-          width="200"
-          alt="Logo"
-        />
-      </a>
-      <ul class="navbar">
-        <li><a href="#"> Sobre </a></li>
-        <li><a href="#"> Contato </a></li>
-        <li><a href="#"> Descubra </a></li>
-      </ul>
-      <div class="login-style">
-        <a href="{% url 'user:register' %}" class="btn-login"
-          >Entre/Cadastre-se</a
-        >
-      </div>
-    </header>
-
-    <section class="letter">
-      <div class="letter-text">
-        <h5>Explorar. Descobrir. Compartilhar.</h5>
-        <h1>Suas descobertas merecem o mundo!</h1>
-        <p>
-          Na Innovator, cada pesquisa e inovação é uma porta para novas
-          possibilidades. Junte-se a uma comunidade que valoriza o conhecimento
-          e ajuda a transformar o futuro. Cadastre-se agora e faça parte dessa
-          jornada!
-        </p>
-      </div>
-      <div class="letter-img">
-        <img src="{% static 'assets/img/pesquisadores.png' %}" />
-      </div>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InnovaSus</title>
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <section id="home">
+        <header>
+            <div id="logo">
+                <a href="#home">
+                    <img src="{% static 'assets/img/logo.png' %}" alt="Logo" width="280">
+                </a>
+            </div>
+            <nav id="navbar">
+                <div id="quit">
+                    <i class="fa fa-times" aria-hidden="true" onclick="toggle()"></i>
+                </div>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#sobre">Sobre</a></li>
+                </ul>
+            </nav>
+            <div class="login-button">
+                <a href="{% url 'user:register' %}" class="btn-login">Entrar/Conectar-se</a>
+            </div>
+            <div id="bars" onclick="toggle()">
+                <div class="bar b"></div>
+                <div class="bar"></div>
+                <div class="bar b"></div>
+            </div>
+        </header>
+        <div class="content">
+            <div class="left">
+                <h1>Descubra. Compartilhe.</h1>
+                <p>Conecte-se com uma comunidade científica dedicada ao avanço da medicina e saúde pública. Compartilhe suas pesquisas, descubra inovações e colabore com profissionais que estão transformando o futuro da saúde. Juntos, construímos conhecimento de forma mais eficiente e acessível para todos.</p>
+            </div>
+            <div class="right">
+                <div class="box">
+                    <img src="{% static 'assets/img/Medical research-bro (1).png' %}" alt="Medical Research" class="book">
+                </div>
+            </div>
+        </div>
     </section>
-    <section id="descubra" class"view section-warp" aria-lebelledby="title-descubra" hidden
-    <h2 id="title-descubra" class"section-title">Descubra></h2>
-    <p class="section-sub">Conheça Innovator</p>
-  
-  </section>
-  </body>
+
+    <section id="sobre" class="sobre-section">
+        <div class="container">
+            <h2 class="section-title">Sobre o InnovaSus</h2>
+            <p class="section-subtitle">Uma plataforma dedicada ao avanço pesquisa científica na saúde</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class='bx bx-check-square'></i>
+                    </div>
+                    <h3>Funcionalidade</h3>
+                    <p>Ferramentas avançadas para compartilhamento de pesquisas, colaboração científica e acesso a conteúdo médico de qualidade, facilitando o desenvolvimento de conhecimento na área da saúde.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class='bx bx-check-square'></i>
+                    </div>
+                    <h3>Usabilidade</h3>
+                    <p>Interface intuitiva e amigável, projetada para profissionais da saúde e pesquisadores, proporcionando uma experiência fluida e eficiente na navegação e uso da plataforma.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class='bx bx-check-square'></i>
+                    </div>
+                    <h3>Confiabilidade</h3>
+                    <p>Segurança de dados e validação de conteúdo científico, garantindo a integridade das informações compartilhadas e a proteção dos dados dos usuários da comunidade médica.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- scripts -->
+    <script>
+        // Efeito de scroll da navbar
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('#home header');
+            const scrolled = window.pageYOffset;
+            const homeSection = document.querySelector('#home');
+            const sobreSection = document.querySelector('#sobre');
+            
+            // Verifica se está na seção home ou sobre
+            if (scrolled > homeSection.offsetHeight - 200) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+
+        // Scroll suave melhorado
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                
+                if (targetId === '#home') {
+                    // Scroll para o topo (seção home)
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                } else if (targetId === '#sobre') {
+                    // Scroll específico para a seção sobre
+                    const homeHeight = window.innerHeight;
+                    window.scrollTo({
+                        top: homeHeight,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    // Para outros links
+                    const target = document.querySelector(targetId);
+                    if (target) {
+                        const headerHeight = document.querySelector('#home header').offsetHeight;
+                        const targetPosition = target.offsetTop - headerHeight - 80;
+                        
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Funcionalidade específica para o link Home
+        document.querySelectorAll('a[href="#"]').forEach(homeLink => {
+            homeLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
 </html>
