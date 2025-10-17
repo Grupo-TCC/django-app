@@ -126,8 +126,9 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# settings.py
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+# Use manifest-based storage only in production so dev picks up CSS/JS without collectstatic
+if not DEBUG:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 #Media
 MEDIA_ROOT = BASE_DIR / "media"

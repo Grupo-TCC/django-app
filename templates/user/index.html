@@ -84,6 +84,14 @@
 
     <!-- scripts -->
     <script>
+        // Mobile nav toggle
+        function toggle() {
+            const nav = document.getElementById('navbar');
+            if (nav) {
+                nav.classList.toggle('active');
+            }
+        }
+
         // Efeito de scroll da navbar
         window.addEventListener('scroll', function() {
             const header = document.querySelector('#home header');
@@ -99,37 +107,31 @@
             }
         });
 
-        // Scroll suave melhorado
+        // Scroll suave: rola até a seção alvo com ajuste do header fixo
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
-                
+
                 if (targetId === '#home') {
-                    // Scroll para o topo (seção home)
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                } else if (targetId === '#sobre') {
-                    // Scroll específico para a seção sobre
-                    const homeHeight = window.innerHeight;
-                    window.scrollTo({
-                        top: homeHeight,
-                        behavior: 'smooth'
-                    });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
-                    // Para outros links
                     const target = document.querySelector(targetId);
                     if (target) {
-                        const headerHeight = document.querySelector('#home header').offsetHeight;
-                        const targetPosition = target.offsetTop - headerHeight - 80;
-                        
-                        window.scrollTo({
-                            top: targetPosition,
-                            behavior: 'smooth'
-                        });
+                        const header = document.querySelector('#home header');
+                        const headerHeight = header ? header.offsetHeight : 0;
+                        const rect = target.getBoundingClientRect();
+                        // Extra deslocamento para deixar a seção "mais baixa" na tela
+                        const extraOffset = (targetId === '#sobre') ? 140 : 20;
+                        const offsetTop = window.pageYOffset + rect.top - headerHeight + extraOffset;
+                        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
                     }
+                }
+
+                // Fecha o menu mobile após clicar
+                const nav = document.getElementById('navbar');
+                if (nav && nav.classList.contains('active')) {
+                    nav.classList.remove('active');
                 }
             });
         });

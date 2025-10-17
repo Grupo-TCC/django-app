@@ -101,6 +101,50 @@ form.sign-up-form {
   display: grid;
   grid-template-columns: 15% 85%;
   padding: 0.4rem;
+  position: relative;
+}
+
+.input-field.password-field {
+  display: flex;
+  align-items: center;
+  padding: 0 0.4rem;
+}
+
+.input-field.password-field i.bx {
+  width: 15%;
+  text-align: center;
+  line-height: 45px;
+  color: var(--grey-colorhelp);
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.input-field.password-field input {
+  flex: 1;
+  background: none;
+  outline: none;
+  border: none;
+  line-height: 1;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--almostblack-color);
+  padding-right: 40px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--grey-colorhelp);
+  font-size: 1.2rem;
+  z-index: 10;
+  transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+  color: var(--main-color);
 }
 
 .input-field i {
