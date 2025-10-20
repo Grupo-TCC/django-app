@@ -1,0 +1,107 @@
+{% load static %}
+
+<!-- Enhanced Video Implementation Example -->
+
+<div class="video-container">
+  <video
+    class="feed-video"
+    src="{% static 'uploads/sample.mp4' %}"
+    preload="metadata"
+    controls
+    muted
+    playsinline
+    data-video-id="sample-video-1"
+  >
+    <source src="{% static 'uploads/sample.mp4' %}" type="video/mp4">
+    <source src="{% static 'uploads/sample.webm' %}" type="video/webm">
+    <p>Seu navegador não suporta o elemento de vídeo. 
+       <a href="{% static 'uploads/sample.mp4' %}" target="_blank">Baixar vídeo</a>
+    </p>
+  </video>
+</div>
+
+<!-- Multiple videos example -->
+<div class="video-container">
+  <video
+    class="feed-video"
+    src="{% static 'uploads/video2.mp4' %}"
+    preload="metadata"
+    controls
+    muted
+    playsinline
+    data-video-id="sample-video-2"
+  >
+    <source src="{% static 'uploads/video2.mp4' %}" type="video/mp4">
+    <p>Vídeo não disponível.</p>
+  </video>
+</div>
+
+<!-- Dynamic video with Django template variables -->
+{% if media_file.is_video %}
+<div class="video-container">
+  <video
+    class="feed-video"
+    src="{{ media_file.media_file.url }}"
+    preload="metadata"
+    controls
+    muted
+    playsinline
+    data-video-id="video-{{ media_file.id }}"
+    data-title="{{ media.title|escapejs }}"
+  >
+    <source src="{{ media_file.media_file.url }}" type="video/mp4">
+    <source src="{{ media_file.media_file.url }}" type="video/webm">
+    <p>Seu navegador não suporta o elemento de vídeo. 
+       <a href="{{ media_file.media_file.url }}" target="_blank">Baixar vídeo</a>
+    </p>
+  </video>
+</div>
+{% endif %}
+
+<!-- Video with custom controls (if needed) -->
+<div class="video-container">
+  <video
+    class="feed-video"
+    src="{% static 'uploads/sample.mp4' %}"
+    preload="metadata"
+    muted
+    playsinline
+    data-video-id="custom-video"
+  >
+    <!-- No controls attribute = custom controls will be added by JS -->
+    <source src="{% static 'uploads/sample.mp4' %}" type="video/mp4">
+    <p>Vídeo não disponível.</p>
+  </video>
+  
+  <!-- Custom controls can be added here if needed -->
+  <div class="custom-video-controls" style="display: none;">
+    <button class="play-pause-btn">▶️</button>
+    <input type="range" class="seek-bar" min="0" max="100" value="0">
+    <span class="time-display">0:00 / 0:00</span>
+    <button class="mute-btn">🔊</button>
+    <button class="fullscreen-btn">⛶</button>
+  </div>
+</div>
+
+<script>
+// Example of manual video control
+document.addEventListener('DOMContentLoaded', function() {
+  // Get video handler instance
+  const videoHandler = window.feedVideoHandler;
+  
+  // Log video information
+  console.log('Current videos:', videoHandler.getVideoInfo());
+  
+  // Example: Pause all videos when user clicks a button
+  document.getElementById('pause-all-btn')?.addEventListener('click', function() {
+    videoHandler.pauseAll();
+  });
+  
+  // Example: Refresh video handler when new content is loaded
+  document.getElementById('load-more-btn')?.addEventListener('click', function() {
+    setTimeout(() => {
+      videoHandler.refresh();
+    }, 1000); // Wait for new content to load
+  });
+});
+</script>

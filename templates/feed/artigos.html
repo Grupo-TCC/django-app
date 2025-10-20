@@ -120,12 +120,11 @@
                   <img src="{{ article.user.get_profile_picture_url }}" alt="{{ article.user.fullname }}">
                   <div>
                     <p>{{ article.user.fullname }}</p>
-                    {% if article.user.innovator_verification and article.user.innovator_verification.title %}
-                      <small>{{ article.user.innovator_verification.title }}</small>
-                    {% else %}
-                      <small>{{ article.user.research_area|default:"Pesquisador" }}</small>
-                    {% endif %}
-                    <small style="color: #666;">{{ article.created_at|date:"d/m/Y H:i" }}</small>
+                    <div class="user-meta">
+                      <small>{{ article.user.institution }},</small>
+                      <small>{{ article.user.cidade }},</small>
+                      <small>{{ article.user.estado }}</small>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -147,9 +146,13 @@
               </small>
               
               <div class="post-activity">
-                <a href="{{ article.pdf.url }}" target="_blank" class="activity-link" style="display: inline-block; padding: 8px 16px; background-color: #256d4a; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;">
-                  📄 Ver PDF
+                {% if article.get_pdf_url %}
+                <a href="{{ article.get_pdf_url }}" target="_blank" class="activity-link" style="display: inline-block; padding: 8px 16px; background-color: #256d4a; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;">
+                  Ver PDF
                 </a>
+                {% else %}
+                <span style="color: #888; font-style: italic;">PDF não disponível</span>
+                {% endif %}
               </div>
             </div>
           {% empty %}
@@ -182,72 +185,58 @@
       </div>
 
       <!-- RIGHT SIDEBAR -->
-      <div class="right-sidebar">
-        <div class="sidebar-title">
-          <h4>Conversas</h4>
-        </div>
-        {% if top_message_users %}
-          {% for user in top_message_users|slice:":5" %}
-            <div class="online-list">
-              <div class="online">
-                <img src="{{ user.get_profile_picture_url }}" alt="{{ user.fullname }}">
-              </div>
-              <a href="{% url 'feed:mensagens' %}?user={{ user.id }}" style="color: inherit; text-decoration: none;">
-                <p style="margin: 0; cursor: pointer;">{{ user.fullname }}</p>
-              </a>
-            </div>
-          {% empty %}
-            <p style="color: #888; margin: 12px 0 0 12px;">Nenhuma conversa recente.</p>
-          {% endfor %}
-        {% endif %}
-      </div>
+      {% include 'components/convo_rightbar.html' %}
     </div>
 
     <div class="footer"><p>Innovator 2025</p></div>
     <script src="{% static 'js/artigos.js' %}"></script>
     <script src="{% static 'js/search.js' %}"></script>
     <script src="{% static 'js/home.js' %}"></script>
-      <script>
-        document.addEventListener("DOMContentLoaded", function() {
-          var bell = document.getElementById('notification-bell');
-          var dropdown = document.getElementById('notification-dropdown');
-          if (bell && dropdown) {
-            bell.addEventListener('click', function(e) {
-              e.stopPropagation();
-              dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-            });
-            document.addEventListener('mousedown', function(e) {
-              if (dropdown.style.display === 'block' && !dropdown.contains(e.target) && e.target !== bell) {
-                dropdown.style.display = 'none';
-              }
-            });
-          }
-        });
-      </script>
+
     <style>
-      #notification-dropdown {
-        z-index: 2147483647 !important;
-        box-shadow: 0 4px 24px rgba(0,0,0,0.18) !important;
-        border-radius: 10px !important;
+
+      /* User profile flex layout */
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .user-profile img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .user-profile div p {
+        margin: 0;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .user-profile div small {
+        display: block;
+        color: #666;
+        font-size: 13px;
+        margin-top: 2px;
+      }
+      
+      /* Inline user meta (institution, cidade, estado) */
+      .user-meta {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .user-meta small {
+        display: inline-block; /* ensure they sit inline inside flex */
+        margin: 0; /* reset margin since parent handles spacing */
+        color: #666;
+        font-size: 13px;
       }
     </style>
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        var bell = document.getElementById('notification-bell');
-        var dropdown = document.getElementById('notification-dropdown');
-        if (bell && dropdown) {
-          bell.addEventListener('click', function(e) {
-            e.stopPropagation();
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-          });
-          document.addEventListener('mousedown', function(e) {
-            if (dropdown.style.display === 'block' && !dropdown.contains(e.target) && e.target !== bell) {
-              dropdown.style.display = 'none';
-            }
-          });
-        }
-      });
-    </script>
+
 
     <!-- Payment Modal -->
     <div id="pay-modal" class="modal" style="display: none">
@@ -371,22 +360,5 @@
         }
       });
     </script>
-      <script>
-        document.addEventListener("DOMContentLoaded", function() {
-          var bell = document.getElementById('notification-bell');
-          var dropdown = document.getElementById('notification-dropdown');
-          if (bell && dropdown) {
-            bell.addEventListener('click', function(e) {
-              e.stopPropagation();
-              dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-            });
-            document.addEventListener('mousedown', function(e) {
-              if (dropdown.style.display === 'block' && !dropdown.contains(e.target) && e.target !== bell) {
-                dropdown.style.display = 'none';
-              }
-            });
-          }
-        });
-      </script>
   </body>
 </html>

@@ -4,6 +4,14 @@ from django.shortcuts import render, redirect
 from django.db import models
 from django.contrib.auth.decorators import login_required
 
+# Simple test view for video functionality
+def video_test(request):
+    return render(request, 'video-test.html')
+
+# Debug view for video auto-pause functionality
+def video_debug(request):
+    return render(request, 'video-debug.html')
+
 @login_required
 def mensagens(request):
     from .models import Message
@@ -80,10 +88,46 @@ def conexao(request):
     following_ids = set(
         request.user.following.values_list("following_id", flat=True)
     )
+    
+    # Top 5 users with most recent messages (for sidebar - consistent with other pages)
+    from .models import Message
+    from user.models import Follow
+    
+    user = request.user if request.user.is_authenticated else None
+    top_message_users = []
+    
+    if user:
+        # Get users the current user follows
+        following_users = [f.following for f in Follow.objects.filter(follower=user).select_related('following')]
+        conversation_data = []
+        
+        for u in following_users:
+            last_msg = Message.objects.filter(
+                (Q(sender=user, recipient=u) | Q(sender=u, recipient=user))
+            ).order_by('-created_at').first()
+            conversation_data.append({
+                'user': u,
+                'last_message_time': last_msg.created_at if last_msg else None,
+            })
+        
+        import datetime
+        import pytz
+        
+        def to_naive_utc(dt):
+            if dt is None:
+                return datetime.datetime(1970, 1, 1)
+            if dt.tzinfo is not None:
+                return dt.astimezone(pytz.UTC).replace(tzinfo=None)
+            return dt
+        
+        conversation_data.sort(key=lambda c: to_naive_utc(c['last_message_time']), reverse=True)
+        top_message_users = [c['user'] for c in conversation_data[:5]]
+    
     return render(request, "feed/conexao.html", {
         "users": users,
         "following_ids": following_ids,
         "search_query": query,
+        "top_message_users": top_message_users,
     })
     
 @login_required
@@ -365,6 +409,40 @@ def media_post(request):
         media.user_has_access = media.user_has_access(request.user)
         media.is_liked_by_user = media.is_liked_by(request.user)
     
+    # Top 5 users with most recent messages (for sidebar - consistent with other pages)
+    from .models import Message
+    from user.models import Follow
+    
+    user = request.user if request.user.is_authenticated else None
+    top_message_users = []
+    
+    if user:
+        # Get users the current user follows
+        following_users = [f.following for f in Follow.objects.filter(follower=user).select_related('following')]
+        conversation_data = []
+        
+        for u in following_users:
+            last_msg = Message.objects.filter(
+                (Q(sender=user, recipient=u) | Q(sender=u, recipient=user))
+            ).order_by('-created_at').first()
+            conversation_data.append({
+                'user': u,
+                'last_message_time': last_msg.created_at if last_msg else None,
+            })
+        
+        import datetime
+        import pytz
+        
+        def to_naive_utc(dt):
+            if dt is None:
+                return datetime.datetime(1970, 1, 1)
+            if dt.tzinfo is not None:
+                return dt.astimezone(pytz.UTC).replace(tzinfo=None)
+            return dt
+        
+        conversation_data.sort(key=lambda c: to_naive_utc(c['last_message_time']), reverse=True)
+        top_message_users = [c['user'] for c in conversation_data[:5]]
+    
     form = MediaPostForm(user=request.user)
     
     if request.method == 'POST':
@@ -380,6 +458,7 @@ def media_post(request):
         'media_posts': media_posts,
         'form': form,
         'search_query': search_query,
+        'top_message_users': top_message_users,
     }
     return render(request, 'feed/traducao.html', context)
 

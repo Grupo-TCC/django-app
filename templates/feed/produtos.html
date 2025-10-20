@@ -152,31 +152,7 @@
       </div>
 
       <!-- RIGHT SIDEBAR -->
-      <div class="right-sidebar">
-        <div class="sidebar-title-container">
-          <h3>Pesquisadores Conectados</h3>
-        </div>
-        <div class="message-list">
-          {% for user in top_message_users %}
-          <div class="message-item">
-            <div class="profile-pic-small">
-              <img
-                src="{% if user.profile_pic %}{{ user.profile_pic.url }}{% else %}{% static 'assets/img/profile-pic.png' %}{% endif %}"
-                alt="Foto do Perfil"
-              />
-            </div>
-            <div class="message-info">
-              <p>{{ user.fullname }}</p>
-              <span>{{ user.research_area|default:"Área não especificada" }}</span>
-            </div>
-          </div>
-          {% empty %}
-          <p style="color: #888; font-size: 14px; text-align: center; padding: 20px;">
-            Conecte-se com pesquisadores para vê-los aqui.
-          </p>
-          {% endfor %}
-        </div>
-      </div>
+      {% include 'components/convo_rightbar.html' %}
     </div>
 
     <script>
@@ -185,17 +161,7 @@
         settingsMenu.classList.toggle("settings-menu-height");
       }
 
-      // Notification dropdown toggle
-      document.getElementById('notification-bell').addEventListener('click', function(e) {
-        e.stopPropagation();
-        var dropdown = document.getElementById('notification-dropdown');
-        dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-      });
 
-      // Close notification dropdown when clicking elsewhere
-      document.addEventListener('click', function() {
-        document.getElementById('notification-dropdown').style.display = 'none';
-      });
 
       // Product modal handling
       document.getElementById('add-product-btn').addEventListener('click', function() {
@@ -218,6 +184,7 @@
         }
       });
     </script>
+
   </body>
 </html>
 <!-- prettier-ignore-end -->

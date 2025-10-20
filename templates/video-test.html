@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Video Test{% endblock %}
+
+{% block content %}
+<div style="padding: 20px; max-width: 800px; margin: 0 auto;">
+  <h1>Video Functionality Test</h1>
+  
+  <h2>Test 1: Basic Video Element</h2>
+  <div class="video-container">
+    <video
+      class="feed-video"
+      controls
+      muted
+      preload="metadata"
+      playsinline
+      style="width: 100%; max-width: 600px;"
+    >
+      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+      <source src="https://www.w3schools.com/html/mov_bbb.ogg" type="video/ogg">
+      <p>Your browser doesn't support video. <a href="https://www.w3schools.com/html/mov_bbb.mp4">Download the video</a></p>
+    </video>
+  </div>
+
+  <h2>Test 2: Your Original Video Element</h2>
+  <video
+    class="feed-video"
+    src="{% static 'uploads/sample.mp4' %}"
+    preload="metadata"
+    controls
+    muted
+    style="width: 100%; max-width: 600px;"
+  ></video>
+
+  <h2>Test 3: Multiple Videos for Auto-Pause</h2>
+  <div style="margin: 50px 0;">
+    <video
+      class="feed-video"
+      controls
+      muted
+      preload="metadata"
+      playsinline
+      style="width: 100%; max-width: 600px; margin: 20px 0;"
+    >
+      <source src="https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4" type="video/mp4">
+      <p>Test video 1 not available</p>
+    </video>
+  </div>
+
+  <div style="margin: 50px 0;">
+    <video
+      class="feed-video"
+      controls
+      muted
+      preload="metadata"
+      playsinline
+      style="width: 100%; max-width: 600px; margin: 20px 0;"
+    >
+      <source src="https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4" type="video/mp4">
+      <p>Test video 2 not available</p>
+    </video>
+  </div>
+
+  <div style="margin: 1000px 0;">
+    <p>Scroll up and down to test auto-pause functionality</p>
+  </div>
+
+  <h2>JavaScript Console Output</h2>
+  <div id="console-output" style="background: #f0f0f0; padding: 10px; border-radius: 4px; font-family: monospace; min-height: 100px;">
+    Check browser console (F12) for video handler messages...
+  </div>
+
+  <h2>Manual Test Controls</h2>
+  <button onclick="testVideoHandler()" style="padding: 10px 20px; margin: 5px; background: #256d4a; color: white; border: none; border-radius: 4px;">
+    Test Video Handler
+  </button>
+  <button onclick="pauseAllVideos()" style="padding: 10px 20px; margin: 5px; background: #dc3545; color: white; border: none; border-radius: 4px;">
+    Pause All Videos
+  </button>
+  <button onclick="refreshVideoHandler()" style="padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 4px;">
+    Refresh Handler
+  </button>
+
+  <div id="test-results" style="margin-top: 20px; padding: 10px; background: #e9ecef; border-radius: 4px;">
+    <strong>Test Results:</strong>
+    <div id="results-content">Click buttons above to run tests...</div>
+  </div>
+</div>
+
+<script>
+function logToPage(message) {
+  const output = document.getElementById('console-output');
+  output.innerHTML += '<div>' + new Date().toLocaleTimeString() + ': ' + message + '</div>';
+  console.log(message);
+}
+
+function updateResults(message) {
+  document.getElementById('results-content').innerHTML += '<div>✓ ' + message + '</div>';
+}
+
+function testVideoHandler() {
+  logToPage('Testing video handler...');
+  
+  try {
+    // Check if handler exists
+    if (typeof window.feedVideoHandler === 'undefined') {
+      logToPage('❌ feedVideoHandler not found in window object');
+      updateResults('Handler not loaded');
+      return;
+    }
+    
+    logToPage('✅ feedVideoHandler found');
+    updateResults('Handler loaded successfully');
+    
+    // Check videos detected
+    const videoCount = window.feedVideoHandler.videos.length;
+    logToPage('📹 Videos detected: ' + videoCount);
+    updateResults(videoCount + ' videos detected');
+    
+    // Get video info
+    const videoInfo = window.feedVideoHandler.getVideoInfo();
+    logToPage('📊 Video info: ' + JSON.stringify(videoInfo, null, 2));
+    updateResults('Video info retrieved');
+    
+    // Test visibility check
+    window.feedVideoHandler.checkVideoVisibility();
+    logToPage('👁️ Visibility check completed');
+    updateResults('Visibility check completed');
+    
+  } catch (error) {
+    logToPage('❌ Error testing handler: ' + error.message);
+    updateResults('Error: ' + error.message);
+  }
+}
+
+function pauseAllVideos() {
+  try {
+    if (window.feedVideoHandler) {
+      window.feedVideoHandler.pauseAll();
+      logToPage('⏸️ All videos paused');
+      updateResults('All videos paused');
+    } else {
+      logToPage('❌ Video handler not available');
+      updateResults('Handler not available');
+    }
+  } catch (error) {
+    logToPage('❌ Error pausing videos: ' + error.message);
+    updateResults('Error pausing: ' + error.message);
+  }
+}
+
+function refreshVideoHandler() {
+  try {
+    if (window.feedVideoHandler) {
+      window.feedVideoHandler.refresh();
+      logToPage('🔄 Video handler refreshed');
+      updateResults('Handler refreshed');
+    } else {
+      logToPage('❌ Video handler not available');
+      updateResults('Handler not available');
+    }
+  } catch (error) {
+    logToPage('❌ Error refreshing handler: ' + error.message);
+    updateResults('Error refreshing: ' + error.message);
+  }
+}
+
+// Auto-run initial test when page loads
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    logToPage('🚀 Page loaded, running initial test...');
+    testVideoHandler();
+  }, 1000);
+});
+
+// Log all console messages to the page
+const originalConsoleLog = console.log;
+console.log = function(...args) {
+  originalConsoleLog.apply(console, args);
+  logToPage(args.join(' '));
+};
+
+const originalConsoleError = console.error;
+console.error = function(...args) {
+  originalConsoleError.apply(console, args);
+  logToPage('❌ ' + args.join(' '));
+};
+</script>
+{% endblock %}

@@ -67,5 +67,14 @@ class MediaPost(models.Model):
     def get_file_url(self):
         """Return the URL of the media file"""
         if self.media_file:
-            return self.media_file.url
+            # Check if the file actually exists on disk
+            try:
+                if self.media_file.storage.exists(self.media_file.name):
+                    return self.media_file.url
+                else:
+                    # File doesn't exist (maybe moved to iCloud), return None
+                    return None
+            except:
+                # Any error accessing the file, return None
+                return None
         return None

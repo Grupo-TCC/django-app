@@ -134,45 +134,12 @@
   </div>
 </div>
 
-
-    <div class="right-sidebar">
-      <div class="sidebar-title">
-        <h4>Conversas</h4>
-        <a href="#">Esconder conversa</a>
-      </div>
-      <div class="online-list">
-        <div class="online"><img src="{% static 'assets/img/member-1.png' %}"></div>
-        <p>Diva Luna</p>
-      </div>
-      <div class="online-list">
-        <div class="online"><img src="{% static 'assets/img/member-2.png' %}"></div>
-        <p>Lucas Brito</p>
-      </div>
-      <div class="online-list">
-        <div class="online"><img src="{% static 'assets/img/member-3.png' %}"></div>
-        <p>Leila Tales</p>
-      </div>
-    </div>
+    {% include 'components/convo_rightbar.html' %}
   </div>
 
   <script src="{% static 'js/home.js' %}"></script>
   <script src="{% static 'js/conexao.js' %}"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      var bell = document.getElementById('notification-bell');
-      var dropdown = document.getElementById('notification-dropdown');
-      if (bell && dropdown) {
-        bell.addEventListener('click', function(e) {
-          e.stopPropagation();
-          dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        });
-        document.addEventListener('mousedown', function(e) {
-          if (dropdown.style.display === 'block' && !dropdown.contains(e.target) && e.target !== bell) {
-            dropdown.style.display = 'none';
-          }
-        });
-      }
-    });
-  </script>
+
+
 </body>
 </html>

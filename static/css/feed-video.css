@@ -1,0 +1,251 @@
+/* Enhanced Feed Video Styles */
+
+.feed-video {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  background: #000;
+  display: block;
+  margin: 10px 0;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.feed-video:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.feed-video:focus {
+  outline: 3px solid #256d4a;
+  outline-offset: 2px;
+}
+
+/* Loading states */
+.feed-video[data-loading="true"] {
+  position: relative;
+  min-height: 200px;
+  background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%),
+    linear-gradient(-45deg, #f0f0f0 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #f0f0f0 75%),
+    linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  animation: loading-pattern 1s linear infinite;
+}
+
+@keyframes loading-pattern {
+  0% {
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  }
+  100% {
+    background-position: 20px 20px, 20px 30px, 30px 10px, 10px 20px;
+  }
+}
+
+.feed-video[data-loading="true"]::after {
+  content: "Carregando vídeo...";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  z-index: 10;
+}
+
+/* Seeking state */
+.feed-video[data-seeking="true"] {
+  opacity: 0.8;
+}
+
+.feed-video[data-seeking="true"]::before {
+  content: "⏩";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 24px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Video controls enhancement */
+.feed-video::-webkit-media-controls-panel {
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+}
+
+.feed-video::-webkit-media-controls-current-time-display,
+.feed-video::-webkit-media-controls-time-remaining-display {
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Video indicator styles */
+.video-indicator {
+  animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+/* Video error overlay */
+.video-error-overlay {
+  background: rgba(231, 76, 60, 0.95);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+  margin: 10px 0;
+  border: 2px solid #c0392b;
+}
+
+.video-error-overlay .error-content h4 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.video-error-overlay .error-content p {
+  margin: 10px 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.video-error-overlay .error-content button {
+  background: #256d4a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+  transition: background 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.video-error-overlay .error-content button:hover {
+  background: #1e5a3a;
+}
+
+.video-error-overlay .error-content button:active {
+  transform: translateY(1px);
+}
+
+/* Responsive video container */
+.video-container {
+  position: relative;
+  width: 100%;
+  margin: 15px 0;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .feed-video {
+    border-radius: 4px;
+    margin: 8px 0;
+  }
+
+  .feed-video:hover {
+    transform: none; /* Disable hover effects on touch devices */
+  }
+
+  .video-indicator {
+    font-size: 12px;
+    padding: 4px 8px;
+    top: 5px;
+    right: 5px;
+  }
+
+  .video-error-overlay {
+    padding: 15px;
+    font-size: 14px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .feed-video[data-loading="true"] {
+    background: linear-gradient(45deg, #333 25%, transparent 25%),
+      linear-gradient(-45deg, #333 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #333 75%),
+      linear-gradient(-45deg, transparent 75%, #333 75%);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .feed-video:focus {
+    outline: 4px solid #000;
+  }
+
+  .video-indicator {
+    background: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .feed-video {
+    transition: none;
+  }
+
+  .feed-video:hover {
+    transform: none;
+  }
+
+  .video-indicator {
+    animation: none;
+  }
+
+  .loading-pattern {
+    animation: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .feed-video {
+    display: none;
+  }
+
+  .feed-video::after {
+    content: "Vídeo: " attr(src);
+    display: block;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+  }
+}

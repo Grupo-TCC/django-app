@@ -18,30 +18,8 @@
 		<div class="nav-left">
 			<a href="{% url 'feed:artigos' %}"><img src="{% static 'assets/img/logo.png' %}" class="logo"></a>
 			<ul>
-								<li style="position:relative;">
-									<img src="{% static 'assets/img/notification.png' %}" id="notification-bell" style="cursor:pointer;">
-									  <div id="notification-dropdown" style="display:none; position:absolute; top:40px; left:50%; transform:translateX(-50%); background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.12); border-radius:8px; min-width:280px; z-index:200;">
-										<div style="padding:14px 18px; border-bottom:1px solid #e0e0e0; font-weight:600; color:#256d4a;">Notificações</div>
-										<div style="max-height:260px; overflow-y:auto;">
-											<!-- Notificações de pessoas seguidas -->
-											<div style="padding:12px 18px; border-bottom:1px solid #f0f0f0;">
-												<span style="font-weight:500; color:#256d4a;">Atividades das pessoas que você segue</span>
-												<ul style="margin:8px 0 0 0; padding:0; list-style:none;">
-													<li style="color:#555; font-size:0.97em; margin-bottom:6px;">Maria Silva publicou um artigo novo.</li>
-													<li style="color:#555; font-size:0.97em; margin-bottom:6px;">João Souza entrou em uma comunidade.</li>
-												</ul>
-											</div>
-											<!-- Notificações de mensagens recebidas -->
-											<div style="padding:12px 18px;">
-												<span style="font-weight:500; color:#256d4a;">Mensagens recebidas</span>
-												<ul style="margin:8px 0 0 0; padding:0; list-style:none;">
-													<li style="color:#555; font-size:0.97em; margin-bottom:6px;">Nova mensagem de Ana Paula.</li>
-													<li style="color:#555; font-size:0.97em; margin-bottom:6px;">Carlos enviou um arquivo.</li>
-												</ul>
-											</div>
-										</div>
-									</div>
-								</li>
+
+
 				<li><a href="{% url 'feed:mensagens' %}"><img src="{% static 'assets/img/inbox.png' %}" alt="Mensagens" style="cursor:pointer;"></a></li>
 			</ul>
 		</div>
@@ -90,23 +68,7 @@
 	</nav>
 	<!-- Conteúdo da página community_detail -->
 			<script src="{% static 'js/home.js' %}"></script>
-			<script>
-				document.addEventListener("DOMContentLoaded", function() {
-					var bell = document.getElementById('notification-bell');
-					var dropdown = document.getElementById('notification-dropdown');
-					if (bell && dropdown) {
-						bell.addEventListener('click', function(e) {
-							e.stopPropagation();
-							dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-						});
-						document.addEventListener('mousedown', function(e) {
-							if (dropdown.style.display === 'block' && !dropdown.contains(e.target) && e.target !== bell) {
-								dropdown.style.display = 'none';
-							}
-						});
-					}
-				});
-			</script>
+
 		<script>
 			// Abas de mensagens e arquivos
 			document.addEventListener("DOMContentLoaded", function() {
@@ -157,29 +119,90 @@
 						<div style="margin-top:32px;">
 							<div style="display:flex; justify-content:center; gap:16px;">
 								<button id="tab-messages" class="tab-btn active" style="padding:10px 24px; border:none; border-radius:8px 8px 0 0; background:#256d4a; color:#fff; font-weight:600; cursor:pointer;">Mensagens</button>
-								<button id="tab-files" class="tab-btn" style="padding:10px 24px; border:none; border-radius:8px 8px 0 0; background:#eafaf1; color:#256d4a; font-weight:600; cursor:pointer;">Compartilhamento de Arquivos</button>
+								<button id="tab-files" class="tab-btn" style="padding:10px 24px; border:none; border-radius:8px 8px 0 0; background:#eafaf1; color:#256d4a; font-weight:600; cursor:pointer;">Arquivos</button>
 							</div>
 							<div id="tab-content-messages" class="tab-content" style="background:#fafafa; border-radius:0 0 8px 8px; box-shadow:0 2px 8px rgba(0,0,0,0.05); padding:24px;">
 											<!-- Conteúdo de mensagens entre membros -->
 											<h4 style="color:#256d4a; margin-bottom:12px;">Mensagens entre membros</h4>
+											{% if error %}
+												<div style="background:#ffebee; color:#c62828; padding:12px; border-radius:8px; margin-bottom:16px; border-left:4px solid #c62828;">
+													{{ error }}
+												</div>
+											{% endif %}
 											<div class="messages-main" style="background:#fff; border-radius:8px; min-height:300px; box-shadow:0 2px 8px rgba(0,0,0,0.07); display:flex; overflow:hidden; margin:0 auto; max-width:600px;">
 															<div class="chat-area" style="flex:1; display:flex; flex-direction:column; background:#fff; min-width:0; min-height:500px;">
-													<div class="chat-messages" style="flex:1; padding:22px; overflow-y:auto; background:#fff; display:flex; flex-direction:column; gap:12px;">
-																		<!-- Mensagens fictícias para exemplo -->
-																		<div style="display:flex; flex-direction:column; align-items:flex-start;">
-																			<span style="font-size:0.97em; color:#256d4a; font-weight:600; margin-bottom:2px;">Maria Silva</span>
-																			<div class="message" style="max-width:70%; padding:10px 16px; border-radius:18px; font-size:1em; background:#eafaf1; color:#222; align-self:flex-start; box-shadow:0 1px 3px rgba(0,0,0,0.04);">Olá comunidade! 👋</div>
+													<div class="chat-messages" id="chat-messages" style="flex:1; padding:22px; overflow-y:auto; background:#fff; display:flex; flex-direction:column; gap:12px; max-height:400px;">
+														{% if community_messages %}
+															{% for message in community_messages %}
+																{% if message.user == request.user %}
+																	<!-- My message -->
+																	<div style="display:flex; flex-direction:column; align-items:flex-end;">
+																		<div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+																			<small style="font-size:0.85em; color:#666;">{{ message.created_at|date:"H:i" }}</small>
+																			<span style="font-size:0.97em; color:#256d4a; font-weight:600;">Você</span>
 																		</div>
-																		<div class="message me" style="max-width:70%; padding:10px 16px; border-radius:18px; font-size:1em; background:#256d4a; color:#fff; align-self:flex-end; box-shadow:0 1px 3px rgba(0,0,0,0.04);">Bem-vindo ao grupo!</div>
-																		<div style="display:flex; flex-direction:column; align-items:flex-start;">
-																			<span style="font-size:0.97em; color:#256d4a; font-weight:600; margin-bottom:2px;">João Souza</span>
-																			<div class="message" style="max-width:70%; padding:10px 16px; border-radius:18px; font-size:1em; background:#eafaf1; color:#222; align-self:flex-start; box-shadow:0 1px 3px rgba(0,0,0,0.04);">Aqui podemos trocar ideias e arquivos.</div>
+																		<div class="message me" style="max-width:70%; padding:10px 16px; border-radius:18px; font-size:1em; background:#256d4a; color:#fff; align-self:flex-end; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+																			{% if message.body %}
+																				{{ message.body }}
+																			{% endif %}
+																			{% if message.pdf %}
+																				<div style="margin-top:8px;">
+																					<a href="{{ message.pdf.url }}" target="_blank" style="color:#fff; text-decoration:underline;">
+																						{% if message.file_type == '.pdf' %}📄
+																						{% elif message.file_type in '.jpg,.jpeg,.png,.gif' %}🖼️
+																						{% elif message.file_type in '.doc,.docx' %}📄
+																						{% else %}📎{% endif %} {{ message.filename }}
+																					</a>
+																				</div>
+																			{% endif %}
 																		</div>
+																	</div>
+																{% else %}
+																	<!-- Other user's message -->
+																	<div style="display:flex; flex-direction:column; align-items:flex-start;">
+																		<div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+																			<span style="font-size:0.97em; color:#256d4a; font-weight:600;">{{ message.user.fullname }}</span>
+																			<small style="font-size:0.85em; color:#666;">{{ message.created_at|date:"H:i" }}</small>
+																		</div>
+																		<div class="message" style="max-width:70%; padding:10px 16px; border-radius:18px; font-size:1em; background:#eafaf1; color:#222; align-self:flex-start; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+																			{% if message.body %}
+																				{{ message.body }}
+																			{% endif %}
+																			{% if message.pdf %}
+																				<div style="margin-top:8px;">
+																					<a href="{{ message.pdf.url }}" target="_blank" style="color:#256d4a; text-decoration:underline;">
+																						{% if message.file_type == '.pdf' %}📄
+																						{% elif message.file_type in '.jpg,.jpeg,.png,.gif' %}🖼️
+																						{% elif message.file_type in '.doc,.docx' %}📄
+																						{% else %}📎{% endif %} {{ message.filename }}
+																					</a>
+																				</div>
+																			{% endif %}
+																		</div>
+																	</div>
+																{% endif %}
+															{% endfor %}
+														{% else %}
+															<div style="text-align:center; color:#888; padding:40px;">
+																<p>Seja o primeiro a enviar uma mensagem nesta comunidade! 💬</p>
+															</div>
+														{% endif %}
 													</div>
 													<div class="chat-input-area" style="padding:16px 22px; border-top:1px solid #e0e0e0; background:#fafafa;">
-														<form style="display:flex; gap:10px;">
-															<input type="text" placeholder="Digite uma mensagem..." style="flex:1; padding:10px 16px; border-radius:18px; border:1px solid #e0e0e0; font-size:1em; outline:none;">
-															<button type="submit" style="background:#256d4a; color:#fff; border:none; border-radius:18px; padding:10px 22px; font-weight:600; cursor:pointer;">Enviar</button>
+														<form id="message-form" method="post" enctype="multipart/form-data" style="display:flex; gap:10px; align-items:center;">
+															{% csrf_token %}
+															<input type="hidden" name="community_id" value="{{ community.id }}">
+															<input type="text" name="message_text" id="message-input" placeholder="Digite uma mensagem..." style="flex:1; padding:10px 16px; border-radius:18px; border:1px solid #e0e0e0; font-size:1em; outline:none;">
+															
+															<!-- File upload button -->
+															<label for="file-input" style="cursor:pointer; padding:8px; border-radius:50%; background:#f0f0f0; display:flex; align-items:center; justify-content:center; width:36px; height:36px; transition:background 0.2s;">
+																<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#256d4a" stroke-width="2">
+																	<path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.64 16.2a2 2 0 0 1-2.83-2.83l8.49-8.49"/>
+																</svg>
+															</label>
+															<input type="file" id="file-input" name="message_file" style="display:none;" accept="image/*,application/pdf,.doc,.docx,.txt">
+															
+															<button type="submit" style="background:#256d4a; color:#fff; border:none; border-radius:18px; padding:10px 22px; font-weight:600; cursor:pointer; transition:background 0.2s;" onmouseover="this.style.background='#1e5a3a'" onmouseout="this.style.background='#256d4a'">Enviar</button>
 														</form>
 													</div>
 												</div>
@@ -187,8 +210,69 @@
 							</div>
 							<div id="tab-content-files" class="tab-content" style="display:none; background:#fafafa; border-radius:0 0 8px 8px; box-shadow:0 2px 8px rgba(0,0,0,0.05); padding:24px;">
 								<!-- Conteúdo de compartilhamento de arquivos -->
-								<h4 style="color:#256d4a; margin-bottom:12px;">Compartilhamento de Arquivos</h4>
-								<div style="min-height:80px; color:#888;">(Compartilhar arquivos PDF, docs, etc.)</div>
+								<h4 style="color:#256d4a; margin-bottom:12px;">Arquivos Compartilhados</h4>
+								
+								<div class="messages-main" style="background:#fff; border-radius:8px; min-height:300px; box-shadow:0 2px 8px rgba(0,0,0,0.07); display:flex; overflow:hidden; margin:0 auto; max-width:600px;">
+									<div class="chat-area" style="flex:1; display:flex; flex-direction:column; background:#fff; min-width:0; min-height:400px;">
+										<div class="chat-messages" style="flex:1; padding:22px; overflow-y:auto; background:#fff; display:flex; flex-direction:column; gap:12px; max-height:400px;">
+											{% if community_files %}
+												{% for message in community_files %}
+													{% if message.pdf %}
+														{% if message.user == request.user %}
+															<!-- My file message -->
+															<div style="display:flex; flex-direction:column; align-items:flex-end;">
+																<div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+																	<small style="font-size:0.85em; color:#666;">{{ message.created_at|date:"H:i" }}</small>
+																	<span style="font-size:0.97em; color:#256d4a; font-weight:600;">Você</span>
+																</div>
+																<div class="message me" style="max-width:70%; padding:10px 16px; border-radius:18px; font-size:1em; background:#256d4a; color:#fff; align-self:flex-end; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+																	{% if message.body %}
+																		{{ message.body }}
+																	{% endif %}
+																	<div style="margin-top:8px;">
+																		<a href="{{ message.pdf.url }}" target="_blank" style="color:#fff; text-decoration:underline;">
+																			{% if message.file_type == '.pdf' %}📄
+																			{% elif message.file_type in '.jpg,.jpeg,.png,.gif' %}🖼️
+																			{% elif message.file_type in '.doc,.docx' %}📄
+																			{% else %}📎{% endif %} {{ message.filename }}
+																		</a>
+																	</div>
+																</div>
+															</div>
+														{% else %}
+															<!-- Other user's file message -->
+															<div style="display:flex; flex-direction:column; align-items:flex-start;">
+																<div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+																	<span style="font-size:0.97em; color:#256d4a; font-weight:600;">{{ message.user.fullname }}</span>
+																	<small style="font-size:0.85em; color:#666;">{{ message.created_at|date:"H:i" }}</small>
+																</div>
+																<div class="message" style="max-width:70%; padding:10px 16px; border-radius:18px; font-size:1em; background:#eafaf1; color:#222; align-self:flex-start; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+																	{% if message.body %}
+																		{{ message.body }}
+																	{% endif %}
+																	<div style="margin-top:8px;">
+																		<a href="{{ message.pdf.url }}" target="_blank" style="color:#256d4a; text-decoration:underline;">
+																			{% if message.file_type == '.pdf' %}📄
+																			{% elif message.file_type in '.jpg,.jpeg,.png,.gif' %}🖼️
+																			{% elif message.file_type in '.doc,.docx' %}📄
+																			{% else %}�{% endif %} {{ message.filename }}
+																		</a>
+																	</div>
+																</div>
+															</div>
+														{% endif %}
+													{% endif %}
+												{% endfor %}
+											{% else %}
+												<div style="text-align: center; color: #888; padding: 40px;">
+													<div style="font-size: 48px; margin-bottom: 16px;">📁</div>
+													<div style="font-size: 1.1em; font-weight: 600; margin-bottom: 8px;">Nenhum arquivo compartilhado ainda</div>
+													<div style="font-size: 0.95em;">Os arquivos enviados pelos membros aparecerão aqui</div>
+												</div>
+											{% endif %}
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -243,6 +327,64 @@
 		</div>
 		<script src="{% static 'js/home.js' %}"></script>
 		<script>
+			// Message form functionality
+			document.addEventListener("DOMContentLoaded", function() {
+				const messageForm = document.getElementById('message-form');
+				const messageInput = document.getElementById('message-input');
+				const chatMessages = document.getElementById('chat-messages');
+				const fileInput = document.getElementById('file-input');
+				
+				// Auto-scroll to bottom of messages
+				function scrollToBottom() {
+					chatMessages.scrollTop = chatMessages.scrollHeight;
+				}
+				
+				// Initial scroll to bottom
+				scrollToBottom();
+				
+				// File input change handler
+				fileInput.addEventListener('change', function() {
+					const fileName = this.files[0] ? this.files[0].name : '';
+					if (fileName) {
+						messageInput.placeholder = `Arquivo selecionado: ${fileName}`;
+						messageInput.style.fontStyle = 'italic';
+						messageInput.style.color = '#256d4a';
+					} else {
+						messageInput.placeholder = 'Digite uma mensagem...';
+						messageInput.style.fontStyle = 'normal';
+						messageInput.style.color = '';
+					}
+				});
+				
+				// Form submission handler
+				if (messageForm) {
+					messageForm.addEventListener('submit', function(e) {
+						const messageText = messageInput.value.trim();
+						const selectedFile = fileInput.files[0];
+						
+						if (!messageText && !selectedFile) {
+							e.preventDefault();
+							alert('Por favor, digite uma mensagem ou selecione um arquivo.');
+							return;
+						}
+						
+						// Let the form submit normally for now
+						// Could be enhanced with AJAX later
+					});
+				}
+				
+				// Enhanced file upload icon hover effect
+				const fileLabel = document.querySelector('label[for="file-input"]');
+				if (fileLabel) {
+					fileLabel.addEventListener('mouseenter', function() {
+						this.style.background = '#e0e0e0';
+					});
+					fileLabel.addEventListener('mouseleave', function() {
+						this.style.background = '#f0f0f0';
+					});
+				}
+			});
+			
 			document.addEventListener("DOMContentLoaded", function() {
 				var inviteBtn = document.getElementById('invite-btn');
 				var inviteList = document.getElementById('invite-list');
@@ -268,27 +410,3 @@
 		</script>
 </body>
 </html>
-		<script>
-			document.addEventListener("DOMContentLoaded", function() {
-				var inviteBtn = document.getElementById('invite-btn');
-				var inviteList = document.getElementById('invite-list');
-				var hasInvites = parseInt("{{ possible_invites|length }}");
-				inviteBtn.addEventListener('click', function() {
-					if (hasInvites > 0) {
-						inviteList.classList.toggle('show');
-						inviteList.style.display = inviteList.classList.contains('show') ? 'block' : 'none';
-					} else {
-						if (typeof toastr !== 'undefined') {
-							toastr.options = {
-								"closeButton": true,
-								"progressBar": true,
-								"positionClass": "toast-top-center"
-							};
-							toastr.info("Você não segue ninguém para convidar.");
-						} else {
-							alert("Você não segue ninguém para convidar.");
-						}
-					}
-				});
-			});
-		</script>

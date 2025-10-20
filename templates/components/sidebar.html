@@ -204,12 +204,12 @@
     <a
       href="{% url 'feed:media_post' %}"
       class="{% if request.resolver_match.url_name == 'media_post' %}active{% endif %}"
-      ><i class="bxr bx-light-bulb-on" style="margin-right:10px;"></i> Tradução de Conhecimento</a
+      ><img src="{% static 'assets/img/conhecimento.png' %}" /> Tradução de Conhecimento</a
     >
     <a
       href="{% url 'feed:produtos' %}"
       class="{% if request.resolver_match.url_name == 'produtos' %}active{% endif %}"
-      ><i class="bxr bx-swatch" style="margin-right:10px;"></i> Produtos</a
+      ><img src="{% static 'assets/img/produtos.png' %}" /> Produtos</a
     >
     <a
       href="{% url 'feed:conexao' %}"

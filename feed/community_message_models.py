@@ -6,26 +6,34 @@ class CommunityMessage(models.Model):
     community = models.ForeignKey(Community, on_delete=models.CASCADE, related_name='messages')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     body = models.TextField(help_text="Texto da mensagem.", blank=True)
-    pdf = models.FileField(upload_to='community_messages/pdfs/', blank=True, null=True)
+    pdf = models.FileField(upload_to='community_messages/', blank=True, null=True, verbose_name="Arquivo", help_text="Arquivos permitidos: PDF, imagens, documentos Word, arquivos de texto")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['created_at']
 
     def __str__(self):
-        return f"{self.user.fullname}: {self.body[:30]}{' [PDF]' if self.pdf else ''}"
+        return f"{self.user.fullname}: {self.body[:30]}{' [Arquivo]' if self.pdf else ''}"
     
     @property
-    def has_pdf(self):
-        """Check if message has a PDF attachment"""
+    def has_file(self):
+        """Check if message has a file attachment"""
         return bool(self.pdf)
     
     @property
-    def pdf_filename(self):
-        """Get the original filename of the PDF"""
+    def filename(self):
+        """Get the original filename of the attachment"""
         if self.pdf:
             import os
             return os.path.basename(self.pdf.name)
+        return None
+    
+    @property
+    def file_type(self):
+        """Get the file type/extension"""
+        if self.pdf:
+            import os
+            return os.path.splitext(self.pdf.name)[1].lower()
         return None
     
     @property

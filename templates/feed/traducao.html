@@ -9,6 +9,178 @@
     <title>Tradução de Conhecimento - Innovator</title>
     <link rel="stylesheet" href="{% static 'styles/home.css' %}" />
     <link rel="stylesheet" href="{% static 'styles/artigos.css' %}" />
+    
+    <!-- Video Auto-Pause Styles -->
+    <style>
+      .video-container {
+        position: relative;
+        max-width: 100%;
+        background: #000;
+        border-radius: 8px;
+        overflow: visible; /* Changed from hidden to allow controls */
+        margin: 10px 0;
+      }
+
+      video {
+        width: 100%;
+        height: auto;
+        display: block;
+        cursor: pointer;
+        border-radius: 8px;
+        /* Ensure controls are always visible */
+        -webkit-media-controls-panel: visible;
+      }
+
+      video:focus {
+        outline: 2px solid #007bff;
+        outline-offset: 2px;
+      }
+
+      /* Force controls to be always visible and interactive */
+      video[controls] {
+        -webkit-appearance: media-controls-background;
+        -webkit-media-controls: visible;
+      }
+
+      /* Enhanced video controls - Fix scrubbing/seeking */
+      video {
+        outline: none;
+      }
+
+      video::-webkit-media-controls {
+        display: flex !important;
+        opacity: 1 !important;
+      }
+
+      video::-webkit-media-controls-enclosure {
+        background: rgba(0, 0, 0, 0.3) !important;
+        border-radius: 6px;
+        padding: 8px !important;
+      }
+
+      video::-webkit-media-controls-panel {
+        background: transparent !important;
+        display: flex !important;
+        align-items: center !important;
+      }
+
+      video::-webkit-media-controls-play-button {
+        width: 40px !important;
+        height: 40px !important;
+        margin-right: 10px !important;
+        cursor: pointer !important;
+      }
+
+      /* Critical: Make timeline interactive and properly sized */
+      video::-webkit-media-controls-timeline-container {
+        height: 20px !important;
+        margin: 0 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        cursor: pointer !important;
+      }
+
+      video::-webkit-media-controls-timeline {
+        height: 8px !important;
+        width: 100% !important;
+        background: rgba(255, 255, 255, 0.3) !important;
+        border-radius: 4px !important;
+        cursor: pointer !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+      }
+
+      video::-webkit-media-controls-seek-back-button,
+      video::-webkit-media-controls-seek-forward-button {
+        width: 30px !important;
+        height: 30px !important;
+        cursor: pointer !important;
+      }
+
+      video::-webkit-media-controls-current-time-display,
+      video::-webkit-media-controls-time-remaining-display {
+        font-size: 12px !important;
+        color: white !important;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+        min-width: 40px !important;
+      }
+
+      video::-webkit-media-controls-volume-slider-container {
+        display: flex !important;
+        align-items: center !important;
+      }
+
+      video::-webkit-media-controls-volume-slider {
+        width: 60px !important;
+        height: 6px !important;
+        margin: 0 5px !important;
+        cursor: pointer !important;
+      }
+
+      /* Loading indicator */
+      .video-loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 14px;
+        pointer-events: none;
+      }
+
+      /* Firefox and other browsers */
+      video::-moz-media-controls {
+        opacity: 1 !important;
+      }
+
+      video::-moz-media-controls-panel {
+        background: rgba(0, 0, 0, 0.2) !important;
+      }
+
+      /* General video improvements for all browsers */
+      video {
+        background: transparent;
+        position: relative;
+      }
+
+      video:not([controls]) {
+        pointer-events: auto;
+      }
+
+      /* Ensure all browsers show controls properly */
+      video[controls]::-webkit-media-controls-panel {
+        display: flex !important;
+        opacity: 1 !important;
+      }
+
+      /* Mobile responsive */
+      @media (max-width: 768px) {
+        video::-webkit-media-controls-timeline {
+          height: 8px !important;
+        }
+        
+        video::-webkit-media-controls-play-button {
+          width: 35px !important;
+          height: 35px !important;
+        }
+
+        video {
+          width: 100% !important;
+          height: auto !important;
+        }
+      }
+
+      /* Ensure video controls work on touch devices */
+      @media (pointer: coarse) {
+        video::-webkit-media-controls-timeline-container {
+          height: 24px !important;
+        }
+
+        video::-webkit-media-controls-timeline {
+          height: 10px !important;
+        }
+      }
+    </style>
   </head>
   <body>
     {% include 'components/topbar.html' %}
@@ -362,6 +534,20 @@
           margin-top: 2px;
         }
 
+        /* Inline user meta (institution, cidade, estado) */
+        .user-meta {
+          display: flex;
+          gap: 6px;
+          align-items: center;
+          flex-wrap: wrap;
+        }
+        .user-meta small {
+          display: inline-block; /* ensure they sit inline inside flex */
+          margin: 0; /* reset margin since parent handles spacing */
+          color: #666;
+          font-size: 13px;
+        }
+
         .post-text {
           font-size: 16px;
           font-weight: 600;
@@ -470,6 +656,89 @@
         .file-preview-item video {
           max-width: 100%;
           max-height: 100px;
+          border-radius: 4px;
+        }
+
+        /* Enhanced video styles for auto-pause */
+        video.post-img {
+          width: 100%;
+          max-width: 100%;
+          height: auto;
+          border-radius: 8px;
+          background: #000;
+          position: relative;
+        }
+
+        /* Video loading state */
+        video.post-img:not([src]) {
+          background: #f0f0f0;
+          min-height: 200px;
+        }
+
+        /* Focus indicator for videos */
+        video.post-img:focus {
+          outline: 2px solid #256d4a;
+          outline-offset: 2px;
+        }
+
+        /* Smooth transitions for video interactions */
+        video.post-img {
+          transition: opacity 0.3s ease, transform 0.2s ease;
+        }
+
+        video.post-img:hover {
+          transform: scale(1.01);
+        }
+
+        /* Enhanced video controls styling */
+        video[data-seeking="true"] {
+          opacity: 0.8;
+        }
+
+        video:focus-visible {
+          outline: 3px solid #256d4a;
+          outline-offset: 2px;
+        }
+
+        /* Video error overlay */
+        .video-error-overlay {
+          background: rgba(0, 0, 0, 0.8);
+          color: white;
+          padding: 20px;
+          text-align: center;
+          border-radius: 8px;
+          margin: 10px 0;
+        }
+
+        .video-error-overlay .error-content h4 {
+          margin: 0 0 10px 0;
+          color: #ff6b6b;
+        }
+
+        .video-error-overlay .error-content button {
+          background: #256d4a;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 4px;
+          cursor: pointer;
+          margin-top: 10px;
+        }
+
+        .video-error-overlay .error-content button:hover {
+          background: #1e5a3a;
+        }
+
+        /* Loading indicator for videos */
+        video[data-loading="true"]::after {
+          content: "Carregando...";
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: rgba(0, 0, 0, 0.7);
+          color: white;
+          padding: 10px;
           border-radius: 4px;
         }
 
@@ -750,18 +1019,25 @@
                   <img src="{{ media.user.get_profile_picture_url }}" alt="{{ media.user.fullname }}">
                   <div>
                     <p>{{ media.user.fullname }}</p>
-                    {% if media.user.innovator_verification and media.user.innovator_verification.title %}
-                      <small>{{ media.user.innovator_verification.title }}</small>
-                    {% else %}
-                      <small>{{ media.user.research_area|default:"Pesquisador" }}</small>
-                    {% endif %}
-                    <small style="color: #666;">{{ media.created_at|date:"d/m/Y H:i" }}</small>
+                    <div class="user-meta">
+                      <small>{{ media.user.institution }},</small>
+                      <small>{{ media.user.cidade }},</small>
+                      <small>{{ media.user.estado }}</small>
+                    </div>
                   </div>
                 </div>
               </div>
               <p class="post-text">{{ media.title }}</p>
               {% if media.description %}
-                <p class="post-description">{{ media.description|truncatewords:30 }}</p>
+                <div class="post-description">
+                  {% if media.description|length > 220 %}
+                    <span class="desc-short">{{ media.description|slice:":220" }}...</span>
+                    <span class="desc-full" style="display: none;">{{ media.description }}</span>
+                    <button class="desc-toggle" onclick="toggleDesc(this); return false;" style="background: none; border: none; color: #28a745; cursor: pointer; padding: 0; margin-left: 4px;">mais</button>
+                  {% else %}
+                    <p>{{ media.description }}</p>
+                  {% endif %}
+                </div>
               {% endif %}
               
               <small style="color: #666; display: block; margin: 10px 0;">
@@ -775,56 +1051,56 @@
                   <img src="{{ media_file.media_file.url }}" alt="{{ media.title }}" class="post-img"
                        onclick="openMediaViewer('{{ media_file.media_file.url }}', 'image', '{{ media.title|escapejs }}')" style="cursor: pointer; margin-bottom: 10px;">
                 {% elif media_file.is_video %}
-                  <!-- Videos are always shown -->
-                  <video controls class="post-img" style="margin-bottom: 10px;">
+                  <!-- Videos with enhanced controls -->
+                  <video 
+                    controls 
+                    preload="metadata" 
+                    controlsList="nodownload" 
+                    class="post-img" 
+                    style="margin-bottom: 10px;"
+                    data-video-id="{{ media_file.id }}"
+                    playsinline>
                     <source src="{{ media_file.media_file.url }}" type="video/mp4">
+                    <source src="{{ media_file.media_file.url }}" type="video/webm">
                     <source src="{{ media_file.media_file.url }}" type="video/quicktime">
-                    Seu navegador não suporta o elemento de vídeo.
+                    <p>Seu navegador não suporta o elemento de vídeo. 
+                       <a href="{{ media_file.media_file.url }}" target="_blank">Baixar vídeo</a>
+                    </p>
                   </video>
                 {% elif media_file.is_document %}
+                  <!-- Show blocked/paid document info -->
                   {% if media.is_paid and not media.user_has_access and media.user != request.user %}
-                    <!-- Document is blocked - show blocked content like artigos.html -->
-                    <div class="document-preview post-img" style="padding: 20px; background: #f8f9fa; border-radius: 8px; text-align: center; border: 2px dashed #dee2e6; margin-bottom: 10px;">
-                      <div style="font-size: 48px; color: #6c757d; margin-bottom: 10px;">
-                        {% if media_file.media_file.name|lower|slice:"-4:" == ".pdf" %}
-                          📄
-                        {% else %}
-                          📊
-                        {% endif %}
-                      </div>
-                      <p style="margin: 0; font-weight: 500; color: #495057;">{{ media_file.media_file.name }}</p>
-                      <div style="margin-top: 10px;">
-                        <span style="color:#888;cursor:not-allowed;">Documento Bloqueado</span>
-                        <span class="article-price" style="color:#28a745; font-weight:bold; margin-left:8px;">R$ {{ media.price }}</span>
-                        <br>
-                        <button class="pay-btn" onclick="showPayModal('{{ media.title|escapejs }}', '{{ media.price }}')">Pagar</button>
-                        <button class="access-btn" onclick="showAccessModal({{ media.id }})">Pedir acesso</button>
+                    <div style="margin: 10px 0;">
+                      <span style="color:#888;cursor:not-allowed;">PDF Bloqueado</span>
+                      <span style="color:#28a745; font-weight:bold; margin-left:8px;">R$ {{ media.price }}</span>
+                      <div style="margin-top: 8px;">
+                        <button class="pay-btn" onclick="showPayModal('{{ media.title|escapejs }}', '{{ media.price }}')" style="padding: 8px 16px; background-color: #256d4a; color: white; border: none; border-radius: 4px; font-size: 14px; margin-right: 8px;">Pagar</button>
+                        <button class="access-btn" onclick="showAccessModal({{ media.id }})" style="padding: 8px 16px; background-color: #6c757d; color: white; border: none; border-radius: 4px; font-size: 14px;">Pedir acesso</button>
                       </div>
                     </div>
-                  {% else %}
-                      <!-- Document is accessible -->
-                      <div class="document-preview post-img" style="padding: 20px; background: #f8f9fa; border-radius: 8px; text-align: center; border: 2px dashed #dee2e6; margin-bottom: 10px;">
-                        <div style="font-size: 48px; color: #6c757d; margin-bottom: 10px;">
-                          {% if media_file.media_file.name|lower|slice:"-4:" == ".pdf" %}
-                            📄
-                          {% else %}
-                            📊
-                          {% endif %}
-                        </div>
-                        <p style="margin: 0; font-weight: 500; color: #495057;">{{ media_file.media_file.name }}</p>
-                        <div style="margin-top: 10px;">
-                          <a href="{{ media_file.media_file.url }}" target="_blank" class="activity-link" style="display: inline-block; padding: 8px 16px; background-color: #256d4a; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;">
-                            📄 Ver PDF
-                          </a>
-                        </div>
-                        </a>
-                      </div>
-                    {% endif %}
                   {% endif %}
-                {% endfor %}
-
+                {% endif %}
+              {% endfor %}
+              
+              <!-- PDF Activity (if document exists and accessible) -->
+              {% for media_file in media.files.all %}
+                {% if media_file.is_document %}
+                  {% if not media.is_paid or media.user_has_access or media.user == request.user %}
+                    <div class="post-activity">
+                      {% if media_file.get_file_url %}
+                      <a href="{{ media_file.get_file_url }}" target="_blank" class="activity-link" style="display: inline-block; padding: 8px 16px; background-color: #256d4a; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;">
+                        Ver PDF
+                      </a>
+                      {% else %}
+                      <span style="color: #888; font-style: italic;">PDF não disponível</span>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+              
               <!-- Post Interaction Buttons -->
-              <div class="post-activity">
+              <div class="post-activity" style="margin-top: 15px;">
                 <div class="activity-icons">
                   <div class="like-btn" data-media-id="{{ media.id }}" role="button" tabindex="0">
                     <img id="like-icon-{{ media.id }}" src="{% static 'assets/img/like.png' %}" alt="like" 
@@ -860,9 +1136,7 @@
         </div>
       </div>
 
-      <div class="right-sidebar">
-        <!-- Conteúdo da sidebar direita pode ser adicionado aqui -->
-      </div>
+      {% include 'components/convo_rightbar.html' %}
     </div>
 
     <!-- Media Viewer Modal -->
@@ -880,7 +1154,271 @@
 
     <script src="{% static 'js/home.js' %}"></script>
     <script src="{% static 'js/artigos.js' %}"></script>
+
+    <!-- Video Auto-Pause Functionality -->
     <script>
+      // Simple and effective video auto-pause
+      class VideoAutoPause {
+        constructor() {
+          this.videos = [];
+          this.scrollTimeout = null;
+          this.init();
+        }
+
+        init() {
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.setup());
+          } else {
+            this.setup();
+          }
+        }
+
+        setup() {
+          this.findVideos();
+          this.bindEvents();
+          this.setupIntersectionObserver();
+          this.enhanceVideoControls();
+          this.checkVisibility(); // Initial check
+          console.log('✅ Video auto-pause initialized with', this.videos.length, 'videos');
+        }
+
+        setupIntersectionObserver() {
+          // Use Intersection Observer as primary method for better performance
+          if ('IntersectionObserver' in window) {
+            this.observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                const video = entry.target;
+                const isVisible = entry.isIntersecting;
+                const intersectionRatio = entry.intersectionRatio;
+                
+                // Pause if video is less than 20% visible and playing
+                if (intersectionRatio < 0.2 && !video.paused && !video.ended) {
+                  video.pause();
+                  console.log('🛑 IntersectionObserver: Auto-paused video (< 20% visible)');
+                }
+              });
+            }, {
+              threshold: [0, 0.2, 0.5, 1.0] // Multiple thresholds for better detection
+            });
+
+            // Observe all videos
+            this.videos.forEach(video => {
+              this.observer.observe(video);
+            });
+
+            console.log('👁️ IntersectionObserver setup complete');
+          } else {
+            console.log('⚠️ IntersectionObserver not supported, using scroll fallback');
+          }
+        }
+
+        findVideos() {
+          // Find all video elements in the page
+          this.videos = Array.from(document.querySelectorAll('video'));
+          console.log('🎥 Found videos:', this.videos.length);
+        }
+
+        enhanceVideoControls() {
+          this.videos.forEach((video, index) => {
+            // Ensure video has proper attributes for better control
+            video.preload = 'metadata';
+            video.playsinline = true;
+            
+            // Add keyboard shortcuts for better control
+            video.addEventListener('keydown', (e) => {
+              switch(e.key) {
+                case ' ':
+                case 'k':
+                  e.preventDefault();
+                  video.paused ? video.play() : video.pause();
+                  break;
+                case 'ArrowLeft':
+                  e.preventDefault();
+                  video.currentTime = Math.max(0, video.currentTime - 10);
+                  break;
+                case 'ArrowRight':
+                  e.preventDefault();
+                  video.currentTime = Math.min(video.duration, video.currentTime + 10);
+                  break;
+                case 'j':
+                  e.preventDefault();
+                  video.currentTime = Math.max(0, video.currentTime - 10);
+                  break;
+                case 'l':
+                  e.preventDefault();
+                  video.currentTime = Math.min(video.duration, video.currentTime + 10);
+                  break;
+                case 'm':
+                  e.preventDefault();
+                  video.muted = !video.muted;
+                  break;
+                case 'f':
+                  e.preventDefault();
+                  if (video.requestFullscreen) {
+                    video.requestFullscreen();
+                  } else if (video.webkitRequestFullscreen) {
+                    video.webkitRequestFullscreen();
+                  }
+                  break;
+              }
+            });
+
+            // Ensure video can be focused for keyboard control
+            video.tabIndex = 0;
+
+            // Fix seeking issues by ensuring proper metadata loading
+            video.addEventListener('loadedmetadata', () => {
+              console.log(`📊 Video ${index + 1} metadata loaded - Duration: ${video.duration}s`);
+            });
+
+            // Add click-to-seek functionality as backup
+            video.addEventListener('click', (e) => {
+              if (video.controls) {
+                // Let native controls handle it
+                return;
+              }
+              
+              // Custom click-to-seek if controls are hidden
+              const rect = video.getBoundingClientRect();
+              const clickX = e.clientX - rect.left;
+              const videoWidth = rect.width;
+              const clickRatio = clickX / videoWidth;
+              
+              if (video.duration && !isNaN(video.duration)) {
+                video.currentTime = clickRatio * video.duration;
+              }
+            });
+
+            console.log(`🎛️ Enhanced controls for video ${index + 1}`);
+          });
+        }
+
+        bindEvents() {
+          // Immediate scroll detection for fast scrolling
+          window.addEventListener('scroll', () => {
+            this.checkVisibility(); // Immediate check
+          }, { passive: true });
+
+          // Throttled scroll event as backup
+          window.addEventListener('scroll', () => {
+            clearTimeout(this.scrollTimeout);
+            this.scrollTimeout = setTimeout(() => {
+              console.log('📜 Throttled scroll check...');
+              this.checkVisibility();
+            }, 100);
+          }, { passive: true });
+
+          // Window events
+          window.addEventListener('resize', () => {
+            console.log('📏 Window resized, checking visibility...');
+            this.checkVisibility();
+          });
+          
+          window.addEventListener('blur', () => {
+            console.log('👁️ Window lost focus - pausing all videos');
+            this.pauseAllVideos();
+          });
+          
+          window.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+              console.log('🙈 Tab hidden - pausing all videos');
+              this.pauseAllVideos();
+            }
+          });
+
+          console.log('🔗 Scroll and window events bound successfully');
+        }
+
+        checkVisibility() {
+          let pausedCount = 0;
+          this.videos.forEach((video, index) => {
+            const isOutOfView = this.isVideoOutOfView(video);
+            const isPlaying = !video.paused && !video.ended;
+            
+            if (isOutOfView && isPlaying) {
+              video.pause();
+              pausedCount++;
+              console.log(`🛑 Auto-paused video ${index + 1} (scrolled out of view)`);
+            }
+          });
+          
+          if (pausedCount > 0) {
+            console.log(`⏹️ Total paused: ${pausedCount} video(s)`);
+          }
+        }
+
+        isVideoOutOfView(video) {
+          const rect = video.getBoundingClientRect();
+          const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+          const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+          
+          // More generous threshold - pause when 80% of video is out of view
+          const threshold = 0.2;
+          const videoHeight = rect.height;
+          const videoWidth = rect.width;
+          
+          const verticallyOutOfView = (
+            rect.bottom < (windowHeight * threshold) ||
+            rect.top > (windowHeight * (1 - threshold))
+          );
+          
+          const horizontallyOutOfView = (
+            rect.right < (windowWidth * threshold) ||
+            rect.left > (windowWidth * (1 - threshold))
+          );
+          
+          return verticallyOutOfView || horizontallyOutOfView;
+        }
+
+        pauseAllVideos() {
+          this.videos.forEach(video => {
+            if (!video.paused) {
+              video.pause();
+              console.log('⏸️ Paused video');
+            }
+          });
+        }
+
+        // Refresh video list (for dynamically added videos)
+        refresh() {
+          // Disconnect existing observer
+          if (this.observer) {
+            this.observer.disconnect();
+          }
+          
+          this.findVideos();
+          this.setupIntersectionObserver();
+          this.checkVisibility();
+          console.log('🔄 Video auto-pause refreshed');
+        }
+      }
+
+      // Initialize video auto-pause
+      const videoAutoPause = new VideoAutoPause();
+      
+      // Make it globally accessible for debugging
+      window.videoAutoPause = videoAutoPause;
+    </script>
+
+    <script>
+      // Description toggle functionality  
+      function toggleDesc(btn) {
+        var container = btn.closest(".post-description");
+        var shortDesc = container.querySelector(".desc-short");
+        var fullDesc = container.querySelector(".desc-full");
+        if (shortDesc.style.display !== "none") {
+          shortDesc.style.display = "none";
+          fullDesc.style.display = "inline";
+          btn.textContent = "menos";
+          btn.style.color = "#28a745";
+        } else {
+          shortDesc.style.display = "inline";
+          fullDesc.style.display = "none";
+          btn.textContent = "mais";
+          btn.style.color = "#28a745";
+        }
+      }
+      
       // Price field toggle functionality
       function togglePriceField() {
         var radios = document.getElementsByName("payment_type");
@@ -1322,8 +1860,14 @@
           const reader = new FileReader();
           reader.onload = function(e) {
             previewItem.innerHTML = `
-              <video controls>
+              <video 
+                controls 
+                preload="metadata" 
+                controlsList="nodownload" 
+                playsinline
+                style="max-width: 100%; height: auto;">
                 <source src="${e.target.result}" type="${file.type}">
+                <p>Não foi possível carregar o vídeo.</p>
               </video>
               <div class="file-name">${fileName}</div>
               <div class="file-size">${fileSize}</div>

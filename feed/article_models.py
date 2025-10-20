@@ -28,3 +28,18 @@ class Article(models.Model):
     
     def get_research_area_display(self):
         return dict(RESEARCH_AREA_CHOICES).get(self.research_area, 'Desconhecida')
+    
+    def get_pdf_url(self):
+        """Return the URL of the PDF file if it exists"""
+        if self.pdf:
+            # Check if the file actually exists on disk
+            try:
+                if self.pdf.storage.exists(self.pdf.name):
+                    return self.pdf.url
+                else:
+                    # File doesn't exist (maybe moved to iCloud), return None
+                    return None
+            except:
+                # Any error accessing the file, return None
+                return None
+        return None

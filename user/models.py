@@ -54,7 +54,16 @@ class User(AbstractUser):
 
     def get_profile_picture_url(self):
         if self.profile_picture:
-            return self.profile_picture.url
+            # Check if the file actually exists on disk
+            try:
+                if self.profile_picture.storage.exists(self.profile_picture.name):
+                    return self.profile_picture.url
+                else:
+                    # File doesn't exist (maybe moved to iCloud), return default
+                    return settings.STATIC_URL + "assets/img/no_pic.jpg"
+            except:
+                # Any error accessing the file, return default
+                return settings.STATIC_URL + "assets/img/no_pic.jpg"
         return settings.STATIC_URL + "assets/img/no_pic.jpg"
     
     email_verified = models.BooleanField(default=False)

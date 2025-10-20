@@ -24,34 +24,49 @@ def community_detail(request, community_id):
 
     # Message posting logic
     if request.method == 'POST':
-        message = request.POST.get('message', '').strip()
-        pdf_file = request.FILES.get('pdf')
-        if pdf_file and pdf_file.content_type != 'application/pdf':
-            # Only allow PDF files
-            return render(request, 'feed/community_detail.html', {
-                'community': community,
-                'messages': community.messages.select_related('user').all(),
-                'possible_invites': possible_invites,
-                'error': 'Apenas arquivos PDF são permitidos.'
-            })
-        if message or pdf_file:
+        message_text = request.POST.get('message_text', '').strip()
+        message_file = request.FILES.get('message_file')
+        
+        # Validate file type if provided
+        if message_file:
+            allowed_types = ['application/pdf', 'image/jpeg', 'image/png', 'image/gif', 
+                           'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                           'text/plain']
+            if message_file.content_type not in allowed_types:
+                return render(request, 'feed/community_detail.html', {
+                    'community': community,
+                    'community_messages': community.messages.select_related('user').all(),
+                    'possible_invites': User.objects.filter(id__in=request.user.following.values_list('following_id', flat=True)).exclude(id__in=community.members.values_list('id', flat=True)),
+                    'error': 'Apenas arquivos PDF, imagens, documentos Word e arquivos de texto são permitidos.'
+                })
+        
+        # Create message if there's text or file
+        if message_text or message_file:
             CommunityMessage.objects.create(
                 community=community,
                 user=request.user,
-                body=message,
-                pdf=pdf_file if pdf_file else None
+                body=message_text,
+                pdf=message_file if message_file else None
             )
         return redirect('feed:community_detail', community_id=community.id)
 
     # Fetch messages for this community
     messages = community.messages.select_related('user').all()
+    
+    # Get messages that have files for the files tab
+    messages_with_files = messages.filter(pdf__isnull=False).order_by('-created_at')
+    
     # For inviting members, get users the current user follows who are not already members
-    following_ids = request.user.following.values_list('following_id', flat=True)
-    possible_invites = User.objects.filter(id__in=following_ids).exclude(id__in=community.members.values_list('id', flat=True))
+    try:
+        following_ids = request.user.following.values_list('following_id', flat=True)
+        possible_invites = User.objects.filter(id__in=following_ids).exclude(id__in=community.members.values_list('id', flat=True))
+    except Exception:
+        possible_invites = []
 
     return render(request, 'feed/community_detail.html', {
         'community': community,
-        'messages': messages,
+        'community_messages': messages,
+        'community_files': messages_with_files,
         'possible_invites': possible_invites,
         'profile_user': request.user,
     })

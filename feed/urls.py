@@ -27,4 +27,6 @@ urlpatterns = [
     path("media/<int:media_id>/comment/", views.add_media_comment, name="add_media_comment"),
     path("media/<int:media_id>/comments/", views.get_media_comments, name="get_media_comments"),
     path("produtos/", views.produtos, name="produtos"),
+    path("video-test/", views.video_test, name="video_test"),
+    path("video-debug/", views.video_debug, name="video_debug"),
 ]

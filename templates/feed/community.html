@@ -117,11 +117,12 @@
         </div>
       </div>
     </div>
-  <div class="right-sidebar"></div>
+  {% include 'components/communities_rightbar.html' %}
   </div>
 
   <script src="{% static 'js/home.js' %}"></script>
   <script src="{% static 'js/community.js' %}"></script>
+
   
   <script>
     // Handle cancel button and form validation
@@ -179,22 +180,6 @@
       }
     });
   </script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        var bell = document.getElementById('notification-bell');
-        var dropdown = document.getElementById('notification-dropdown');
-        if (bell && dropdown) {
-          bell.addEventListener('click', function(e) {
-            e.stopPropagation();
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-          });
-          document.addEventListener('mousedown', function(e) {
-            if (dropdown.style.display === 'block' && !dropdown.contains(e.target) && e.target !== bell) {
-              dropdown.style.display = 'none';
-            }
-          });
-        }
-      });
-    </script>
+
 </body>
 </html>
