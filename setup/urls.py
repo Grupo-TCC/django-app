@@ -6,6 +6,11 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from user.views import custom_logout
 
+# Custom error handlers
+handler404 = 'django.views.defaults.page_not_found'
+handler500 = 'django.views.defaults.server_error'
+handler403 = 'django.views.defaults.permission_denied'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 

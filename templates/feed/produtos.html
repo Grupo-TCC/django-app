@@ -6,7 +6,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Produtos para Saúde - Innovator</title>
+    <title>Produtos para Saúde - Innovasus</title>
     <link rel="stylesheet" href="{% static 'styles/home.css' %}" />
   <link rel="stylesheet" href="{% static 'styles/artigos.css' %}" />
   <!-- Icon libraries for sidebar -->
@@ -109,13 +109,12 @@
                 <div class="user-profile">
                   <img src="{{ product.user.get_profile_picture_url }}" alt="{{ product.user.fullname }}">
                   <div>
-                    <p>{{ product.user.fullname }}</p>
-                    {% if product.user.innovator_verification and product.user.innovator_verification.title %}
-                      <small>{{ product.user.innovator_verification.title }}</small>
-                    {% else %}
-                      <small>{{ product.user.research_area|default:"Pesquisador" }}</small>
-                    {% endif %}
-                    <small style="color: #666;">{{ product.created_at|date:"d/m/Y H:i" }}</small>
+                    <p><a href="{% url 'feed:perfil' product.user.id %}" class="user-name-link" title="Ver perfil">{{ product.user.fullname }}</a></p>
+                    <div class="user-meta">
+                      <small>{{ product.user.institution }},</small>
+                      <small>{{ product.user.cidade }},</small>
+                      <small>{{ product.user.estado }}</small>
+                    </div>
                   </div>
                 </div>
               </div>

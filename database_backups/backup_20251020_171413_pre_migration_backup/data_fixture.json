@@ -1,0 +1,2341 @@
+[
+{
+  "model": "user.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$0QzqarXheuHGPLWUtjNy98$PB1QMBQ/6NoEBPmUwWUUy2MR8TnrUhgRRDp2tS0KW7k=",
+    "last_login": "2025-10-20T14:24:05.611Z",
+    "is_superuser": true,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "date_joined": "2025-09-26T23:56:12Z",
+    "email": "emersonok52@gmail.com",
+    "fullname": "Emerson Okorie",
+    "research_area": "Cardiologia",
+    "institution": "Unijorge",
+    "estado": "Bahia",
+    "cidade": "Salvador",
+    "profile_picture": "profile_pics/WhatsApp_Image_2025-07-02_at_19_gL7m7hw.06.26.jpeg",
+    "email_verified": true,
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "user.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$alpCuXSZ8bOV6MjyJBGqCr$G/SgAvJo6hx9vKsFye9hgklyuPSli5jJTsmlGJtJ53I=",
+    "last_login": null,
+    "is_superuser": true,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "date_joined": "2025-09-27T00:03:13Z",
+    "email": "speakup709@gmail.com",
+    "fullname": "Emerson Okorie",
+    "research_area": null,
+    "institution": null,
+    "estado": null,
+    "cidade": null,
+    "profile_picture": "",
+    "email_verified": true,
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "user.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$q8ywI6T0nkQjSKVls1SKbC$ik8X3SsdBbP/vU9TP+ugY3cVsnR7nJaTnmPOtMwG7U0=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "date_joined": "2025-09-27T18:29:50Z",
+    "email": "emerson@gmail.com",
+    "fullname": "Ralph Waldo Emerson",
+    "research_area": null,
+    "institution": null,
+    "estado": null,
+    "cidade": null,
+    "profile_picture": "profile_pics/Screenshot_2025-09-22_at_13_Y3XXAj5.02.03_1.png",
+    "email_verified": true,
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "user.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$1EACypM6L0mIMwdLCVBoRX$XgHp5xyUaQ5f+KfyUJsT/xZBVF4JhWcMvVm50Tz/5fk=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "date_joined": "2025-09-27T18:30:40Z",
+    "email": "solace@hotmail.com",
+    "fullname": "João Mendes",
+    "research_area": null,
+    "institution": null,
+    "estado": null,
+    "cidade": null,
+    "profile_picture": "profile_pics/Screenshot_2025-09-18_at_16_R0YQEHI.12.42.png",
+    "email_verified": true,
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "user.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$Ycvu8sGMzB9Jya2m3313PM$AxvHHVdRRohhKFwSYwXLa5JpX//BbIPlIN00YyS758c=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "date_joined": "2025-09-27T18:31:27Z",
+    "email": "togo@gmail.com",
+    "fullname": "Milano Celdo",
+    "research_area": null,
+    "institution": null,
+    "estado": null,
+    "cidade": null,
+    "profile_picture": "profile_pics/Screenshot_2025-09-10_at_11.47.23.png",
+    "email_verified": true,
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "user.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$pfZGZe5r1LpxxudpikZEne$Yez1//Sj0YP9rvF5iiG9A4PTNm144ef7LLYtyFcVsMM=",
+    "last_login": "2025-09-27T20:48:54.252Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "date_joined": "2025-09-27T18:32:15Z",
+    "email": "heloo@gmail.com",
+    "fullname": "Anita Vista",
+    "research_area": null,
+    "institution": null,
+    "estado": null,
+    "cidade": null,
+    "profile_picture": "profile_pics/IMG_1376_mrImlZ1.jpg",
+    "email_verified": true,
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "user.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$z1tSGKy4UYIT8fObtp3dZL$IqHwPwrTkv6G1MWnYjrMOtmaKVMuk+K76c9J9PoBjTk=",
+    "last_login": "2025-10-11T18:57:15.331Z",
+    "is_superuser": true,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "date_joined": "2025-09-27T18:44:43Z",
+    "email": "emersonokorie@icloud.com",
+    "fullname": "Emeraghi Okorie",
+    "research_area": "Engenharia",
+    "institution": "UFBA",
+    "estado": null,
+    "cidade": null,
+    "profile_picture": "profile_pics/WhatsApp_Image_2025-09-20_at_14_Kbv2r15.47.45.jpeg",
+    "email_verified": true,
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "user.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$JyAYdGHfhnLqlIgBdNkDHL$ADw+GNyftWDkkNmfyWASzAGCqByifIp0RCPeAiznrxM=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "date_joined": "2025-10-08T13:28:37Z",
+    "email": "raqquelvieria21@gmail.com",
+    "fullname": "Raquel Vieira",
+    "research_area": null,
+    "institution": null,
+    "estado": null,
+    "cidade": null,
+    "profile_picture": "",
+    "email_verified": false,
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "user.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$txuElxKxG2fZwFxDdDGPVF$2rMzrug4k9HBowNZ0oPR/o3wkrSMY/aRexRNs98tdcU=",
+    "last_login": "2025-10-08T13:36:27.227Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "date_joined": "2025-10-08T13:35:12.365Z",
+    "email": "raqquelvieira21@gmail.com",
+    "fullname": "Raquel Vieira",
+    "research_area": null,
+    "institution": null,
+    "estado": null,
+    "cidade": null,
+    "profile_picture": "",
+    "email_verified": true,
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "user.userverification",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "raqquelvieria21@gmail.com"
+    ],
+    "link": "https://chatgpt.com/c/68e58dab-3920-832e-bb74-815c1a96ef1c",
+    "status": "APPROVED",
+    "created_at": "2025-10-08T13:28:38.315Z",
+    "login_token": "26e14af9-beb4-40df-9a66-d6db0cd265fe"
+  }
+},
+{
+  "model": "user.userverification",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "raqquelvieira21@gmail.com"
+    ],
+    "link": "https://chatgpt.com/c/68e58dab-3920-832e-bb74-815c1a96ef1c",
+    "status": "APPROVED",
+    "created_at": "2025-10-08T13:35:13.142Z",
+    "login_token": "8a27f213-d731-4629-9aed-c7587d5b2f09"
+  }
+},
+{
+  "model": "user.follow",
+  "pk": 2,
+  "fields": {
+    "follower": [
+      "emersonok52@gmail.com"
+    ],
+    "following": [
+      "emerson@gmail.com"
+    ],
+    "created_at": "2025-09-27T18:33:33.588Z"
+  }
+},
+{
+  "model": "user.follow",
+  "pk": 6,
+  "fields": {
+    "follower": [
+      "emersonokorie@icloud.com"
+    ],
+    "following": [
+      "emerson@gmail.com"
+    ],
+    "created_at": "2025-09-27T18:54:07.375Z"
+  }
+},
+{
+  "model": "user.follow",
+  "pk": 8,
+  "fields": {
+    "follower": [
+      "emersonokorie@icloud.com"
+    ],
+    "following": [
+      "heloo@gmail.com"
+    ],
+    "created_at": "2025-09-27T18:55:25.927Z"
+  }
+},
+{
+  "model": "user.follow",
+  "pk": 9,
+  "fields": {
+    "follower": [
+      "emersonokorie@icloud.com"
+    ],
+    "following": [
+      "togo@gmail.com"
+    ],
+    "created_at": "2025-09-27T18:55:28.459Z"
+  }
+},
+{
+  "model": "user.follow",
+  "pk": 10,
+  "fields": {
+    "follower": [
+      "emersonok52@gmail.com"
+    ],
+    "following": [
+      "togo@gmail.com"
+    ],
+    "created_at": "2025-09-30T00:25:02.966Z"
+  }
+},
+{
+  "model": "user.follow",
+  "pk": 11,
+  "fields": {
+    "follower": [
+      "emersonok52@gmail.com"
+    ],
+    "following": [
+      "emersonokorie@icloud.com"
+    ],
+    "created_at": "2025-10-02T19:50:52.587Z"
+  }
+},
+{
+  "model": "user.follow",
+  "pk": 12,
+  "fields": {
+    "follower": [
+      "emersonokorie@icloud.com"
+    ],
+    "following": [
+      "solace@hotmail.com"
+    ],
+    "created_at": "2025-10-03T11:29:45.726Z"
+  }
+},
+{
+  "model": "user.follow",
+  "pk": 14,
+  "fields": {
+    "follower": [
+      "emersonok52@gmail.com"
+    ],
+    "following": [
+      "speakup709@gmail.com"
+    ],
+    "created_at": "2025-10-08T14:28:15.370Z"
+  }
+},
+{
+  "model": "user.follow",
+  "pk": 16,
+  "fields": {
+    "follower": [
+      "emersonokorie@icloud.com"
+    ],
+    "following": [
+      "emersonok52@gmail.com"
+    ],
+    "created_at": "2025-10-08T14:36:22.022Z"
+  }
+},
+{
+  "model": "feed.message",
+  "pk": 1,
+  "fields": {
+    "sender": [
+      "emersonok52@gmail.com"
+    ],
+    "recipient": [
+      "emerson@gmail.com"
+    ],
+    "body": "Bom dia",
+    "created_at": "2025-10-04T01:47:24.826Z",
+    "read": false
+  }
+},
+{
+  "model": "feed.message",
+  "pk": 2,
+  "fields": {
+    "sender": [
+      "emersonok52@gmail.com"
+    ],
+    "recipient": [
+      "heloo@gmail.com"
+    ],
+    "body": "Bom dia, cheguei",
+    "created_at": "2025-10-04T01:48:35.052Z",
+    "read": false
+  }
+},
+{
+  "model": "feed.message",
+  "pk": 3,
+  "fields": {
+    "sender": [
+      "emersonok52@gmail.com"
+    ],
+    "recipient": [
+      "speakup709@gmail.com"
+    ],
+    "body": "Ola tudo bem",
+    "created_at": "2025-10-04T01:55:10.485Z",
+    "read": false
+  }
+},
+{
+  "model": "feed.message",
+  "pk": 4,
+  "fields": {
+    "sender": [
+      "emersonok52@gmail.com"
+    ],
+    "recipient": [
+      "solace@hotmail.com"
+    ],
+    "body": "Oi Joào",
+    "created_at": "2025-10-04T01:55:31.576Z",
+    "read": false
+  }
+},
+{
+  "model": "feed.message",
+  "pk": 5,
+  "fields": {
+    "sender": [
+      "emersonok52@gmail.com"
+    ],
+    "recipient": [
+      "emerson@gmail.com"
+    ],
+    "body": "Cheguei aqui",
+    "created_at": "2025-10-04T01:57:56.606Z",
+    "read": false
+  }
+},
+{
+  "model": "feed.message",
+  "pk": 6,
+  "fields": {
+    "sender": [
+      "emersonokorie@icloud.com"
+    ],
+    "recipient": [
+      "emersonok52@gmail.com"
+    ],
+    "body": "Bom dia Prof",
+    "created_at": "2025-10-04T02:03:54.766Z",
+    "read": false
+  }
+},
+{
+  "model": "feed.message",
+  "pk": 7,
+  "fields": {
+    "sender": [
+      "emersonok52@gmail.com"
+    ],
+    "recipient": [
+      "emersonokorie@icloud.com"
+    ],
+    "body": "Oi",
+    "created_at": "2025-10-04T02:04:58.359Z",
+    "read": false
+  }
+},
+{
+  "model": "feed.mediapost",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "Video sobre nutrição",
+    "description": "Nutrição é importante",
+    "research_area": "outros",
+    "payment_type": "free",
+    "price": null,
+    "article": null,
+    "media_file": "media_posts/157c59cc-ab08-4671-a54a-793140a3960f.mp4",
+    "created_at": "2025-10-11T13:00:51.454Z",
+    "updated_at": "2025-10-11T13:00:51.454Z"
+  }
+},
+{
+  "model": "feed.mediapost",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "Comida para todos",
+    "description": "Hola!",
+    "research_area": "outros",
+    "payment_type": "free",
+    "price": null,
+    "article": null,
+    "media_file": "media_posts/157c59cc-ab08-4671-a54a-793140a3960f_0SW7uzj.mp4",
+    "created_at": "2025-10-11T17:21:51.212Z",
+    "updated_at": "2025-10-11T17:21:51.212Z"
+  }
+},
+{
+  "model": "feed.mediapost",
+  "pk": 3,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "Nutrição",
+    "description": "Vamos falar sobre a nutrição que é a ciência que estuda os alimentos e os nutrientes que nosso corpo precisa para funcionar, crescer e se manter saudável. Uma alimentação equilibrada, variada e de qualidade, com a quantidade certa de carboidratos, proteínas, gorduras, vitaminas e minerais, é essencial para prevenir doenças e garantir o bem-estar.",
+    "research_area": "outros",
+    "payment_type": "free",
+    "price": null,
+    "article": 10,
+    "media_file": "",
+    "created_at": "2025-10-11T18:15:01.947Z",
+    "updated_at": "2025-10-11T18:15:01.947Z"
+  }
+},
+{
+  "model": "feed.mediapost",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "Aula",
+    "description": "mns,",
+    "research_area": "outros",
+    "payment_type": "free",
+    "price": null,
+    "article": null,
+    "media_file": "",
+    "created_at": "2025-10-11T18:23:12.561Z",
+    "updated_at": "2025-10-11T18:23:12.561Z"
+  }
+},
+{
+  "model": "feed.mediapost",
+  "pk": 5,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "oi",
+    "description": "haha",
+    "research_area": "outros",
+    "payment_type": "free",
+    "price": null,
+    "article": null,
+    "media_file": "",
+    "created_at": "2025-10-11T18:23:54.144Z",
+    "updated_at": "2025-10-11T18:23:54.144Z"
+  }
+},
+{
+  "model": "feed.mediapost",
+  "pk": 6,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "haha",
+    "description": "haha",
+    "research_area": "outros",
+    "payment_type": "free",
+    "price": null,
+    "article": null,
+    "media_file": "",
+    "created_at": "2025-10-11T18:24:26.301Z",
+    "updated_at": "2025-10-11T18:24:26.301Z"
+  }
+},
+{
+  "model": "feed.mediapost",
+  "pk": 7,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "nutrição",
+    "description": "MediaPost form errors: <ul class=\"errorlist\"><li>__all__<ul class=\"errorlist nonfield\"><li>Selecione pelo menos um arquivo.</li></ul></li></ul>\r\n[11/Oct/2025 15:17:05] \"POST /feed/traducao/ HTTP/1.1\" 200 56677\r\nMediaPost form errors: <ul class=\"errorlist\"><li>__all__<ul class=\"errorlist nonfield\"><li>Selecione pelo menos um arquivo.</li></ul></li></ul>\r\n[11/Oct/2025 15:17:15] \"POST /feed/traducao/ HTTP/1.1\" 200 56677",
+    "research_area": "outros",
+    "payment_type": "free",
+    "price": null,
+    "article": 11,
+    "media_file": "",
+    "created_at": "2025-10-11T18:25:47.104Z",
+    "updated_at": "2025-10-11T18:25:47.104Z"
+  }
+},
+{
+  "model": "feed.mediapost",
+  "pk": 8,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "haah",
+    "description": "kjskd",
+    "research_area": "outros",
+    "payment_type": "free",
+    "price": null,
+    "article": 12,
+    "media_file": "",
+    "created_at": "2025-10-11T18:33:43.496Z",
+    "updated_at": "2025-10-11T18:33:43.496Z"
+  }
+},
+{
+  "model": "feed.mediapost",
+  "pk": 9,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "dsd",
+    "description": "dsds",
+    "research_area": "outros",
+    "payment_type": "free",
+    "price": null,
+    "article": 13,
+    "media_file": "",
+    "created_at": "2025-10-11T18:35:41.717Z",
+    "updated_at": "2025-10-11T18:35:41.717Z"
+  }
+},
+{
+  "model": "feed.mediapost",
+  "pk": 10,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "sas",
+    "description": "dwww",
+    "research_area": "outros",
+    "payment_type": "paid",
+    "price": "12.00",
+    "article": null,
+    "media_file": "",
+    "created_at": "2025-10-11T18:48:33.623Z",
+    "updated_at": "2025-10-11T18:48:33.623Z"
+  }
+},
+{
+  "model": "feed.mediapost",
+  "pk": 11,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "sas",
+    "description": "wddw",
+    "research_area": "outros",
+    "payment_type": "paid",
+    "price": "12.00",
+    "article": null,
+    "media_file": "",
+    "created_at": "2025-10-11T18:54:44.478Z",
+    "updated_at": "2025-10-11T18:54:44.478Z"
+  }
+},
+{
+  "model": "feed.mediapost",
+  "pk": 12,
+  "fields": {
+    "user": [
+      "emersonokorie@icloud.com"
+    ],
+    "title": "Nutrição",
+    "description": "A nutrição é a ciência que estuda os alimentos e os nutrientes que nosso corpo precisa para funcionar, crescer e se manter saudável. Uma alimentação equilibrada, variada e de qualidade, com a quantidade certa de carboidratos, proteínas, gorduras, vitaminas e minerais, é essencial para prevenir doenças e garantir o bem-estar.",
+    "research_area": "outros",
+    "payment_type": "paid",
+    "price": "200.00",
+    "article": null,
+    "media_file": "",
+    "created_at": "2025-10-11T19:02:31.310Z",
+    "updated_at": "2025-10-11T19:02:31.310Z"
+  }
+},
+{
+  "model": "feed.mediapost",
+  "pk": 13,
+  "fields": {
+    "user": [
+      "emersonokorie@icloud.com"
+    ],
+    "title": "Nutri",
+    "description": "A nutrição é a ciência que estuda os alimentos e os nutrientes que nosso corpo precisa para funcionar, crescer e se manter saudável. Uma alimentação equilibrada, variada e de qualidade, com a quantidade certa de carboidratos, proteínas, gorduras, vitaminas e minerais, é essencial para prevenir doenças e garantir o bem-estar.",
+    "research_area": "outros",
+    "payment_type": "paid",
+    "price": "200.00",
+    "article": null,
+    "media_file": "",
+    "created_at": "2025-10-11T19:03:33.685Z",
+    "updated_at": "2025-10-11T19:03:33.685Z"
+  }
+},
+{
+  "model": "feed.mediapost",
+  "pk": 14,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "Nutrição",
+    "description": "A nutrição é a ciência que estuda os alimentos e os nutrientes que nosso corpo precisa para funcionar, crescer e se manter saudável. Uma alimentação equilibrada, variada e de qualidade, com a quantidade certa de carboidratos, proteínas, gorduras, vitaminas e minerais, é essencial para prevenir doenças e garantir o bem-estar.",
+    "research_area": "outros",
+    "payment_type": "paid",
+    "price": "200.00",
+    "article": null,
+    "media_file": "",
+    "created_at": "2025-10-11T19:08:13.242Z",
+    "updated_at": "2025-10-11T19:08:13.242Z"
+  }
+},
+{
+  "model": "feed.mediapost",
+  "pk": 15,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "Porque devemos comer bem",
+    "description": "Comer bem é ter uma alimentação equilibrada que prioriza alimentos naturais, como frutas, verduras e legumes, reduzindo o consumo de açúcares, sal, gorduras e alimentos processados. Não se trata de comer em excesso, mas sim de garantir que o corpo receba os nutrientes essenciais para o seu bom funcionamento, o que contribui para a saúde física e mental",
+    "research_area": "nutricao",
+    "payment_type": "free",
+    "price": null,
+    "article": null,
+    "media_file": "",
+    "created_at": "2025-10-20T18:50:12.472Z",
+    "updated_at": "2025-10-20T18:50:12.473Z"
+  }
+},
+{
+  "model": "feed.mediafile",
+  "pk": 1,
+  "fields": {
+    "media_post": 3,
+    "media_file": "media_posts/apresentacao_quinta.pptx",
+    "media_type": "document",
+    "created_at": "2025-10-11T18:15:01.952Z"
+  }
+},
+{
+  "model": "feed.mediafile",
+  "pk": 2,
+  "fields": {
+    "media_post": 5,
+    "media_file": "media_posts/Screenshot_2025-09-10_at_11.47.23.png",
+    "media_type": "image",
+    "created_at": "2025-10-11T18:23:54.149Z"
+  }
+},
+{
+  "model": "feed.mediafile",
+  "pk": 3,
+  "fields": {
+    "media_post": 6,
+    "media_file": "media_posts/0cf549d0-9fea-48ca-bef8-d8940e8995bc.mp4",
+    "media_type": "video",
+    "created_at": "2025-10-11T18:24:26.305Z"
+  }
+},
+{
+  "model": "feed.mediafile",
+  "pk": 4,
+  "fields": {
+    "media_post": 7,
+    "media_file": "media_posts/ATIVIDADE_EM_SALA.pdf",
+    "media_type": "document",
+    "created_at": "2025-10-11T18:25:47.108Z"
+  }
+},
+{
+  "model": "feed.mediafile",
+  "pk": 5,
+  "fields": {
+    "media_post": 8,
+    "media_file": "media_posts/Screenshot_2024-12-31_at_12.04.40.png",
+    "media_type": "image",
+    "created_at": "2025-10-11T18:33:43.507Z"
+  }
+},
+{
+  "model": "feed.mediafile",
+  "pk": 6,
+  "fields": {
+    "media_post": 8,
+    "media_file": "media_posts/IntoducaoTCC.pdf",
+    "media_type": "document",
+    "created_at": "2025-10-11T18:33:43.512Z"
+  }
+},
+{
+  "model": "feed.mediafile",
+  "pk": 7,
+  "fields": {
+    "media_post": 9,
+    "media_file": "media_posts/ATIVIDADE_EM_SALA_Lw55Xw2.pdf",
+    "media_type": "document",
+    "created_at": "2025-10-11T18:35:41.726Z"
+  }
+},
+{
+  "model": "feed.mediafile",
+  "pk": 8,
+  "fields": {
+    "media_post": 10,
+    "media_file": "media_posts/MicroProceessador_KkNLKgJ.pdf",
+    "media_type": "document",
+    "created_at": "2025-10-11T18:48:33.628Z"
+  }
+},
+{
+  "model": "feed.mediafile",
+  "pk": 9,
+  "fields": {
+    "media_post": 11,
+    "media_file": "media_posts/MicroProceessador_KkNLKgJ_wLacEjw.pdf",
+    "media_type": "document",
+    "created_at": "2025-10-11T18:54:44.482Z"
+  }
+},
+{
+  "model": "feed.mediafile",
+  "pk": 10,
+  "fields": {
+    "media_post": 12,
+    "media_file": "media_posts/0cf549d0-9fea-48ca-bef8-d8940e8995bc_fnsHEjV.mp4",
+    "media_type": "video",
+    "created_at": "2025-10-11T19:02:31.315Z"
+  }
+},
+{
+  "model": "feed.mediafile",
+  "pk": 11,
+  "fields": {
+    "media_post": 12,
+    "media_file": "media_posts/ATIVIDADE_EM_SALA_AHzpvnJ.pdf",
+    "media_type": "document",
+    "created_at": "2025-10-11T19:02:31.318Z"
+  }
+},
+{
+  "model": "feed.mediafile",
+  "pk": 12,
+  "fields": {
+    "media_post": 13,
+    "media_file": "media_posts/0cf549d0-9fea-48ca-bef8-d8940e8995bc_l5Z7cV2.mp4",
+    "media_type": "video",
+    "created_at": "2025-10-11T19:03:33.689Z"
+  }
+},
+{
+  "model": "feed.mediafile",
+  "pk": 13,
+  "fields": {
+    "media_post": 13,
+    "media_file": "media_posts/ATIVIDADE_EM_SALA_wPlrBun.pdf",
+    "media_type": "document",
+    "created_at": "2025-10-11T19:03:33.692Z"
+  }
+},
+{
+  "model": "feed.mediafile",
+  "pk": 14,
+  "fields": {
+    "media_post": 14,
+    "media_file": "media_posts/203e8bd9-1025-4991-81e3-0e3606f7f77a.mp4",
+    "media_type": "video",
+    "created_at": "2025-10-11T19:08:13.285Z"
+  }
+},
+{
+  "model": "feed.mediafile",
+  "pk": 15,
+  "fields": {
+    "media_post": 14,
+    "media_file": "media_posts/apresentacao_quinta_1.pptx",
+    "media_type": "document",
+    "created_at": "2025-10-11T19:08:13.289Z"
+  }
+},
+{
+  "model": "feed.mediafile",
+  "pk": 16,
+  "fields": {
+    "media_post": 15,
+    "media_file": "media_posts/157c59cc-ab08-4671-a54a-793140a3960f.mp4",
+    "media_type": "video",
+    "created_at": "2025-10-20T18:50:12.512Z"
+  }
+},
+{
+  "model": "feed.medialike",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "media_post": 1,
+    "created_at": "2025-10-11T17:13:15.335Z"
+  }
+},
+{
+  "model": "feed.medialike",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "media_post": 2,
+    "created_at": "2025-10-11T17:40:06.814Z"
+  }
+},
+{
+  "model": "feed.medialike",
+  "pk": 3,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "media_post": 4,
+    "created_at": "2025-10-11T18:24:49.425Z"
+  }
+},
+{
+  "model": "feed.medialike",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "media_post": 14,
+    "created_at": "2025-10-11T19:08:19.276Z"
+  }
+},
+{
+  "model": "feed.mediacomment",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "media_post": 1,
+    "body": "Top",
+    "created_at": "2025-10-11T17:13:25.023Z",
+    "updated_at": "2025-10-11T17:13:25.023Z"
+  }
+},
+{
+  "model": "feed.mediacomment",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "media_post": 4,
+    "body": "Boa",
+    "created_at": "2025-10-20T15:25:17.171Z",
+    "updated_at": "2025-10-20T15:25:17.171Z"
+  }
+},
+{
+  "model": "feed.mediaaccess",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "media_post": 13,
+    "has_access": true,
+    "created_at": "2025-10-11T19:19:17.524Z"
+  }
+},
+{
+  "model": "feed.mediaaccessrequest",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "media_post": 13,
+    "payment_slip": "media_access_slips/3013085_sign.pdf",
+    "created_at": "2025-10-11T19:17:31.992Z",
+    "approved": true
+  }
+},
+{
+  "model": "feed.product",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "titulo": "Aplicativo para verificar os componentes de um remédio",
+    "descricao": "Com esse aplicativo você verifica os componentes de um remédio. Segue o link abaixo para baixar no playstore",
+    "area_pesquisa": "farmacia",
+    "link": "https://docs.google.com/document/d/1zRaqHv5LdrXcN2lV4nZjlZ46lYYcK6TshRJBQ2gr9Ww/edit?tab=t.0",
+    "created_at": "2025-10-20T18:21:09.113Z",
+    "updated_at": "2025-10-20T18:21:09.113Z"
+  }
+},
+{
+  "model": "feed.community",
+  "pk": 7,
+  "fields": {
+    "name": "Ciência da Computação",
+    "description": "",
+    "created_by": [
+      "emersonok52@gmail.com"
+    ],
+    "created_at": "2025-09-28T20:33:20.650Z",
+    "community_pic": "",
+    "members": [
+      [
+        "emersonok52@gmail.com"
+      ],
+      [
+        "speakup709@gmail.com"
+      ],
+      [
+        "togo@gmail.com"
+      ]
+    ]
+  }
+},
+{
+  "model": "feed.community",
+  "pk": 8,
+  "fields": {
+    "name": "Dentista",
+    "description": "",
+    "created_by": [
+      "emersonok52@gmail.com"
+    ],
+    "created_at": "2025-09-28T20:34:10.780Z",
+    "community_pic": "",
+    "members": [
+      [
+        "emersonok52@gmail.com"
+      ],
+      [
+        "speakup709@gmail.com"
+      ],
+      [
+        "emerson@gmail.com"
+      ],
+      [
+        "solace@hotmail.com"
+      ],
+      [
+        "togo@gmail.com"
+      ],
+      [
+        "heloo@gmail.com"
+      ],
+      [
+        "emersonokorie@icloud.com"
+      ]
+    ]
+  }
+},
+{
+  "model": "feed.community",
+  "pk": 10,
+  "fields": {
+    "name": "Saúde Coletiva",
+    "description": "",
+    "created_by": [
+      "emersonok52@gmail.com"
+    ],
+    "created_at": "2025-10-10T01:52:08.056Z",
+    "community_pic": "community_pics/WhatsApp_Image_2025-07-02_at_19.06.26.jpeg",
+    "members": [
+      [
+        "emersonok52@gmail.com"
+      ],
+      [
+        "emerson@gmail.com"
+      ]
+    ]
+  }
+},
+{
+  "model": "feed.article",
+  "pk": 2,
+  "fields": {
+    "description": null,
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "Assembly",
+    "pdf": "articles/Assembly.pdf",
+    "research_area": "Computação",
+    "qualis_capes": "C",
+    "created_at": "2025-09-22T20:53:23.314Z"
+  }
+},
+{
+  "model": "feed.article",
+  "pk": 3,
+  "fields": {
+    "description": null,
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "Pesquisa sobre Sintática da gramática computacional",
+    "pdf": "articles/Analise-Sintatica.pdf",
+    "research_area": "Computação",
+    "qualis_capes": "C",
+    "created_at": "2025-09-27T18:09:16.825Z"
+  }
+},
+{
+  "model": "feed.article",
+  "pk": 4,
+  "fields": {
+    "description": null,
+    "user": [
+      "emersonokorie@icloud.com"
+    ],
+    "title": "Impacto de língua estrangeira na nossa communidade",
+    "pdf": "articles/1Bfull.pdf",
+    "research_area": "Línguas",
+    "qualis_capes": "C",
+    "created_at": "2025-09-27T18:50:58.185Z"
+  }
+},
+{
+  "model": "feed.article",
+  "pk": 5,
+  "fields": {
+    "description": null,
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "Impactos das tarifas sobre a agricultura",
+    "pdf": "articles/Trump_Tariffs_Brazilian_Agriculture.pdf",
+    "research_area": "Agricultura",
+    "qualis_capes": "C",
+    "created_at": "2025-09-29T19:48:37.190Z"
+  }
+},
+{
+  "model": "feed.article",
+  "pk": 6,
+  "fields": {
+    "description": null,
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "Estudos sobre Atidades de Sala",
+    "pdf": "articles/ATIVIDADE_EM_SALA.pdf",
+    "research_area": "Educação",
+    "qualis_capes": "C",
+    "created_at": "2025-09-29T19:54:17.945Z"
+  }
+},
+{
+  "model": "feed.article",
+  "pk": 8,
+  "fields": {
+    "description": "O Brasil é um país importante para o mundo e a maior econômia da América do Sul. Por isso, as tarifas impostas pelo presidente americano Donald Trump não afeta apenas o Brasil mas o mundo inteiro. Esse artigo trás as respostas às perguntas de todo mundo sobre o rumo da econômia brasileira após uma pesquisa.",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "Econômia do Brasil",
+    "pdf": "articles/Trump_Tariffs_Brazilian_Agriculture_QmnA2VO.pdf",
+    "research_area": "Economia",
+    "qualis_capes": "C",
+    "created_at": "2025-10-02T19:02:03.156Z"
+  }
+},
+{
+  "model": "feed.article",
+  "pk": 9,
+  "fields": {
+    "description": "Após tarifar o Brasil, onde vão parar as exportações do agro brasileiro. Esse artigo mostra em detalhes todos os levantamentos feitos sobre esse assunto",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "O futuro do agronegócio diante das tarifas do Trump",
+    "pdf": "articles/Trump_Tariffs_Brazilian_Agriculture_UQOWleQ.pdf",
+    "research_area": "Agricultura",
+    "qualis_capes": "C",
+    "created_at": "2025-10-10T00:51:54.018Z"
+  }
+},
+{
+  "model": "feed.article",
+  "pk": 10,
+  "fields": {
+    "description": "Vamos falar sobre a nutrição que é a ciência que estuda os alimentos e os nutrientes que nosso corpo precisa para funcionar, crescer e se manter saudável. Uma alimentação equilibrada, variada e de qualidade, com a quantidade certa de carboidratos, proteínas, gorduras, vitaminas e minerais, é essencial para prevenir doenças e garantir o bem-estar.",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "Nutrição",
+    "pdf": "articles/apresentacao_quinta.pptx",
+    "research_area": "Tradução de Conhecimento",
+    "qualis_capes": "C",
+    "created_at": "2025-10-11T18:15:01.943Z"
+  }
+},
+{
+  "model": "feed.article",
+  "pk": 11,
+  "fields": {
+    "description": "MediaPost form errors: <ul class=\"errorlist\"><li>__all__<ul class=\"errorlist nonfield\"><li>Selecione pelo menos um arquivo.</li></ul></li></ul>\r\n[11/Oct/2025 15:17:05] \"POST /feed/traducao/ HTTP/1.1\" 200 56677\r\nMediaPost form errors: <ul class=\"errorlist\"><li>__all__<ul class=\"errorlist nonfield\"><li>Selecione pelo menos um arquivo.</li></ul></li></ul>\r\n[11/Oct/2025 15:17:15] \"POST /feed/traducao/ HTTP/1.1\" 200 56677",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "nutrição",
+    "pdf": "articles/ATIVIDADE_EM_SALA_SDD8DKD.pdf",
+    "research_area": "Tradução de Conhecimento",
+    "qualis_capes": "C",
+    "created_at": "2025-10-11T18:25:47.086Z"
+  }
+},
+{
+  "model": "feed.article",
+  "pk": 12,
+  "fields": {
+    "description": "kjskd",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "haah",
+    "pdf": "articles/Screenshot_2024-12-31_at_12.04.40.png",
+    "research_area": "Tradução de Conhecimento",
+    "qualis_capes": "C",
+    "created_at": "2025-10-11T18:33:43.491Z"
+  }
+},
+{
+  "model": "feed.article",
+  "pk": 13,
+  "fields": {
+    "description": "dsds",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "dsd",
+    "pdf": "articles/ATIVIDADE_EM_SALA_kFABYxo.pdf",
+    "research_area": "Tradução de Conhecimento",
+    "qualis_capes": "C",
+    "created_at": "2025-10-11T18:35:41.713Z"
+  }
+},
+{
+  "model": "feed.article",
+  "pk": 14,
+  "fields": {
+    "description": "Esse artigo descreve muita coisa sobre nutrição",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "title": "A importância da nutrição para a população",
+    "pdf": "articles/ATIVIDADE_EM_SALA_qVatqLV.pdf",
+    "research_area": "nutricao",
+    "qualis_capes": "A1",
+    "created_at": "2025-10-11T21:59:33.060Z"
+  }
+},
+{
+  "model": "feed.articleaccess",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "article": 5,
+    "has_access": true
+  }
+},
+{
+  "model": "feed.articleaccess",
+  "pk": 3,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "article": 8,
+    "has_access": true
+  }
+},
+{
+  "model": "feed.articleaccessrequest",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "article": 5,
+    "slip": "article_access_slips/IntoducaoTCC.pdf",
+    "created_at": "2025-09-29T21:07:19.144Z",
+    "approved": false
+  }
+},
+{
+  "model": "feed.articleaccessrequest",
+  "pk": 3,
+  "fields": {
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "article": 8,
+    "slip": "article_access_slips/3013085_sign_DO9S7QS.pdf",
+    "created_at": "2025-10-10T00:52:44.972Z",
+    "approved": true
+  }
+},
+{
+  "model": "feed.communitymessage",
+  "pk": 1,
+  "fields": {
+    "community": 8,
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "body": "Olá grupo",
+    "pdf": "",
+    "created_at": "2025-09-28T21:02:28.682Z"
+  }
+},
+{
+  "model": "feed.communitymessage",
+  "pk": 2,
+  "fields": {
+    "community": 8,
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "body": "Oi",
+    "pdf": "",
+    "created_at": "2025-09-28T21:03:17.733Z"
+  }
+},
+{
+  "model": "feed.communitymessage",
+  "pk": 3,
+  "fields": {
+    "community": 8,
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "body": "Oi gente",
+    "pdf": "",
+    "created_at": "2025-09-28T21:07:43.466Z"
+  }
+},
+{
+  "model": "feed.communitymessage",
+  "pk": 4,
+  "fields": {
+    "community": 8,
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "body": "pdf do trabalho",
+    "pdf": "community_messages/pdfs/ATIVIDADE_EM_SALA.pdf",
+    "created_at": "2025-09-28T21:13:54.582Z"
+  }
+},
+{
+  "model": "feed.communitymessage",
+  "pk": 5,
+  "fields": {
+    "community": 8,
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "body": "Boa noite grupo",
+    "pdf": "",
+    "created_at": "2025-10-10T01:08:53.145Z"
+  }
+},
+{
+  "model": "feed.communitymessage",
+  "pk": 6,
+  "fields": {
+    "community": 8,
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "body": "",
+    "pdf": "community_messages/pdfs/IntoducaoTCC.pdf",
+    "created_at": "2025-10-10T01:15:32.741Z"
+  }
+},
+{
+  "model": "feed.communitymessage",
+  "pk": 7,
+  "fields": {
+    "community": 10,
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "body": "Olá grupo.",
+    "pdf": "",
+    "created_at": "2025-10-13T13:27:05.459Z"
+  }
+},
+{
+  "model": "feed.communitymessage",
+  "pk": 8,
+  "fields": {
+    "community": 10,
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "body": "",
+    "pdf": "community_messages/3013085_sign.pdf",
+    "created_at": "2025-10-13T13:53:36.707Z"
+  }
+},
+{
+  "model": "feed.communitymessage",
+  "pk": 9,
+  "fields": {
+    "community": 10,
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "body": "Bom dia",
+    "pdf": "",
+    "created_at": "2025-10-13T13:55:08.679Z"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2025-09-22T18:57:25.328Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "2",
+    "object_repr": "emersonokorie@icloud.com",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2025-09-22T19:06:06.282Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "emersonokorie@icloud.com",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2025-09-22T19:12:52.454Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "4",
+    "object_repr": "emersonokorie@icloud.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2025-09-26T01:15:42.234Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "5",
+    "object_repr": "rodrigo@gmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2025-09-26T01:18:10.735Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "6",
+    "object_repr": "renata@gmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2025-09-26T01:20:09.945Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "6",
+    "object_repr": "renata@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Superuser status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2025-09-26T01:20:39.850Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "5",
+    "object_repr": "rodrigo@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Superuser status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2025-09-26T01:26:26.287Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "7",
+    "object_repr": "raquel@gmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2025-09-26T01:27:17.187Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "8",
+    "object_repr": "john@gmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2025-09-26T01:28:24.157Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "9",
+    "object_repr": "late@hotmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2025-09-26T01:29:04.436Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "10",
+    "object_repr": "haha@gmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2025-09-26T01:30:18.868Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "11",
+    "object_repr": "toplay@hotmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2025-09-26T01:33:32.789Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "12",
+    "object_repr": "ad@gmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2025-09-26T01:34:24.583Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "13",
+    "object_repr": "jolof@hotmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2025-09-26T01:35:15.669Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "14",
+    "object_repr": "okra@gmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2025-09-26T01:36:16.221Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "15",
+    "object_repr": "codsa@gmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2025-09-26T01:42:11.533Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "16",
+    "object_repr": "dan@gmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2025-09-26T01:43:12.446Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "17",
+    "object_repr": "emir@gmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2025-09-26T01:44:20.274Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "innovator",
+      "user"
+    ],
+    "object_id": "18",
+    "object_repr": "letsgo@gmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2025-09-27T18:29:51.052Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "emerson@gmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2025-09-27T18:30:41.294Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "4",
+    "object_repr": "solace@hotmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2025-09-27T18:31:27.465Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "5",
+    "object_repr": "togo@gmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2025-09-27T18:32:16.188Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "6",
+    "object_repr": "heloo@gmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2025-09-27T18:32:36.755Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "6",
+    "object_repr": "heloo@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Email verified\", \"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2025-09-27T18:34:26.107Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "emerson@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Email verified\", \"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2025-09-27T18:34:35.424Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "1",
+    "object_repr": "emersonok52@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Email verified\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2025-09-27T18:34:45.232Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "4",
+    "object_repr": "solace@hotmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Email verified\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2025-09-27T18:40:36.417Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "emerson@gmail.com",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2025-09-27T18:41:09.245Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "4",
+    "object_repr": "solace@hotmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 30,
+  "fields": {
+    "action_time": "2025-09-27T18:42:10.493Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "1",
+    "object_repr": "emersonok52@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Staff status\", \"Superuser status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 31,
+  "fields": {
+    "action_time": "2025-09-27T18:47:25.009Z",
+    "user": [
+      "emersonokorie@icloud.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "7",
+    "object_repr": "emersonokorie@icloud.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Email verified\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 32,
+  "fields": {
+    "action_time": "2025-09-27T18:54:39.299Z",
+    "user": [
+      "emersonokorie@icloud.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "2",
+    "object_repr": "speakup709@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Email verified\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 33,
+  "fields": {
+    "action_time": "2025-09-27T18:54:56.865Z",
+    "user": [
+      "emersonokorie@icloud.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "2",
+    "object_repr": "speakup709@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 34,
+  "fields": {
+    "action_time": "2025-09-27T18:55:06.892Z",
+    "user": [
+      "emersonokorie@icloud.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "5",
+    "object_repr": "togo@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Email verified\", \"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 35,
+  "fields": {
+    "action_time": "2025-09-28T17:57:20.244Z",
+    "user": [
+      "emersonokorie@icloud.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "1",
+    "object_repr": "emersonok52@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Staff status\", \"Superuser status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 36,
+  "fields": {
+    "action_time": "2025-09-28T17:57:31.593Z",
+    "user": [
+      "emersonokorie@icloud.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "2",
+    "object_repr": "speakup709@gmail.com",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 37,
+  "fields": {
+    "action_time": "2025-09-28T20:25:35.812Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "feed",
+      "community"
+    ],
+    "object_id": "6",
+    "object_repr": "Nutrição USP",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 38,
+  "fields": {
+    "action_time": "2025-09-28T20:26:20.437Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "feed",
+      "community"
+    ],
+    "object_id": "5",
+    "object_repr": "Dentistas do Brasil",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 39,
+  "fields": {
+    "action_time": "2025-09-28T20:26:30.057Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "feed",
+      "community"
+    ],
+    "object_id": "4",
+    "object_repr": "Cientistas Brasil",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 40,
+  "fields": {
+    "action_time": "2025-09-28T20:26:39.358Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "feed",
+      "community"
+    ],
+    "object_id": "3",
+    "object_repr": "Engenharia UFBA",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 41,
+  "fields": {
+    "action_time": "2025-09-28T20:26:45.963Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "feed",
+      "community"
+    ],
+    "object_id": "2",
+    "object_repr": "Psicologia UFBA",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 42,
+  "fields": {
+    "action_time": "2025-09-28T20:26:55.507Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "feed",
+      "community"
+    ],
+    "object_id": "1",
+    "object_repr": "Ciência da Computaçõ Unijorge",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 43,
+  "fields": {
+    "action_time": "2025-09-29T21:07:58.612Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "feed",
+      "articleaccessrequest"
+    ],
+    "object_id": "1",
+    "object_repr": "Emerson Okorie - Impactos das tarifas sobre a agricultura (Aprovado)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Reviewed\", \"Approved\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 44,
+  "fields": {
+    "action_time": "2025-09-29T21:10:34.660Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "feed",
+      "articleaccessrequest"
+    ],
+    "object_id": "1",
+    "object_repr": "Emerson Okorie - Impactos das tarifas sobre a agricultura (Aprovado)",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 45,
+  "fields": {
+    "action_time": "2025-09-29T21:30:25.567Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "feed",
+      "articleaccessrequest"
+    ],
+    "object_id": "1",
+    "object_repr": "Emerson Okorie - Impactos das tarifas sobre a agricultura (Aprovado)",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 46,
+  "fields": {
+    "action_time": "2025-09-30T00:24:25.983Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "feed",
+      "articleaccessrequest"
+    ],
+    "object_id": "1",
+    "object_repr": "Emerson Okorie - Impactos das tarifas sobre a agricultura (Pendente)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Approved\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 47,
+  "fields": {
+    "action_time": "2025-09-30T14:41:18.932Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "feed",
+      "articleaccessrequest"
+    ],
+    "object_id": "2",
+    "object_repr": "Emerson Okorie - Doc Teste (Aprovado)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Approved\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 48,
+  "fields": {
+    "action_time": "2025-10-08T13:39:19.964Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "user",
+      "user"
+    ],
+    "object_id": "8",
+    "object_repr": "raqquelvieria21@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Email verified\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 49,
+  "fields": {
+    "action_time": "2025-10-10T00:53:48.738Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "feed",
+      "articleaccessrequest"
+    ],
+    "object_id": "3",
+    "object_repr": "Emerson Okorie - Econômia do Brasil (Aprovado)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Approved\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 50,
+  "fields": {
+    "action_time": "2025-10-10T02:11:24.115Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "feed",
+      "community"
+    ],
+    "object_id": "9",
+    "object_repr": "Test Community with Image",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 51,
+  "fields": {
+    "action_time": "2025-10-11T19:19:17.526Z",
+    "user": [
+      "emersonok52@gmail.com"
+    ],
+    "content_type": [
+      "feed",
+      "mediaaccessrequest"
+    ],
+    "object_id": "1",
+    "object_repr": "Emerson Okorie - Nutri (Aprovado)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Aprovado\"]}}]"
+  }
+}
+]

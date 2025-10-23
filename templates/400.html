@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bad Request - Innovator</title>
+    <link rel="stylesheet" href="{% static 'styles/register.css' %}">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+        .error-code {
+            font-size: 8rem;
+            font-weight: bold;
+            color: #dc2626;
+            margin: 0;
+        }
+        .error-message {
+            font-size: 1.5rem;
+            color: #374151;
+            margin: 20px 0;
+        }
+        .error-description {
+            font-size: 1rem;
+            color: #6b7280;
+            max-width: 500px;
+            margin-bottom: 30px;
+        }
+        .error-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: #dc2626;
+            border: 2px solid #dc2626;
+        }
+        .btn-secondary:hover {
+            background-color: #dc2626;
+            color: white;
+        }
+        .logo {
+            width: 100px;
+            margin-bottom: 30px;
+        }
+        .error-icon {
+            font-size: 4rem;
+            color: #dc2626;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <img src="{% static 'assets/img/logo.png' %}" alt="Innovator" class="logo">
+        
+        <i class='bx bx-x-circle error-icon'></i>
+        <h1 class="error-code">400</h1>
+        <h2 class="error-message">Bad Request</h2>
+        <p class="error-description">
+            The request could not be understood by the server. 
+            Please check your input and try again.
+        </p>
+        
+        <div class="error-actions">
+            <a href="{% url 'home' %}" class="btn btn-primary">
+                <i class='bx bx-home'></i> Go Home
+            </a>
+            <a href="javascript:history.back()" class="btn btn-secondary">
+                <i class='bx bx-arrow-back'></i> Go Back
+            </a>
+        </div>
+    </div>
+</body>
+</html>

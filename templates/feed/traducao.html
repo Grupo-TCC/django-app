@@ -1018,7 +1018,7 @@
                 <div class="user-profile">
                   <img src="{{ media.user.get_profile_picture_url }}" alt="{{ media.user.fullname }}">
                   <div>
-                    <p>{{ media.user.fullname }}</p>
+                    <p><a href="{% url 'feed:perfil' media.user.id %}" class="user-name-link" title="Ver perfil">{{ media.user.fullname }}</a></p>
                     <div class="user-meta">
                       <small>{{ media.user.institution }},</small>
                       <small>{{ media.user.cidade }},</small>

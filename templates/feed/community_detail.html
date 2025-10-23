@@ -161,7 +161,7 @@
 																	<!-- Other user's message -->
 																	<div style="display:flex; flex-direction:column; align-items:flex-start;">
 																		<div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-																			<span style="font-size:0.97em; color:#256d4a; font-weight:600;">{{ message.user.fullname }}</span>
+																			<span style="font-size:0.97em; color:#256d4a; font-weight:600;"><a href="{% url 'feed:perfil' message.user.id %}" class="user-name-link" title="Ver perfil" style="color:#256d4a; text-decoration:none;">{{ message.user.fullname }}</a></span>
 																			<small style="font-size:0.85em; color:#666;">{{ message.created_at|date:"H:i" }}</small>
 																		</div>
 																		<div class="message" style="max-width:70%; padding:10px 16px; border-radius:18px; font-size:1em; background:#eafaf1; color:#222; align-self:flex-start; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
@@ -243,7 +243,7 @@
 															<!-- Other user's file message -->
 															<div style="display:flex; flex-direction:column; align-items:flex-start;">
 																<div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-																	<span style="font-size:0.97em; color:#256d4a; font-weight:600;">{{ message.user.fullname }}</span>
+																	<span style="font-size:0.97em; color:#256d4a; font-weight:600;"><a href="{% url 'feed:perfil' message.user.id %}" class="user-name-link" title="Ver perfil" style="color:#256d4a; text-decoration:none;">{{ message.user.fullname }}</a></span>
 																	<small style="font-size:0.85em; color:#666;">{{ message.created_at|date:"H:i" }}</small>
 																</div>
 																<div class="message" style="max-width:70%; padding:10px 16px; border-radius:18px; font-size:1em; background:#eafaf1; color:#222; align-self:flex-start; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
@@ -287,7 +287,7 @@
 									<li style="margin-bottom:18px; display:flex; align-items:center;">
 										<img src="{{ member.get_profile_picture_url }}" alt="Foto de perfil" style="width:40px; height:40px; border-radius:50%; margin-right:12px; object-fit:cover;">
 										<div>
-											<div style="font-weight:600; color:#256d4a;">{{ member.fullname }}</div>
+											<div style="font-weight:600; color:#256d4a;"><a href="{% url 'feed:perfil' member.id %}" class="user-name-link" title="Ver perfil" style="color:#256d4a; text-decoration:none;">{{ member.fullname }}</a></div>
 											{% if member.institution %}
 												<div style="font-size:0.95em; color:#555;">{{ member.institution }}</div>
 											{% endif %}

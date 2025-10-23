@@ -358,6 +358,44 @@ nav {
   text-decoration: none;
 }
 
+/* User name link styles */
+.user-name-link {
+  color: inherit !important;
+  text-decoration: none !important;
+  transition: color 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.user-name-link:hover {
+  color: var(--highlight-color) !important;
+  text-decoration: none !important;
+}
+
+/* Tooltip for "Ver perfil" */
+.user-name-link:hover::after {
+  content: "Ver perfil";
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.user-name-link::after {
+  content: "";
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
 .footer {
   text-align: center;
   color: #9a9a9a;
