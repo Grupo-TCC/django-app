@@ -1,0 +1,41 @@
+🚀 AWS Deployment Information - FREE TIER
+==========================================
+
+✅ INFRASTRUCTURE STATUS:
+- Account validated for us-east-1 ✅
+- EC2 Instance: RUNNING ✅
+- RDS Database: CREATING ⏳ (10-15 minutes)
+
+🖥️ EC2 INSTANCE:
+- Instance ID: i-019f15a5601e8d099
+- Public IP: 3.87.153.138  
+- Instance Type: t3.micro (Free Tier)
+- Region: us-east-1 (N. Virginia)
+- SSH Key: ~/.ssh/django-app-key
+- SSH Command: ssh -i ~/.ssh/django-app-key ubuntu@3.87.153.138
+
+🗄️ RDS DATABASE:
+- Identifier: django-mariadb
+- Instance Class: db.t3.micro (Free Tier) 
+- Engine: MariaDB
+- Database: django_db
+- Username: admin
+- Password: DjangoPass123
+- Status: Creating... (check with: aws rds describe-db-instances --db-instance-identifier django-mariadb)
+
+🔒 SECURITY GROUPS:
+- Web Server: sg-01432dc60e6a5b152 (HTTP/HTTPS/SSH)
+- Database: sg-00393e02d756b541f (MySQL/MariaDB from web server)
+
+📋 NEXT STEPS:
+1. Wait for RDS to become 'available' (10-15 minutes)
+2. Get RDS endpoint when ready
+3. SSH to EC2: ssh -i ~/.ssh/django-app-key ubuntu@3.87.153.138  
+4. Run deployment script on EC2
+5. Import your Django data
+
+💰 COST: $0/month (AWS Free Tier - 12 months)
+
+🔗 GITHUB REPO: https://github.com/Grupo-TCC/django-app.git
+
+Generated: $(date)
