@@ -75,6 +75,7 @@ from .constants import RESEARCH_AREA_CHOICES
 from feed.article_models import Article
 from user.models import Follow
 from feed.community_models import Community
+from .utils import get_regular_users_except
 
 #from user.forms import InnovatorVerificationForm    
 
@@ -82,7 +83,7 @@ from feed.community_models import Community
 
 def conexao(request):
     query = request.GET.get('q', '').strip()
-    users = User.objects.filter(is_active=True, email_verified=True).exclude(id=request.user.id)
+    users = get_regular_users_except(request.user)
     if query:
         users = users.filter(fullname__icontains=query)
     following_ids = set(

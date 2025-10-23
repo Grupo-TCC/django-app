@@ -6,6 +6,7 @@ from django.http import HttpResponseForbidden
 from django.views.decorators.http import require_POST
 from django.db.models import Q
 from .community_message_models import CommunityMessage
+from .utils import get_regular_users
 
 @login_required
 def community_detail(request, community_id):
@@ -36,7 +37,9 @@ def community_detail(request, community_id):
                 return render(request, 'feed/community_detail.html', {
                     'community': community,
                     'community_messages': community.messages.select_related('user').all(),
-                    'possible_invites': User.objects.filter(id__in=request.user.following.values_list('following_id', flat=True)).exclude(id__in=community.members.values_list('id', flat=True)),
+                    'possible_invites': get_regular_users().filter(
+                        id__in=request.user.following.values_list('following_id', flat=True)
+                    ).exclude(id__in=community.members.values_list('id', flat=True)),
                     'error': 'Apenas arquivos PDF, imagens, documentos Word e arquivos de texto são permitidos.'
                 })
         
@@ -59,7 +62,9 @@ def community_detail(request, community_id):
     # For inviting members, get users the current user follows who are not already members
     try:
         following_ids = request.user.following.values_list('following_id', flat=True)
-        possible_invites = User.objects.filter(id__in=following_ids).exclude(id__in=community.members.values_list('id', flat=True))
+        possible_invites = get_regular_users().filter(
+            id__in=following_ids
+        ).exclude(id__in=community.members.values_list('id', flat=True))
     except Exception:
         possible_invites = []
 
