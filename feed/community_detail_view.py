@@ -1,12 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .community_models import Community
-from user.models import User
+from django.contrib.auth import get_user_model
 from django.http import HttpResponseForbidden
 from django.views.decorators.http import require_POST
 from django.db.models import Q
 from .community_message_models import CommunityMessage
 from .utils import get_regular_users
+
+User = get_user_model()
 
 @login_required
 def community_detail(request, community_id):
