@@ -1,12 +1,11 @@
 #!/bin/bash
 
-# InnovaSus Render.com Startup Script
-echo "🌟 Starting InnovaSus on Render..."
+# InnovaSus Render.com Release Script
+# This runs during build, not during server start
+echo "🌟 InnovaSus Release Tasks..."
 
-# Set default environment variables
+# Set environment variables
 export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-"setup.settings_render"}
-export SECRET_KEY=${SECRET_KEY:-"render-default-key"}
-export DEBUG=${DEBUG:-"False"}
 
 # Run database migrations
 echo "📊 Running database migrations..."
@@ -26,15 +25,4 @@ else:
 EOF
 fi
 
-# Start Gunicorn with optimized settings for Render
-echo "🚀 Starting InnovaSus server on Render..."
-exec gunicorn setup.wsgi:application \
-    --bind 0.0.0.0:${PORT:-10000} \
-    --workers 2 \
-    --threads 2 \
-    --timeout 120 \
-    --max-requests 1000 \
-    --max-requests-jitter 100 \
-    --access-logfile - \
-    --error-logfile - \
-    --log-level info
+echo "✅ Release tasks completed!"
