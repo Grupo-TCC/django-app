@@ -8,6 +8,9 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('register/', views.register, name='register'),
 
+    # Email verification for new registrations
+    path('verify-email/<str:uidb64>/<str:token>/', views.verify_email, name='verify_email'),
+    
     # Auto-login link for approved users
     path('login/auto/<str:uidb64>/<str:token>/', views.auto_login, name='auto_login'),
     path("change-profile-picture/", views.change_profile_picture, name="change_profile_picture"),

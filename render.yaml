@@ -26,6 +26,8 @@ services:
         value: "False"
       - key: GMAIL_APP_PASSWORD
         value: "ipilfpmgnpbl"
+      - key: EMAIL_HOST_USER
+        value: "innovasus76@gmail.com"
       - key: CREATE_SUPERUSER
         value: "true"
     autoDeploy: true

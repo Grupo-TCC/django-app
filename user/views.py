@@ -50,11 +50,11 @@ def register(request):
                 return redirect('user:register')
             if register_form.is_valid():
                 user = register_form.save(commit=False)
-                user.is_active = False
+                user.is_active = False  # User needs to verify email first
                 user.email_verified = False
                 user.save()
                 
-                # Create UserVerification record directly
+                # Create UserVerification record with Lattes link
                 verification_link = register_form.cleaned_data.get('verification_link')
                 verification = UserVerification.objects.create(
                     user=user,
@@ -62,33 +62,61 @@ def register(request):
                     status="PENDING"
                 )
                 
-                # Send admin notification email
-                admin_subject = f"Nova solicitação de verificação - {user.fullname}"
-                admin_body = f"""
-Nova solicitação de verificação de usuário:
+                # Generate email verification token and link
+                token = email_verification_token.make_token(user)
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                verification_url = request.build_absolute_uri(
+                    reverse('user:verify_email', kwargs={'uidb64': uid, 'token': token})
+                )
+                
+                # Send email verification to user directly
+                subject = "InnovaSus - Verifique seu email para ativar sua conta"
+                message = f"""
+Olá {user.fullname},
 
-Nome: {user.fullname}
-Email: {user.email}
+Obrigado por se cadastrar no InnovaSus! 
 
-Link de verificação: {verification_link}
+Para ativar sua conta, clique no link abaixo:
+{verification_url}
 
-Para aprovar ou rejeitar, acesse o painel administrativo.
+IMPORTANTE: Suas credenciais serão verificadas através do link Lattes que você forneceu. 
+Contas com informações inconsistentes podem ser removidas.
+
+Se você não se cadastrou no InnovaSus, ignore este email.
+
+Atenciosamente,
+Equipe InnovaSus
                 """
                 
                 try:
-                    # Send notification to admins 
-                    admin_emails = [settings.EMAIL_HOST_USER]  # Use the same email as the sender for now
-                    sent = send_mail(admin_subject, admin_body, None, admin_emails, fail_silently=False)
+                    send_mail(
+                        subject=subject,
+                        message=message,
+                        from_email=settings.EMAIL_HOST_USER,
+                        recipient_list=[user.email],
+                        fail_silently=False
+                    )
                     
                     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                        return JsonResponse({'success': True, 'message': 'Cadastro realizado com sucesso! Você receberá o email de acesso caso sua solicitação seja aprovada.'})
-                    messages.success(request, 'Cadastro realizado com sucesso! Você receberá o email de acesso caso sua solicitação seja aprovada.')
+                        return JsonResponse({
+                            'success': True, 
+                            'message': 'Cadastro realizado! Verifique seu email para ativar sua conta.'
+                        })
+                    messages.success(request, 'Cadastro realizado com sucesso! Verifique seu email para ativar sua conta.')
                     return redirect('user:register')
                     
                 except Exception as e:
+                    # Delete the user if email sending fails
+                    user.delete()
+                    if verification:
+                        verification.delete()
+                    
                     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                        return JsonResponse({'success': False, 'message': f'Falha ao enviar notificação: {e}'}, status=500)
-                    messages.error(request, f'Cadastro realizado, mas falha ao notificar administrador: {e}')
+                        return JsonResponse({
+                            'success': False, 
+                            'message': 'Erro ao enviar email de verificação. Tente novamente.'
+                        }, status=500)
+                    messages.error(request, 'Erro ao enviar email de verificação. Tente novamente.')
                     return redirect('user:register')
             # Form invalid → return all errors
             errors = [e for field in register_form.errors.values() for e in field]
@@ -114,6 +142,9 @@ Para aprovar ou rejeitar, acesse o painel administrativo.
                             return redirect('user:register')
                     
                     login(request, user)
+                    # Add Lattes verification warning message
+                    messages.info(request, 'IMPORTANTE: Suas credenciais serão verificadas através do link Lattes fornecido. Contas com informações inconsistentes podem ser removidas.')
+                    
                     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                         return JsonResponse({'success': True, 'message': f'Bem-vindo, {user.fullname}!', 'redirect': reverse('feed:artigos')})
                     
@@ -171,6 +202,35 @@ def auto_login(request, uidb64, token):
     # bad/expired token
     messages.error(request, "Link de acesso expirado ou inválido.")
     return redirect('user:register')
+
+
+def verify_email(request, uidb64, token):
+    """
+    Handle email verification for new user registrations
+    """
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (User.DoesNotExist, ValueError, TypeError):
+        user = None
+
+    if user and email_verification_token.check_token(user, token):
+        # Activate the user account
+        user.is_active = True
+        user.email_verified = True
+        user.save()
+        
+        # Update verification status
+        verification = UserVerification.objects.filter(user=user).first()
+        if verification:
+            verification.status = "APPROVED"
+            verification.save()
+        
+        messages.success(request, f"Email verificado com sucesso! Sua conta está ativa. Faça login abaixo.")
+        return redirect('user:register')
+    else:
+        messages.error(request, "Link de verificação inválido ou expirado.")
+        return redirect('user:register')
 
 
 @login_required
