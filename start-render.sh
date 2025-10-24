@@ -4,7 +4,7 @@
 echo "🌟 Starting InnovaSus on Render..."
 
 # Set default environment variables
-export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-"setup.settings_railway"}
+export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-"setup.settings_render"}
 export SECRET_KEY=${SECRET_KEY:-"render-default-key"}
 export DEBUG=${DEBUG:-"False"}
 
