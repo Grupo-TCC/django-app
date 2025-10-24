@@ -3,7 +3,7 @@ Production settings for Render.com deployment with PostgreSQL
 Optimized for Render platform
 """
 import os
-import dj_database_url
+from urllib.parse import urlparse
 from .settings import *
 
 # SECURITY SETTINGS
@@ -27,9 +27,20 @@ if not any('.onrender.com' in host for host in ALLOWED_HOSTS):
 
 # DATABASE CONFIGURATION for Render PostgreSQL
 if 'DATABASE_URL' in os.environ:
-    # Render provides DATABASE_URL automatically
+    # Parse DATABASE_URL manually for Render PostgreSQL
+    url = urlparse(os.environ.get('DATABASE_URL'))
     DATABASES = {
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': url.path[1:],  # Remove leading slash
+            'USER': url.username,
+            'PASSWORD': url.password,
+            'HOST': url.hostname,
+            'PORT': url.port or 5432,
+            'OPTIONS': {
+                'connect_timeout': 60,
+            },
+        }
     }
 else:
     # Fallback to SQLite for local testing

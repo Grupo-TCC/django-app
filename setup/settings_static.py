@@ -10,7 +10,7 @@ ALLOWED_HOSTS = [
     'innovasus.vercel.app',
     'innovasus.netlify.app', 
     'grupo-tcc.github.io',
-    '*.railway.app',
+    '.onrender.com',
     'localhost',
     '127.0.0.1',
     '*',  # Allow all for now

@@ -1,5 +1,5 @@
 """
-Build-time settings for Railway/Docker builds
+Build-time settings for Docker builds
 No environment variables required
 """
 from .settings import *
