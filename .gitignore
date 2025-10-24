@@ -172,3 +172,10 @@ cython_debug/
 #.idea/
 
 # End of https://www.toptal.com/developers/gitignore/api/django
+
+# Sensitive deployment files
+.aws-deployment-vars
+*deployment-vars
+deployment-info.txt
+*.pem
+*.key

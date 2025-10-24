@@ -5,7 +5,7 @@ echo "Testing database connection..."
 
 DB_HOST="django-mariadb.c8pgiy0imd9p.us-east-1.rds.amazonaws.com"
 DB_USER="admin"
-DB_PASS="DjangoPass123"
+DB_PASS="[YOUR_DB_PASSWORD_HERE]"
 DB_NAME="django_db"
 
 echo "Testing MySQL connection..."

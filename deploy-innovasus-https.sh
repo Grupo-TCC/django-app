@@ -119,7 +119,10 @@ python manage.py collectstatic --noinput --settings=setup.settings_production
 
 # Create superuser
 echo -e "${BLUE}👤 Creating InnovaSus admin user...${NC}"
-echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@innovasus.com', 'InnovaSus2025!', fullname='InnovaSus Admin') if not User.objects.filter(username='admin').exists() else None" | python manage.py shell --settings=setup.settings_production
+echo -e "${YELLOW}Please create admin password:${NC}"
+read -s -p "Enter admin password: " ADMIN_PASSWORD
+echo
+echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@innovasus.com', '$ADMIN_PASSWORD', fullname='InnovaSus Admin') if not User.objects.filter(username='admin').exists() else None" | python manage.py shell --settings=setup.settings_production
 
 # Configure Supervisor
 echo -e "${BLUE}🔧 Configuring Supervisor for InnovaSus...${NC}"
@@ -199,7 +202,7 @@ echo
 echo -e "${GREEN}🔑 Admin Access:${NC}"
 echo -e "${BLUE}   URL: https://$DOMAIN_NAME/admin/${NC}"
 echo -e "${BLUE}   Username: admin${NC}"
-echo -e "${BLUE}   Password: InnovaSus2025!${NC}"
+echo -e "${BLUE}   Password: [Your chosen password]${NC}"
 echo
 echo -e "${GREEN}📊 Service Status:${NC}"
 sudo supervisorctl status innovasus

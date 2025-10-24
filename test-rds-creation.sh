@@ -8,7 +8,7 @@ aws rds create-db-instance \
     --db-instance-class db.t2.micro \
     --engine mariadb \
     --master-username admin \
-    --master-user-password 'DjangoPass123!' \
+    --master-user-password '[YOUR_SECURE_PASSWORD]' \
     --allocated-storage 20 \
     --storage-type gp2 \
     --no-deletion-protection
