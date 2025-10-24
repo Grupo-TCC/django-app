@@ -1,0 +1,10 @@
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "python manage.py migrate && gunicorn setup.wsgi:application"
+healthcheckPath = "/"
+restartPolicyType = "ON_FAILURE"
+
+[env]
+DJANGO_SETTINGS_MODULE = "setup.settings_production"
