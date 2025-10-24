@@ -25,7 +25,7 @@ services:
       - key: DEBUG
         value: "False"
       - key: GMAIL_APP_PASSWORD
-        value: ""
+        value: "ipilfpmgnpbl"
       - key: CREATE_SUPERUSER
         value: "true"
     autoDeploy: true
