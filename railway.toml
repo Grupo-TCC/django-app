@@ -2,9 +2,9 @@
 builder = "NIXPACKS"
 
 [deploy]
-startCommand = "python manage.py migrate && gunicorn setup.wsgi:application"
+startCommand = "python manage.py migrate --settings=setup.settings_railway && python manage.py collectstatic --noinput --settings=setup.settings_railway && gunicorn setup.wsgi:application"
 healthcheckPath = "/"
 restartPolicyType = "ON_FAILURE"
 
 [env]
-DJANGO_SETTINGS_MODULE = "setup.settings_production"
+DJANGO_SETTINGS_MODULE = "setup.settings_railway"

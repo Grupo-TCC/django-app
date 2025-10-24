@@ -8,12 +8,17 @@ typing_extensions==4.13.2
 # Database packages
 mysqlclient==2.2.4
 PyMySQL==1.1.1
+dj-database-url==2.1.0
+psycopg2-binary==2.9.7
 
 # AWS deployment packages
 boto3==1.35.48
 botocore==1.35.48
 gunicorn==22.0.0
 whitenoise==6.7.0
+
+# Railway deployment packages
+dj-database-url==2.1.0
 
 # Environment and security
 django-environ==0.11.2
