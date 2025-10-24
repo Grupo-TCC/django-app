@@ -1,0 +1,17 @@
+# Railway Nixpacks Configuration for InnovaSus
+# Optimized for fast Django + PostgreSQL deployment
+
+[providers]
+python = "3.11"
+
+[phases.setup]
+aptPkgs = ["postgresql-client"]
+
+[phases.install]
+cmds = ["pip install -r requirements-railway.txt"]
+
+[phases.build]
+cmds = ["python manage.py collectstatic --noinput --settings=setup.settings_railway"]
+
+[start]
+cmd = "gunicorn setup.wsgi:application --bind 0.0.0.0:$PORT --workers 3"

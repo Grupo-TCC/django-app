@@ -32,8 +32,8 @@ RUN mkdir -p /app/media
 # Create log directory
 RUN mkdir -p /var/log/django
 
-# Collect static files
-RUN python manage.py collectstatic --noinput --settings=setup.settings_production
+# Collect static files (use build-specific settings)
+RUN python manage.py collectstatic --noinput --settings=setup.settings_build
 
 # Expose port
 EXPOSE 8000
