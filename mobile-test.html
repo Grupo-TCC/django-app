@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Test - InnovaSUS</title>
+    <link rel="stylesheet" href="static/styles/home.css">
+    <link rel="stylesheet" href="static/styles/mobile-responsive.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Test the mobile layout -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <button class="mobile-menu-toggle" onclick="toggleMobileSidebar()">
+                <i class='bx bx-menu'></i>
+            </button>
+            <img src="static/assets/img/logo.png" class="logo" alt="InnovaSUS">
+        </div>
+        <div class="nav-center">
+            <h2>InnovaSUS</h2>
+        </div>
+        <div class="nav-right">
+            <div class="nav-user-icon online">
+                <img src="static/assets/img/profile-pic.png" alt="User">
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="left-sidebar">
+            <div class="imp-links">
+                <a href="#" class="active">
+                    <img src="static/assets/img/newspaper.png"> Artigos Científicos
+                </a>
+                <a href="#">
+                    <img src="static/assets/img/conhecimento.png"> Tradução de Conhecimento
+                </a>
+                <a href="#">
+                    <img src="static/assets/img/produtos.png"> Produtos
+                </a>
+                <a href="#">
+                    <img src="static/assets/img/friends.png"> Conexões
+                </a>
+                <a href="#">
+                    <img src="static/assets/img/people.png"> Comunidades
+                </a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <h1>Mobile Responsive Test</h1>
+            <p>This is a test to verify mobile responsiveness is working correctly.</p>
+            <div class="article-card" style="border: 1px solid #ddd; padding: 20px; margin: 10px 0; border-radius: 8px;">
+                <h3>Sample Article</h3>
+                <p>This is a sample article to test mobile layout.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-sidebar-overlay" onclick="closeMobileSidebar()" style="display: none;"></div>
+
+    <script>
+    function toggleMobileSidebar() {
+        const sidebar = document.querySelector('.left-sidebar');
+        const overlay = document.querySelector('.mobile-sidebar-overlay');
+        
+        if (sidebar && overlay) {
+            sidebar.classList.toggle('active');
+            if (sidebar.classList.contains('active')) {
+                overlay.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            } else {
+                overlay.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+    }
+
+    function closeMobileSidebar() {
+        const sidebar = document.querySelector('.left-sidebar');
+        const overlay = document.querySelector('.mobile-sidebar-overlay');
+        
+        if (sidebar && overlay) {
+            sidebar.classList.remove('active');
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    }
+    </script>
+</body>
+</html>

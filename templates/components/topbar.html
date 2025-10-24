@@ -1,11 +1,16 @@
 {% load static %}
 <!-- NAV -->
-<nav>
+<nav class="topbar">
   <div class="nav-left">
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" onclick="toggleMobileSidebar()" style="display: none;">
+      <i class="bx bx-menu"></i>
+    </button>
+    
     <a href="{% url 'feed:artigos' %}"
       ><img src="{% static 'assets/img/logo.png' %}" class="logo"
     /></a>
-    <ul>
+    <ul class="hide-mobile">
       <li>
         <a href="{% url 'feed:mensagens' %}"
           ><img
@@ -74,3 +79,73 @@
     </div>
   </div>
 </nav>
+
+<!-- Mobile Overlay -->
+<div class="mobile-sidebar-overlay" onclick="closeMobileSidebar()" style="display: none;"></div>
+
+<script>
+// Mobile Sidebar Functions
+function toggleMobileSidebar() {
+  const sidebar = document.querySelector('.left-sidebar');
+  const overlay = document.querySelector('.mobile-sidebar-overlay');
+  
+  if (sidebar && overlay) {
+    sidebar.classList.toggle('active');
+    if (sidebar.classList.contains('active')) {
+      overlay.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+    } else {
+      overlay.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  }
+}
+
+function closeMobileSidebar() {
+  const sidebar = document.querySelector('.left-sidebar');
+  const overlay = document.querySelector('.mobile-sidebar-overlay');
+  
+  if (sidebar && overlay) {
+    sidebar.classList.remove('active');
+    overlay.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
+// Close sidebar when clicking on a link (mobile)
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebarLinks = document.querySelectorAll('.left-sidebar a');
+  sidebarLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      if (window.innerWidth <= 768) {
+        closeMobileSidebar();
+      }
+    });
+  });
+  
+  // Handle window resize
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+      closeMobileSidebar();
+    }
+  });
+});
+</script>
+
+<style>
+.mobile-sidebar-overlay {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 60px);
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: block !important;
+  }
+}
+</style>

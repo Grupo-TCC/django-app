@@ -18,8 +18,8 @@ DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 # Hostinger domain configuration
 ALLOWED_HOSTS = [
-    'your-domain.com',  # Replace with your actual domain
-    'www.your-domain.com',  # Replace with your actual domain
+    'innovasusbr.com',
+    'www.innovasusbr.com',
     'localhost',
     '127.0.0.1',
 ]
@@ -149,8 +149,8 @@ if not DEBUG:
 # CORS settings
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
-    "https://your-domain.com",  # Replace with your actual domain
-    "https://www.your-domain.com",  # Replace with your actual domain
+    "https://innovasusbr.com",
+    "https://www.innovasusbr.com",
 ]
 
 # Login/Logout URLs

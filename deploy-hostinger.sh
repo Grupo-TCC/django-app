@@ -66,7 +66,8 @@ pip install -r requirements-hostinger.txt
 # Prompt for configuration
 print_warning "Please provide the following information:"
 
-read -p "Enter your domain name (e.g., innovasus.com): " DOMAIN_NAME
+read -p "Enter your domain name [innovasusbr.com]: " DOMAIN_NAME
+DOMAIN_NAME=${DOMAIN_NAME:-innovasusbr.com}
 read -p "Enter your server IP: " SERVER_IP
 read -s -p "Enter MySQL root password: " MYSQL_ROOT_PASSWORD
 echo

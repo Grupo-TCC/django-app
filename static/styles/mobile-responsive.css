@@ -1,0 +1,401 @@
+/* InnovaSus Mobile Responsive Styles */
+
+/* Mobile-first approach with responsive breakpoints */
+
+/* Global Mobile Optimizations */
+* {
+  box-sizing: border-box;
+}
+
+/* Touch-friendly elements */
+button,
+.btn,
+a,
+input,
+select,
+textarea {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Prevent horizontal scroll */
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Mobile Container Improvements */
+@media (max-width: 768px) {
+  /* Container adjustments */
+  .container {
+    padding: 10px;
+    margin: 0;
+    width: 100%;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+    padding: 15px 10px;
+    width: 100%;
+  }
+
+  /* Sidebar Mobile Behavior */
+  .left-sidebar {
+    position: fixed;
+    left: -280px;
+    top: 60px;
+    width: 280px;
+    height: calc(100vh - 60px);
+    background: white;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+    z-index: 999;
+    overflow-y: auto;
+  }
+
+  .left-sidebar.active {
+    left: 0;
+  }
+
+  /* Mobile Topbar */
+  .topbar {
+    padding: 8px 15px !important;
+    height: 60px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Hamburger Menu */
+  .mobile-menu-toggle {
+    display: block !important;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: var(--main-color);
+    cursor: pointer;
+    padding: 8px;
+  }
+
+  .mobile-menu-toggle:hover {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+
+  /* Adjust body for fixed topbar */
+  body {
+    padding-top: 60px;
+  }
+
+  /* Cards and Articles Mobile */
+  .article-card,
+  .card {
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+  }
+
+  .article-grid {
+    grid-template-columns: 1fr !important;
+    gap: 15px;
+  }
+
+  /* Forms Mobile */
+  .search-box {
+    width: 100% !important;
+    margin: 10px 0;
+  }
+
+  .search-box input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+
+  /* Buttons Mobile */
+  .btn,
+  button {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 5px 0;
+    font-size: 16px;
+    border-radius: 6px;
+    touch-action: manipulation;
+  }
+
+  .btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  /* Tables Mobile - Convert to Cards */
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 600px;
+  }
+
+  /* Profile and User Info */
+  .profile-section {
+    text-align: center;
+    padding: 20px 10px;
+  }
+
+  .profile-picture {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+
+  /* Navigation Mobile */
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-link {
+    padding: 15px;
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+
+  /* Modal Mobile */
+  .modal {
+    padding: 0 !important;
+  }
+
+  .modal-content {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    max-height: none !important;
+  }
+
+  /* File Upload Mobile */
+  .file-upload {
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+  }
+
+  /* Community Cards */
+  .community-card {
+    width: 100% !important;
+    margin: 10px 0;
+  }
+
+  /* Video Player Mobile */
+  .video-container {
+    width: 100%;
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+  }
+
+  .video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Artigos Header Mobile */
+  .artigos-header {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px 10px;
+  }
+
+  .artigos-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  /* Typography Mobile */
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+  }
+
+  p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* Spacing Mobile */
+  .mb-mobile {
+    margin-bottom: 20px;
+  }
+
+  .mt-mobile {
+    margin-top: 20px;
+  }
+
+  .p-mobile {
+    padding: 15px;
+  }
+}
+
+/* Tablet Optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    padding: 15px;
+  }
+
+  .main-content {
+    margin-left: 260px;
+    padding: 20px 15px;
+  }
+
+  .left-sidebar {
+    width: 250px;
+  }
+
+  .article-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .search-box {
+    width: 70%;
+  }
+}
+
+/* Large Mobile (iPhone Plus, etc.) */
+@media (max-width: 480px) {
+  .container {
+    padding: 5px;
+  }
+
+  .main-content {
+    padding: 10px 5px;
+  }
+
+  .topbar {
+    padding: 5px 10px !important;
+  }
+
+  .article-card {
+    margin: 8px 0;
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  .btn {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+
+  /* Smaller profile picture on very small screens */
+  .profile-picture {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* Utility Classes for Mobile */
+.mobile-only {
+  display: none;
+}
+
+.desktop-only {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: block;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .show-mobile {
+    display: block !important;
+  }
+}
+
+/* Touch Improvements */
+@media (hover: none) and (pointer: coarse) {
+  /* This targets touch devices */
+
+  .hover-effect:hover {
+    transform: none;
+  }
+
+  .card:hover {
+    transform: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Larger touch targets */
+  .touch-target {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 12px;
+  }
+}
+
+/* Dark Mode Mobile Support */
+@media (prefers-color-scheme: dark) {
+  .left-sidebar {
+    background: #1a1a1a;
+    color: white;
+  }
+
+  .topbar {
+    background: #1a1a1a;
+    color: white;
+  }
+
+  .modal-content {
+    background: #1a1a1a;
+    color: white;
+  }
+}
+
+/* Landscape Mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  .topbar {
+    height: 50px;
+  }
+
+  body {
+    padding-top: 50px;
+  }
+
+  .left-sidebar {
+    top: 50px;
+    height: calc(100vh - 50px);
+  }
+}
