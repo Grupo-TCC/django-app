@@ -1,0 +1,28 @@
+databases:
+  - name: innovasus-postgres
+    databaseName: innovasus_db
+    user: innovasus_user
+    plan: free
+
+services:
+  - type: web
+    name: innovasus-backend
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements-railway.txt && python manage.py collectstatic --noinput --settings=setup.settings_railway"
+    startCommand: "python manage.py migrate --settings=setup.settings_railway && gunicorn setup.wsgi:application --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: setup.settings_railway
+      - key: DATABASE_URL
+        fromDatabase:
+          name: innovasus-postgres
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: GMAIL_APP_PASSWORD
+        value: ""
+    autoDeploy: true
+    healthCheckPath: "/"
