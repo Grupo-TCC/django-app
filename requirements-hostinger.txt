@@ -1,5 +1,5 @@
-# InnovaSus - Production Requirements
-# Optimized for Hostinger VPS with MySQL
+# Hostinger Production Requirements for InnovaSus
+# Optimized for VPS/Shared hosting with MySQL
 
 # Django Core
 Django==5.2

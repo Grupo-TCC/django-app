@@ -1,8 +1,0 @@
-{
-  "name": "backup_20251020_171413_pre_migration_backup",
-  "created": "2025-10-20T17:14:14.101830",
-  "sqlite_file": "/Users/emersonokorie/Desktop/django-app/database_backups/backup_20251020_171413_pre_migration_backup/db.sqlite3",
-  "fixture_file": "/Users/emersonokorie/Desktop/django-app/database_backups/backup_20251020_171413_pre_migration_backup/data_fixture.json",
-  "media_path": "/Users/emersonokorie/Desktop/django-app/database_backups/backup_20251020_171413_pre_migration_backup/media",
-  "django_version": "5.2"
-}
