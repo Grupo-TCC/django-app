@@ -11,7 +11,8 @@ services:
     runtime: python-3.11
     plan: free
     buildCommand: "pip install --upgrade pip && pip install -r requirements-render.txt && python manage.py collectstatic --noinput --settings=setup.settings_render"
-    startCommand: "python manage.py migrate --settings=setup.settings_render && gunicorn setup.wsgi:application --bind 0.0.0.0:$PORT --workers 2"
+    preDeployCommand: "./start-render.sh"
+    startCommand: "gunicorn setup.wsgi:application --bind 0.0.0.0:$PORT --workers 2"
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: setup.settings_render

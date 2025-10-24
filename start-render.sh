@@ -1,18 +1,11 @@
 #!/bin/bash
 
-# InnovaSus Render.com Release Script
-# This runs during build, not during server start
-echo "🌟 InnovaSus Release Tasks..."
+# InnovaSus Render.com Pre-Deploy Script
+# This runs before the server starts
+echo "🌟 InnovaSus Pre-Deploy Tasks..."
 
 # Set environment variables
 export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-"setup.settings_render"}
-
-# Check if Django is installed
-echo "🔍 Checking Django installation..."
-python -c "import django; print(f'✅ Django {django.VERSION} found')" || {
-    echo "❌ Django not found! Installing dependencies..."
-    pip install -r requirements-render.txt
-}
 
 # Run database migrations
 echo "📊 Running database migrations..."
@@ -32,4 +25,4 @@ else:
 EOF
 fi
 
-echo "✅ Release tasks completed!"
+echo "✅ Pre-deploy tasks completed!"
