@@ -26,5 +26,7 @@ services:
         value: "False"
       - key: GMAIL_APP_PASSWORD
         value: ""
+      - key: CREATE_SUPERUSER
+        value: "true"
     autoDeploy: true
     healthCheckPath: "/"
