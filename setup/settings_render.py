@@ -73,9 +73,15 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'innovasus76@gmail.com'
+EMAIL_USE_SSL = False
+EMAIL_TIMEOUT = 60
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'innovasus76@gmail.com')
 EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_APP_PASSWORD', '')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+
+# Email debugging
+EMAIL_DEBUG = True
 
 # Logging for Render
 LOGGING = {
