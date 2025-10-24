@@ -7,6 +7,13 @@ echo "🌟 InnovaSus Release Tasks..."
 # Set environment variables
 export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-"setup.settings_render"}
 
+# Check if Django is installed
+echo "🔍 Checking Django installation..."
+python -c "import django; print(f'✅ Django {django.VERSION} found')" || {
+    echo "❌ Django not found! Installing dependencies..."
+    pip install -r requirements-render.txt
+}
+
 # Run database migrations
 echo "📊 Running database migrations..."
 python manage.py migrate --settings=$DJANGO_SETTINGS_MODULE
