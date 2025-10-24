@@ -24,6 +24,3 @@ Pillow==10.4.0
 
 # Security and CORS
 django-cors-headers==4.4.0
-
-# File handling (for media uploads)
-Pillow==10.0.0
