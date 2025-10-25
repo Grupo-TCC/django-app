@@ -5,12 +5,15 @@
 
 set -e
 
-echo "🚀 Starting InnovaSus deployment on Hostinger..."
+echo "🚀 Starting InnovaSus deployment on Hostinger VPS..."
+echo "   This script will deploy your Django app to innovasusbr.com"
+echo ""
 
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Function to print colored output
@@ -24,6 +27,10 @@ print_warning() {
 
 print_error() {
     echo -e "${RED}[ERROR]${NC} $1"
+}
+
+print_header() {
+    echo -e "${BLUE}[STEP]${NC} $1"
 }
 
 # Check if running as root
@@ -48,8 +55,10 @@ cd /var/www/innovasus
 # Clone repository
 print_status "Cloning InnovaSus repository..."
 if [ -d ".git" ]; then
-    git pull
+    print_status "Repository exists, pulling latest changes..."
+    git pull origin master
 else
+    print_status "Cloning fresh repository..."
     git clone https://github.com/Grupo-TCC/django-app.git .
 fi
 
