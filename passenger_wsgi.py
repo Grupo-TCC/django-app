@@ -1,14 +1,18 @@
+"""
+WSGI config for InnovaSUS project on Hostinger VPS.
+This file is used by Gunicorn for VPS deployment.
+"""
+
 import os
 import sys
+from pathlib import Path
 
-# Add your project directory to Python path
-# Replace 'u123456789' with your actual Hostinger username
-project_home = '/home/u123456789/domains/innovasusbr.com/public_html'
-if project_home not in sys.path:
-    sys.path.insert(0, project_home)
+# Build paths inside the project
+BASE_DIR = Path(__file__).resolve().parent
+sys.path.append(str(BASE_DIR))
 
-# Set Django settings module for shared hosting
-os.environ['DJANGO_SETTINGS_MODULE'] = 'setup.settings_hostinger'
+# Set the settings module for VPS production
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'setup.settings_hostinger')
 
 # Import Django WSGI application
 from django.core.wsgi import get_wsgi_application

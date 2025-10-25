@@ -1,15 +1,11 @@
 """
 InnovaSus - Hostinger Production Settings
-Optimized for Hostinger Shared Hosting
+Optimized for Hostinger VPS with MySQL
 """
 
 import os
 from pathlib import Path
 from urllib.parse import urlparse
-import pymysql
-
-# Install PyMySQL as MySQLdb for shared hosting compatibility
-pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
