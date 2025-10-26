@@ -20,6 +20,7 @@ DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 ALLOWED_HOSTS = [
     'innovasusbr.com',
     'www.innovasusbr.com',
+    '85.31.231.8',  # VPS IP address
     'localhost',
     '127.0.0.1',
 ]
