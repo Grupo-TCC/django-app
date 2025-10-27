@@ -48,7 +48,6 @@ body {
     width: 280px;
     height: calc(100vh - 60px);
     background: white;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     transition: left 0.3s ease;
     z-index: 999;
     overflow-y: auto;
@@ -67,8 +66,7 @@ body {
     left: 0;
     right: 0;
     z-index: 1000;
-    background: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: #69a787;
   }
 
   /* Hamburger Menu */
@@ -77,7 +75,7 @@ body {
     background: none;
     border: none;
     font-size: 20px;
-    color: var(--main-color);
+    color: white;
     cursor: pointer;
     padding: 8px;
   }
@@ -87,7 +85,7 @@ body {
     border-radius: 4px;
   }
 
-  /* Adjust body for fixed topbar */
+  /* Adjust body for fixed topbar on mobile only */
   body {
     padding-top: 60px;
   }
@@ -366,7 +364,8 @@ body {
   }
 }
 
-/* Dark Mode Mobile Support */
+/* Dark Mode Mobile Support - Disabled to maintain original colors */
+/*
 @media (prefers-color-scheme: dark) {
   .left-sidebar {
     background: #1a1a1a;
@@ -383,6 +382,7 @@ body {
     color: white;
   }
 }
+*/
 
 /* Landscape Mobile */
 @media (max-width: 768px) and (orientation: landscape) {
@@ -397,5 +397,33 @@ body {
   .left-sidebar {
     top: 50px;
     height: calc(100vh - 50px);
+  }
+}
+
+/* Desktop Reset - Ensure desktop styles are not affected */
+@media (min-width: 769px) {
+  /* Reset mobile-specific styles for desktop */
+  body {
+    padding-top: 0 !important;
+  }
+
+  .topbar,
+  nav {
+    position: sticky !important;
+    height: auto !important;
+    padding: 5px 5% !important;
+  }
+
+  .left-sidebar {
+    position: sticky !important;
+    left: auto !important;
+    top: 70px !important;
+    width: auto !important;
+    height: auto !important;
+    flex-basis: 25% !important;
+  }
+
+  .mobile-menu-toggle {
+    display: none !important;
   }
 }

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidade - InnovaSus</title>
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .politica-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.7;
+            color: #333;
+        }
+        
+        .politica-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-top: 6rem;
+        }
+        
+        .politica-header h1 {
+            color: #2c5530;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .politica-header p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .update-date {
+            font-style: italic;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .politica-content {
+            background: #f8f9fa;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .politica-content h2 {
+            color: #2c5530;
+            font-size: 1.6rem;
+            margin: 2rem 0 1rem 0;
+            border-bottom: 2px solid #4a7c59;
+            padding-bottom: 0.5rem;
+        }
+        
+        .politica-content h2:first-child {
+            margin-top: 0;
+        }
+        
+        .politica-content h3 {
+            color: #4a7c59;
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.8rem 0;
+        }
+        
+        .politica-content p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+        
+        .politica-content ul, .politica-content ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .politica-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .highlight-box {
+            background: #e8f5e8;
+            border-left: 4px solid #4a7c59;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .contact-info {
+            background: linear-gradient(135deg, #2c5530, #4a7c59);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .contact-info h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .contact-info a {
+            color: #a8d4a8;
+            text-decoration: none;
+        }
+        
+        .contact-info a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .back-link {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: #2c5530;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 1000;
+        }
+        
+        .back-link:hover {
+            background: #4a7c59;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .politica-container {
+                padding: 1rem;
+            }
+            
+            .politica-header {
+                padding-top: 4rem;
+            }
+            
+            .politica-header h1 {
+                font-size: 2rem;
+            }
+            
+            .politica-content {
+                padding: 1.5rem;
+            }
+            
+            .politica-content ul, .politica-content ol {
+                margin-left: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'user:index' %}" class="back-link">
+        <i class="fa fa-arrow-left"></i> Voltar
+    </a>
+
+    <div class="politica-container">
+        <div class="politica-header">
+            <h1><i class="fa fa-shield"></i> Política de Privacidade</h1>
+            <p>InnovaSus - Plataforma de Pesquisa em Saúde</p>
+            <p class="update-date">Última atualização: 27 de outubro de 2025</p>
+        </div>
+
+        <div class="politica-content">
+            <h2>1. Introdução</h2>
+            <p>
+                A InnovaSus ("nós", "nosso" ou "plataforma") está comprometida em proteger e respeitar 
+                sua privacidade. Esta Política de Privacidade explica como coletamos, usamos, 
+                compartilhamos e protegemos suas informações quando você usa nossa plataforma de 
+                publicação científica para pesquisadores do setor de saúde.
+            </p>
+            <div class="highlight-box">
+                <strong>Importante:</strong> Ao usar a plataforma InnovaSus, você concorda com os 
+                termos desta Política de Privacidade. Se você não concordar, por favor, não use 
+                nossa plataforma.
+            </div>
+
+            <h2>2. Informações que Coletamos</h2>
+            
+            <h3>2.1 Informações Pessoais</h3>
+            <p>Coletamos as seguintes informações quando você se registra na plataforma:</p>
+            <ul>
+                <li>Nome completo</li>
+                <li>Endereço de e-mail</li>
+                <li>Instituição de afiliação</li>
+                <li>Área de especialização em saúde</li>
+                <li>Titulação acadêmica</li>
+                <li>Informações de perfil profissional</li>
+            </ul>
+
+            <h3>2.2 Informações de Conteúdo</h3>
+            <p>Quando você publica conteúdo em nossa plataforma, coletamos:</p>
+            <ul>
+                <li>Artigos científicos e pesquisas</li>
+                <li>Materiais de tradução de conhecimento</li>
+                <li>Comentários e discussões em comunidades</li>
+                <li>Informações sobre produtos e inovações publicadas</li>
+                <li>Metadados associados às publicações</li>
+            </ul>
+
+            <h3>2.3 Informações Técnicas</h3>
+            <p>Coletamos automaticamente:</p>
+            <ul>
+                <li>Endereço IP e localização geral</li>
+                <li>Tipo de navegador e sistema operacional</li>
+                <li>Páginas visitadas e tempo de permanência</li>
+                <li>Padrões de uso da plataforma</li>
+                <li>Logs de acesso e atividade</li>
+            </ul>
+
+            <h2>3. Como Usamos suas Informações</h2>
+            
+            <h3>3.1 Finalidades Principais</h3>
+            <ul>
+                <li>Fornecer acesso à plataforma de publicação científica</li>
+                <li>Facilitar a publicação e compartilhamento de pesquisas</li>
+                <li>Conectar pesquisadores através de comunidades especializadas</li>
+                <li>Processar pagamentos para conteúdo premium</li>
+                <li>Enviar notificações sobre atividades relevantes</li>
+                <li>Melhorar a experiência do usuário na plataforma</li>
+            </ul>
+
+            <h3>3.2 Comunicações</h3>
+            <p>Utilizamos seu e-mail para:</p>
+            <ul>
+                <li>Confirmação de cadastro e verificação de conta</li>
+                <li>Notificações sobre novas publicações em sua área</li>
+                <li>Alertas sobre atividades em comunidades</li>
+                <li>Atualizações importantes da plataforma</li>
+                <li>Suporte técnico quando solicitado</li>
+            </ul>
+
+            <h2>4. Compartilhamento de Informações</h2>
+            
+            <h3>4.1 Informações Públicas</h3>
+            <p>As seguintes informações são visíveis publicamente na plataforma:</p>
+            <ul>
+                <li>Nome e afiliação profissional</li>
+                <li>Publicações e pesquisas compartilhadas</li>
+                <li>Participação em comunidades públicas</li>
+                <li>Perfil profissional (conforme configurado)</li>
+            </ul>
+
+            <h3>4.2 Não Compartilhamos</h3>
+            <p>Nunca vendemos, alugamos ou compartilhamos suas informações pessoais com terceiros para fins comerciais, exceto:</p>
+            <ul>
+                <li>Quando exigido por lei ou ordem judicial</li>
+                <li>Para proteção de direitos, propriedade ou segurança</li>
+                <li>Com seu consentimento explícito</li>
+                <li>Com prestadores de serviços essenciais (sob acordos de confidencialidade)</li>
+            </ul>
+
+            <h2>5. Segurança dos Dados</h2>
+            <p>Implementamos medidas de segurança técnicas e organizacionais para proteger suas informações:</p>
+            <ul>
+                <li>Criptografia SSL/TLS para transmissão de dados</li>
+                <li>Armazenamento seguro em servidores protegidos</li>
+                <li>Controle de acesso baseado em funções</li>
+                <li>Monitoramento regular de segurança</li>
+                <li>Backups regulares e seguros</li>
+                <li>Políticas internas de proteção de dados</li>
+            </ul>
+
+            <h2>6. Seus Direitos</h2>
+            <p>De acordo com a LGPD (Lei Geral de Proteção de Dados), você tem os seguintes direitos:</p>
+            <ul>
+                <li><strong>Acesso:</strong> Solicitar informações sobre seus dados pessoais</li>
+                <li><strong>Correção:</strong> Atualizar dados incompletos ou incorretos</li>
+                <li><strong>Exclusão:</strong> Solicitar a remoção de seus dados</li>
+                <li><strong>Portabilidade:</strong> Obter uma cópia de seus dados</li>
+                <li><strong>Oposição:</strong> Opor-se ao tratamento de dados específicos</li>
+                <li><strong>Revogação:</strong> Retirar seu consentimento a qualquer momento</li>
+            </ul>
+
+            <h2>7. Cookies e Tecnologias Similares</h2>
+            <p>Utilizamos cookies para:</p>
+            <ul>
+                <li>Manter sua sessão ativa na plataforma</li>
+                <li>Lembrar suas preferências e configurações</li>
+                <li>Analisar o uso da plataforma para melhorias</li>
+                <li>Personalizar conteúdo relevante</li>
+            </ul>
+            <p>Você pode gerenciar cookies através das configurações do seu navegador.</p>
+
+            <h2>8. Retenção de Dados</h2>
+            <p>
+                Mantemos suas informações pessoais apenas pelo tempo necessário para cumprir 
+                as finalidades descritas nesta política ou conforme exigido por lei. 
+                Dados de publicações científicas podem ser mantidos por períodos mais longos 
+                devido à natureza acadêmica e de pesquisa da plataforma.
+            </p>
+
+            <h2>9. Alterações nesta Política</h2>
+            <p>
+                Podemos atualizar esta Política de Privacidade periodicamente. Notificaremos 
+                sobre mudanças significativas através de e-mail ou aviso na plataforma. 
+                A continuação do uso da plataforma após as alterações constitui aceitação 
+                da política atualizada.
+            </p>
+
+            <h2>10. Base Legal</h2>
+            <p>O tratamento de dados pessoais na InnovaSus baseia-se em:</p>
+            <ul>
+                <li>Consentimento do titular dos dados</li>
+                <li>Execução de contrato ou procedimentos preliminares</li>
+                <li>Cumprimento de obrigação legal</li>
+                <li>Legítimo interesse para atividades acadêmicas e de pesquisa</li>
+            </ul>
+        </div>
+
+        <div class="contact-info">
+            <h3><i class="fa fa-envelope"></i> Entre em Contato</h3>
+            <p>
+                Se você tiver dúvidas sobre esta Política de Privacidade ou desejar exercer 
+                seus direitos sobre dados pessoais, entre em contato conosco:
+            </p>
+            <p>
+                <strong>E-mail:</strong> <a href="mailto:privacidade@innovasus.com">innovasus706@gmail.com</a><br>
+                {% comment %} <strong>Data Protection Officer (DPO):</strong> <a href="mailto:dpo@innovasus.com">dpo@innovasus.com</a> {% endcomment %}
+            </p>
+            <p>
+                Responderemos às suas solicitações dentro do prazo estabelecido pela LGPD.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.documentElement.style.scrollBehavior = 'smooth';
+        
+        // Add click tracking for important sections (anonymized)
+        document.querySelectorAll('h2, h3').forEach(function(heading) {
+            heading.addEventListener('click', function() {
+                console.log('Privacy Policy section viewed: ' + this.textContent);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termos de Uso - InnovaSus</title>
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .termos-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.7;
+            color: #333;
+        }
+        
+        .termos-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-top: 6rem;
+        }
+        
+        .termos-header h1 {
+            color: #2c5530;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .termos-header p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .update-date {
+            font-style: italic;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .termos-content {
+            background: #f8f9fa;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .termos-content h2 {
+            color: #2c5530;
+            font-size: 1.6rem;
+            margin: 2rem 0 1rem 0;
+            border-bottom: 2px solid #4a7c59;
+            padding-bottom: 0.5rem;
+        }
+        
+        .termos-content h2:first-child {
+            margin-top: 0;
+        }
+        
+        .termos-content h3 {
+            color: #4a7c59;
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.8rem 0;
+        }
+        
+        .termos-content p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+        
+        .termos-content ul, .termos-content ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .termos-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffecb5;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .warning-box strong {
+            color: #856404;
+        }
+        
+        .danger-box {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-left: 4px solid #dc3545;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .danger-box strong {
+            color: #721c24;
+        }
+        
+        .highlight-box {
+            background: #e8f5e8;
+            border-left: 4px solid #4a7c59;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .contact-info {
+            background: linear-gradient(135deg, #2c5530, #4a7c59);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .contact-info h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .contact-info a {
+            color: #a8d4a8;
+            text-decoration: none;
+        }
+        
+        .contact-info a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .back-link {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: #2c5530;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 1000;
+        }
+        
+        .back-link:hover {
+            background: #4a7c59;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .termos-container {
+                padding: 1rem;
+            }
+            
+            .termos-header {
+                padding-top: 4rem;
+            }
+            
+            .termos-header h1 {
+                font-size: 2rem;
+            }
+            
+            .termos-content {
+                padding: 1.5rem;
+            }
+            
+            .termos-content ul, .termos-content ol {
+                margin-left: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'user:index' %}" class="back-link">
+        <i class="fa fa-arrow-left"></i> Voltar
+    </a>
+
+    <div class="termos-container">
+        <div class="termos-header">
+            <h1><i class="fa fa-gavel"></i> Termos de Uso</h1>
+            <p>InnovaSus - Plataforma de Pesquisa em Saúde</p>
+            <p class="update-date">Última atualização: 27 de outubro de 2025</p>
+        </div>
+
+        <div class="termos-content">
+            <div class="danger-box">
+                <strong><i class="fa fa-exclamation-triangle"></i> ATENÇÃO - PLATAFORMA EXCLUSIVA:</strong><br>
+                Esta plataforma é <strong>estritamente destinada a pesquisadores, estudantes ou profissionais 
+                do setor de saúde</strong>. Todo conteúdo e perfis serão revisados. Usuários que não se 
+                adequem ao perfil ou publiquem conteúdo fora do escopo da plataforma serão removidos 
+                e <strong>correm o risco de banimento permanente</strong>.
+            </div>
+
+            <h2>1. Aceitação dos Termos</h2>
+            <p>
+                Ao acessar e usar a plataforma InnovaSus ("Plataforma"), você concorda em cumprir 
+                e ficar vinculado a estes Termos de Uso. Se você não concordar com qualquer parte 
+                destes termos, não deve usar nossa plataforma.
+            </p>
+
+            <h2>2. Elegibilidade e Público-Alvo</h2>
+            
+            <h3>2.1 Usuários Elegíveis</h3>
+            <p>A plataforma InnovaSus é <strong>exclusivamente destinada</strong> a:</p>
+            <ul>
+                <li><strong>Pesquisadores</strong> ativos em ciências da saúde e biomedicina</li>
+                <li><strong>Professores universitários</strong> das áreas de saúde</li>
+                <li><strong>Estudantes de graduação e pós-graduação</strong> em cursos da área da saúde</li>
+                <li><strong>Profissionais da saúde</strong> com atividade de pesquisa</li>
+                <li><strong>Cientistas</strong> de institutos de pesquisa em saúde</li>
+                <li><strong>Profissionais de R&D</strong> em empresas farmacêuticas e de biotecnologia</li>
+            </ul>
+
+            <h3>2.2 Verificação de Perfil</h3>
+            <div class="warning-box">
+                <strong>Todos os perfis serão verificados:</strong> Nossa equipe revisa cada cadastro 
+                para confirmar a adequação do usuário ao perfil da plataforma. Documentos comprobatórios 
+                podem ser solicitados.
+            </div>
+
+            <h2>3. Moderação e Revisão de Conteúdo</h2>
+            
+            <h3>3.1 Revisão Obrigatória</h3>
+            <p>Todo conteúdo publicado na plataforma está sujeito à revisão, incluindo:</p>
+            <ul>
+                <li>Artigos científicos e pesquisas</li>
+                <li>Materiais de tradução de conhecimento</li>
+                <li>Discussões em comunidades</li>
+                <li>Informações sobre produtos e inovações</li>
+                <li>Comentários e interações</li>
+            </ul>
+
+            <h3>3.2 Critérios de Aceitação</h3>
+            <p>O conteúdo deve:</p>
+            <ul>
+                <li>Estar relacionado às ciências da saúde, medicina ou biotecnologia</li>
+                <li>Seguir padrões científicos e éticos</li>
+                <li>Ser original ou devidamente referenciado</li>
+                <li>Não conter informações falsas ou enganosas</li>
+                <li>Respeitar direitos autorais e propriedade intelectual</li>
+                <li>Não promover práticas não comprovadas cientificamente</li>
+            </ul>
+
+            <h2>4. Condutas Proibidas</h2>
+            
+            <h3>4.1 Comportamentos que Resultam em Banimento</h3>
+            <div class="danger-box">
+                <strong><i class="fa fa-ban"></i> RISCO DE BANIMENTO PERMANENTE:</strong><br>
+                As seguintes condutas podem resultar em remoção imediata e banimento permanente:
+            </div>
+            
+            <ul>
+                <li>Publicar conteúdo <strong>fora do escopo da saúde</strong> e pesquisa científica</li>
+                <li>Criar perfil falso ou fornecer informações incorretas sobre qualificações</li>
+                <li>Compartilhar informações médicas não comprovadas ou perigosas</li>
+                <li>Promover produtos ou tratamentos sem base científica</li>
+                <li>Violar direitos autorais ou plagiar conteúdo</li>
+                <li>Usar a plataforma para fins comerciais não autorizados</li>
+                <li>Assediar, intimidar ou desrespeitar outros usuários</li>
+                <li>Tentar burlar sistemas de moderação</li>
+            </ul>
+
+            <h3>4.2 Processo de Banimento</h3>
+            <p>O banimento pode ocorrer:</p>
+            <ul>
+                <li><strong>Imediatamente</strong> em casos graves</li>
+                <li>Após advertências em casos menos severos</li>
+                <li>De forma <strong>permanente</strong> para reincidentes</li>
+                <li>Sem direito a recurso em casos de fraude ou conteúdo perigoso</li>
+            </ul>
+
+            <h2>5. Publicação e Propriedade Intelectual</h2>
+            
+            <h3>5.1 Responsabilidade do Usuário</h3>
+            <p>Ao publicar conteúdo, você:</p>
+            <ul>
+                <li>Garante ser o autor ou ter autorização para publicação</li>
+                <li>Assume responsabilidade pela veracidade das informações</li>
+                <li>Concede à InnovaSus licença não exclusiva para hospedar e exibir o conteúdo</li>
+                <li>Mantém todos os direitos autorais sobre seu trabalho original</li>
+            </ul>
+
+            <h3>5.2 Monetização</h3>
+            <p>Para conteúdo premium pago:</p>
+            <ul>
+                <li>Deve passar por aprovação adicional da equipe editorial</li>
+                <li>Seguir padrões rigorosos de qualidade científica</li>
+                <li>Cumprir regulamentações sobre comercialização de conteúdo médico</li>
+            </ul>
+
+            <h2>6. Privacidade e Dados</h2>
+            <p>
+                O uso da plataforma está sujeito à nossa Política de Privacidade. 
+                Informações acadêmicas e profissionais podem ser visíveis publicamente 
+                conforme necessário para fins de networking acadêmico.
+            </p>
+
+            <h2>7. Disponibilidade do Serviço</h2>
+            <p>
+                Nos esforçamos para manter a plataforma sempre disponível, mas não garantimos 
+                operação ininterrupta. Podemos realizar manutenções programadas ou suspender 
+                temporariamente o serviço quando necessário.
+            </p>
+
+            <h2>8. Modificações nos Termos</h2>
+            <p>
+                Reservamos o direito de modificar estes termos a qualquer momento. 
+                Usuários serão notificados sobre mudanças significativas através da plataforma 
+                ou por e-mail. O uso continuado constitui aceitação dos termos atualizados.
+            </p>
+
+            <h2>9. Limitação de Responsabilidade</h2>
+            <p>
+                A InnovaSus não se responsabiliza por:
+            </p>
+            <ul>
+                <li>Conteúdo publicado por usuários</li>
+                <li>Uso inadequado de informações médicas</li>
+                <li>Decisões tomadas com base em conteúdo da plataforma</li>
+                <li>Perdas decorrentes de interrupções no serviço</li>
+                <li>Conflitos entre usuários ou violações de propriedade intelectual</li>
+            </ul>
+
+            <h2>10. Resolução de Disputas</h2>
+            <p>
+                Disputas relacionadas a estes termos serão resolvidas através de:
+            </p>
+            <ul>
+                <li>Negociação direta inicial</li>
+                <li>Mediação, se necessário</li>
+                <li>Jurisdição brasileira para questões legais</li>
+            </ul>
+
+            <div class="highlight-box">
+                <strong><i class="fa fa-info-circle"></i> Lembrete Importante:</strong><br>
+                Esta é uma plataforma científica séria. Mantenha sempre o foco em contribuições 
+                relevantes para o avanço da ciência e saúde. Sua participação deve refletir 
+                os mais altos padrões acadêmicos e éticos.
+            </div>
+
+            <h2>11. Contato e Suporte</h2>
+            <p>
+                Para questões sobre estes termos, moderação de conteúdo ou recursos contra 
+                decisões da plataforma, entre em contato através dos canais oficiais.
+            </p>
+        </div>
+
+        <div class="contact-info">
+            <h3><i class="fa fa-envelope"></i> Contato</h3>
+            <p>
+                <strong>Questões gerais:</strong> <a href="mailto:suporte@innovasus.com">suporte@innovasus.com</a><br>
+                <strong>Moderação:</strong> <a href="mailto:moderacao@innovasus.com">moderacao@innovasus.com</a><br>
+                <strong>Recursos:</strong> <a href="mailto:recursos@innovasus.com">recursos@innovasus.com</a>
+            </p>
+            <p><strong>Tempo de resposta:</strong> até 48 horas úteis</p>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.documentElement.style.scrollBehavior = 'smooth';
+    </script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre o InnovaSus - Plataforma de Pesquisas Inovadoras em Saúde</title>
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .sobre-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        
+        .sobre-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-top: 6rem;
+        }
+        
+        .sobre-header h1 {
+            color: #2c5530;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .sobre-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .sobre-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .sobre-section {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sobre-section h2 {
+            color: #2c5530;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .sobre-section h3 {
+            color: #4a7c59;
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.5rem 0;
+        }
+        
+        .sobre-section p {
+            color: #555;
+            margin-bottom: 1rem;
+        }
+        
+        .sobre-section ul {
+            color: #555;
+            margin-left: 1.5rem;
+        }
+        
+        .sobre-section li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #4a7c59;
+        }
+        
+        .feature-card h4 {
+            color: #2c5530;
+            margin-bottom: 0.5rem;
+        }
+        
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(135deg, #2c5530, #4a7c59);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 10px;
+            margin-top: 3rem;
+        }
+        
+        .cta-section h2 {
+            margin-bottom: 1rem;
+        }
+        
+        .btn-primary {
+            background: white;
+            color: #2c5530;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+        
+        .back-link {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: #2c5530;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 1000;
+        }
+        
+        .back-link:hover {
+            background: #4a7c59;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .sobre-container {
+                padding: 1rem;
+            }
+            
+            .sobre-header {
+                padding-top: 4rem;
+            }
+            
+            .sobre-header h1 {
+                font-size: 2rem;
+            }
+            
+            .sobre-section {
+                padding: 1.5rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'user:index' %}" class="back-link">
+        <i class="fa fa-arrow-left"></i> Voltar
+    </a>
+
+    <div class="sobre-container">
+        <div class="sobre-header">
+            <h1>Sobre o InnovaSus</h1>
+            <p>Plataforma de publicação e colaboração para pesquisadores do setor de saúde</p>
+        </div>
+
+        <div class="sobre-content">
+            <div class="sobre-section">
+                <h2>
+                    <i class="fa fa-flask"></i>
+                    O que é o InnovaSus?
+                </h2>
+                <p>
+                    O <strong>InnovaSus</strong> é uma plataforma digital especializada desenvolvida para 
+                    <strong>pesquisadores do setor de saúde</strong> que desejam publicar, compartilhar e 
+                    comercializar seus trabalhos científicos, pesquisas e inovações tecnológicas na área da saúde.
+                </p>
+                <p>
+                    Nossa missão é conectar pesquisadores, promover o avanço científico e facilitar 
+                    a disseminação do conhecimento através de uma plataforma integrada que permite 
+                    tanto a publicação acadêmica quanto a comercialização de pesquisas.
+                </p>
+            </div>
+
+            <div class="sobre-section">
+                <h2>
+                    <i class="fa fa-graduation-cap"></i>
+                    Para Quem é Destinado?
+                </h2>
+                <p>O InnovaSus foi criado especificamente para pesquisadores do setor de saúde:</p>
+                <ul>
+                    <li><strong>Pesquisadores</strong> em ciências da saúde e biomedicina</li>
+                    <li><strong>Professores universitários</strong> das áreas de saúde</li>
+                    <li><strong>Doutores e PhD</strong> em medicina e áreas correlatas</li>
+                    <li><strong>Cientistas</strong> de institutos de pesquisa em saúde</li>
+                    <li><strong>Inovadores</strong> em tecnologia médica e biotecnologia</li>
+                    <li><strong>Estudantes de pós-graduação</strong> (mestrado e doutorado)</li>
+                    <li><strong>Profissionais de R&D</strong> em empresas farmacêuticas</li>
+                </ul>
+            </div>
+
+            <div class="sobre-section">
+                <h2>
+                    <i class="fa fa-star"></i>
+                    Principais Publicações Disponíveis
+                </h2>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4><i class="fa fa-file-text-o"></i> Artigos Científicos</h4>
+                        <p>Publique e acesse artigos científicos, estudos clínicos, revisões sistemáticas e meta-análises na área da saúde.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fa fa-language"></i> Tradução de Conhecimento</h4>
+                        <p>Compartilhe pesquisas pessoais, opiniões especializadas e insights científicos. Disponibilize conteúdo premium para venda.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fa fa-users"></i> Comunidades</h4>
+                        <p>Conecte-se com outros pesquisadores e professores, crie grupos de pesquisa especializados e promova colaboração acadêmica.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fa fa-cogs"></i> Produtos</h4>
+                        <p>Mantenha-se atualizado e publique desenvolvimentos tecnológicos recentes no setor de saúde e biotecnologia.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sobre-section">
+                <h2>
+                    <i class="fa fa-rocket"></i>
+                    Nossa Visão
+                </h2>
+                <p>
+                    Acreditamos que a inovação na saúde acontece quando pesquisadores têm uma plataforma 
+                    dedicada para publicar, compartilhar e monetizar seus trabalhos científicos. Nossa visão 
+                    é criar uma comunidade global de pesquisadores que colaboram, inovam e transformam o 
+                    futuro da saúde através da ciência e tecnologia.
+                </p>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Pronto para Publicar Suas Pesquisas?</h2>
+            <p>Junte-se à comunidade de pesquisadores que estão transformando a ciência da saúde através de publicações colaborativas e inovação tecnológica.</p>
+            <a href="{% url 'user:register' %}" class="btn-primary">
+                <i class="fa fa-user-plus"></i> Cadastre-se Agora
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for mobile
+        document.documentElement.style.scrollBehavior = 'smooth';
+    </script>
+</body>
+</html>

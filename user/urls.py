@@ -6,6 +6,9 @@ app_name = "user"  # <-- this registers the 'user:' namespace
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('sobre/', views.sobre, name='sobre'),
+    path('politica-privacidade/', views.politica_privacidade, name='politica_privacidade'),
+    path('termos-de-uso/', views.termos_de_uso, name='termos_de_uso'),
     path('register/', views.register, name='register'),
 
     # Email verification for new registrations

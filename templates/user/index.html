@@ -9,12 +9,381 @@
     <link rel="stylesheet" href="{% static 'styles/style.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #4a7c59;
+            font-weight: 600;
+            margin: 0.5rem 0 1rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .hero-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 2rem;
+        }
+        
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .stat {
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        .stat-number {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c5530;
+            line-height: 1.2;
+        }
+        
+        .stat-label {
+            display: block;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.2rem;
+            font-weight: 500;
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            /* Hero Section Mobile */
+            .content {
+                flex-direction: column !important;
+                padding: 1rem !important;
+                text-align: center;
+            }
+            
+            .content .left {
+                width: 100% !important;
+                margin-bottom: 2rem;
+            }
+            
+            .content .right {
+                width: 100% !important;
+            }
+            
+            .content h1 {
+                font-size: 2rem !important;
+                margin-bottom: 1rem !important;
+                line-height: 1.2 !important;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.9rem !important;
+                margin: 0.5rem 0 !important;
+            }
+            
+            .hero-description {
+                font-size: 0.9rem !important;
+                line-height: 1.5 !important;
+                margin-bottom: 1.5rem !important;
+                padding: 0 1rem;
+            }
+            
+            .hero-stats {
+                flex-direction: row !important;
+                justify-content: space-around !important;
+                gap: 0.5rem !important;
+                margin-top: 1.5rem !important;
+                padding: 0 1rem;
+            }
+            
+            .stat {
+                text-align: center !important;
+                min-width: auto !important;
+                flex: 1;
+            }
+            
+            .stat-number {
+                font-size: 1.2rem !important;
+                line-height: 1.1 !important;
+            }
+            
+            .stat-label {
+                font-size: 0.7rem !important;
+                margin-top: 0.2rem !important;
+                line-height: 1.2 !important;
+            }
+            
+            /* Image responsiveness */
+            .box img {
+                max-width: 80% !important;
+                height: auto !important;
+            }
+            
+            /* Header mobile */
+            header {
+                padding: 1rem !important;
+            }
+            
+            #logo img {
+                width: 200px !important;
+                max-width: 200px !important;
+            }
+            
+            /* About section mobile */
+            .sobre-section {
+                padding: 2rem 1rem !important;
+            }
+            
+            .section-title {
+                font-size: 1.8rem !important;
+                margin-bottom: 1rem !important;
+                text-align: center;
+            }
+            
+            .section-subtitle {
+                font-size: 1rem !important;
+                margin-bottom: 2rem !important;
+                text-align: center;
+                padding: 0 1rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr !important;
+                gap: 1.5rem !important;
+                padding: 0 0.5rem;
+            }
+            
+            .feature-card {
+                padding: 1.5rem !important;
+                text-align: center;
+            }
+            
+            .feature-card h3 {
+                font-size: 1.1rem !important;
+                margin: 1rem 0 0.8rem 0 !important;
+            }
+            
+            .feature-card p {
+                font-size: 0.9rem !important;
+                line-height: 1.5 !important;
+            }
+            
+            .feature-icon {
+                font-size: 2rem !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            /* Extra small screens */
+            .content h1 {
+                font-size: 1.6rem !important;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.8rem !important;
+            }
+            
+            .hero-description {
+                font-size: 0.8rem !important;
+                padding: 0 0.5rem;
+            }
+            
+            .hero-stats {
+                padding: 0 0.5rem;
+            }
+            
+            .stat-number {
+                font-size: 1rem !important;
+            }
+            
+            .stat-label {
+                font-size: 0.6rem !important;
+            }
+            
+            #logo img {
+                width: 160px !important;
+            }
+            
+            .section-title {
+                font-size: 1.5rem !important;
+            }
+            
+            .section-subtitle {
+                font-size: 0.9rem !important;
+            }
+            
+            .feature-card {
+                padding: 1rem !important;
+            }
+            
+            .feature-card h3 {
+                font-size: 1rem !important;
+            }
+            
+            .feature-card p {
+                font-size: 0.8rem !important;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            /* Very small screens */
+            .content {
+                padding: 0.5rem !important;
+            }
+            
+            .content h1 {
+                font-size: 1.4rem !important;
+            }
+            
+            .hero-description {
+                padding: 0 0.2rem;
+                margin-bottom: 1rem !important;
+            }
+            
+            .hero-stats {
+                margin-top: 1rem !important;
+                padding: 0 0.2rem;
+            }
+            
+            .stat-number {
+                font-size: 0.9rem !important;
+            }
+            
+            .stat-label {
+                font-size: 0.5rem !important;
+            }
+            
+            .sobre-section {
+                padding: 1.5rem 0.5rem !important;
+            }
+            
+            .features-grid {
+                padding: 0 0.2rem;
+                gap: 1rem !important;
+            }
+            
+            .feature-card {
+                padding: 0.8rem !important;
+            }
+        }
+        
+        /* Navigation responsiveness */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column !important;
+                gap: 0.8rem !important;
+                margin-top: 1rem;
+            }
+            
+            nav ul li {
+                text-align: center;
+            }
+            
+            nav ul li a {
+                font-size: 0.9rem !important;
+                padding: 0.5rem 1rem !important;
+                display: block;
+            }
+        }
+        
+        /* Button responsiveness */
+        @media (max-width: 768px) {
+            .btn {
+                padding: 0.7rem 1.2rem !important;
+                font-size: 0.9rem !important;
+                display: block;
+                text-align: center;
+                margin: 0.5rem 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .btn {
+                padding: 0.6rem 1rem !important;
+                font-size: 0.8rem !important;
+            }
+        }
+        
+        /* Footer responsiveness */
+        @media (max-width: 768px) {
+            footer {
+                padding: 1.5rem 1rem !important;
+                text-align: center;
+            }
+            
+            footer p {
+                font-size: 0.8rem !important;
+                line-height: 1.4;
+            }
+        }
+        
+        /* Container and general layout improvements */
+        @media (max-width: 1024px) {
+            .container {
+                max-width: 95% !important;
+                padding: 0 1rem !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                overflow-x: hidden;
+            }
+            
+            .container {
+                max-width: 100% !important;
+                padding: 0 0.5rem !important;
+            }
+            
+            /* Ensure no horizontal scrolling */
+            * {
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+        }
+        
+        /* Prevent text from overflowing on small screens */
+        @media (max-width: 480px) {
+            h1, h2, h3, h4, h5, h6 {
+                word-wrap: break-word;
+                word-break: break-word;
+                hyphens: auto;
+            }
+            
+            p {
+                word-wrap: break-word;
+                word-break: break-word;
+            }
+        }
+        
+        /* Improve touch targets for mobile */
+        @media (max-width: 768px) {
+            a, button, .btn {
+                min-height: 44px;
+                min-width: 44px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            nav ul li a {
+                padding: 0.8rem 1rem !important;
+                margin: 0.2rem 0;
+                border-radius: 4px;
+            }
+            
+            nav ul li a:hover {
+                background-color: rgba(74, 124, 89, 0.1);
+            }
+        }
+    </style>
 </head>
 <body>
     <section id="home">
         <header>
             <div id="logo">
-                <a href="#home">
+                
                     <img src="{% static 'assets/img/logo.png' %}" alt="Logo" width="280">
                 </a>
             </div>
@@ -23,8 +392,11 @@
                     <i class="fa fa-times" aria-hidden="true" onclick="toggle()"></i>
                 </div>
                 <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#sobre">Sobre</a></li>
+                    
+                    <li><a href="{% url 'user:sobre' %}">Sobre O InnovaSus</a></li>
+                    
+                    <li><a href="{% url 'user:politica_privacidade' %}">Política de Privacidade</a></li>
+                    <li><a href="{% url 'user:termos_de_uso' %}">Termos de Uso</a></li>
                 </ul>
             </nav>
             <div class="login-button">
@@ -38,8 +410,27 @@
         </header>
         <div class="content">
             <div class="left">
-                <h1>Descubra. Compartilhe.</h1>
-                <p>Conecte-se com uma comunidade científica dedicada ao avanço da medicina e saúde pública. Compartilhe suas pesquisas, descubra inovações e colabore com profissionais que estão transformando o futuro da saúde. Juntos, construímos conhecimento de forma mais eficiente e acessível para todos.</p>
+                <h1>Publique. Conecte. Monetize.</h1>
+                <p class="hero-subtitle">A plataforma líder para pesquisadores do setor de saúde</p>
+                <p class="hero-description">
+                    Transforme suas pesquisas em impacto real. Publique artigos científicos, 
+                    compartilhe conhecimento especializado, conecte-se com colegas pesquisadores 
+                    e monetize seu expertise através da nossa plataforma exclusiva.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Pesquisadores Ativos</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">1.2K+</span>
+                        <span class="stat-label">Artigos Publicados</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Instituições Parceiras</span>
+                    </div>
+                </div>
             </div>
             <div class="right">
                 <div class="box">
@@ -51,32 +442,32 @@
 
     <section id="sobre" class="sobre-section">
         <div class="container">
-            <h2 class="section-title">Sobre o InnovaSus</h2>
-            <p class="section-subtitle">Uma plataforma dedicada ao avanço pesquisa científica na saúde</p>
+            <h2 class="section-title">Por que Escolher o InnovaSus?</h2>
+            <p class="section-subtitle">A plataforma que revoluciona a publicação científica em saúde</p>
             
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class='bx bx-check-square'></i>
+                        <i class='bx bx-file-blank'></i>
                     </div>
-                    <h3>Funcionalidade</h3>
-                    <p>Ferramentas avançadas para compartilhamento de pesquisas, colaboração científica e acesso a conteúdo médico de qualidade, facilitando o desenvolvimento de conhecimento na área da saúde.</p>
+                    <h3>Publicação Científica</h3>
+                    <p>Publique artigos com revisão por pares, compartilhe descobertas e tenha seu trabalho reconhecido pela comunidade científica global.</p>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class='bx bx-check-square'></i>
+                        <i class='bx bx-group'></i>
                     </div>
-                    <h3>Usabilidade</h3>
-                    <p>Interface intuitiva e amigável, projetada para profissionais da saúde e pesquisadores, proporcionando uma experiência fluida e eficiente na navegação e uso da plataforma.</p>
+                    <h3>Networking Acadêmico</h3>
+                    <p>Conecte-se com pesquisadores, professores e especialistas de todo o mundo. Forme parcerias e colabore em projetos inovadores.</p>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class='bx bx-check-square'></i>
+                        <i class='bx bx-dollar-circle'></i>
                     </div>
-                    <h3>Confiabilidade</h3>
-                    <p>Segurança de dados e validação de conteúdo científico, garantindo a integridade das informações compartilhadas e a proteção dos dados dos usuários da comunidade médica.</p>
+                    <h3>Monetização</h3>
+                    <p>Transforme seu conhecimento em renda. Venda consultorias, cursos e conteúdo especializado para outros profissionais da área.</p>
                 </div>
             </div>
         </div>

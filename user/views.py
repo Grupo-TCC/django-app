@@ -32,6 +32,26 @@ def index(request):
     return render (request, 'user/index.html')
 
 
+def sobre(request):
+    """
+    View for the About page (Sobre o InnovaSus)
+    """
+    return render(request, 'user/sobre.html')
+
+
+def politica_privacidade(request):
+    """
+    View for the Privacy Policy page (Política de Privacidade)
+    """
+    return render(request, 'user/politica_privacidade.html')
+
+
+def termos_de_uso(request):
+    """
+    View for the Terms of Service page (Termos de Uso)
+    """
+    return render(request, 'user/termos_de_uso.html')
+
 
 def register(request):
     # form_submitted = False
