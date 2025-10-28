@@ -28,5 +28,5 @@ RESEARCH_AREA_CHOICES = [
     ('saude_publica', 'Saúde Pública'),
     ('tecnologia_saude', 'Tecnologia em Saúde'),
     ('urologia', 'Urologia'),
-    ('outros', 'Outros'),
+    ('outro', 'Outro (especifique abaixo)'),
 ]

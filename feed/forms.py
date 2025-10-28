@@ -2,6 +2,7 @@ from .community_models import Community
 from django import forms
 from .models import MediaPost, Product
 from django.forms.widgets import FileInput
+from .constants import RESEARCH_AREA_CHOICES
 
 from .article_models import Article
 
@@ -9,6 +10,27 @@ from .article_models import Article
 
 
 class ArticleForm(forms.ModelForm):
+    # Create choices with custom option
+    RESEARCH_AREA_CHOICES_WITH_CUSTOM = RESEARCH_AREA_CHOICES + [('custom', 'Outro (especifique abaixo)')]
+    
+    research_area_select = forms.ChoiceField(
+        choices=RESEARCH_AREA_CHOICES_WITH_CUSTOM,
+        required=True,
+        widget=forms.Select(attrs={"class": "form-control", "id": "research_area_select"}),
+        label="Área de Pesquisa"
+    )
+    
+    research_area_custom = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            "placeholder": "Digite sua área de pesquisa", 
+            "class": "form-control",
+            "id": "research_area_custom",
+            "style": "display: none;"
+        }),
+        label="Área de Pesquisa Personalizada"
+    )
+    
     description = forms.CharField(
         required=False,
         widget=forms.Textarea(attrs={
@@ -24,9 +46,23 @@ class ArticleForm(forms.ModelForm):
         fields = ['pdf', 'title', 'research_area', 'qualis_capes', 'description']
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'Título do artigo', 'class': 'form-control'}),
-            'research_area': forms.Select(attrs={'class': 'form-control'}),
+            'research_area': forms.HiddenInput(),  # Hidden field that will store the final value
             'qualis_capes': forms.Select(attrs={'class': 'form-control'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Set initial values for the custom fields based on existing research_area
+        if self.instance and self.instance.research_area:
+            # Check if the research area matches one of our predefined choices
+            for choice_key, choice_label in RESEARCH_AREA_CHOICES:
+                if choice_key == self.instance.research_area or choice_label == self.instance.research_area:
+                    self.fields['research_area_select'].initial = choice_key
+                    break
+            else:
+                # If not found in predefined choices, set as custom
+                self.fields['research_area_select'].initial = 'custom'
+                self.fields['research_area_custom'].initial = self.instance.research_area
 
     def clean_pdf(self):
         pdf = self.cleaned_data.get('pdf')
@@ -56,6 +92,27 @@ class MediaPostForm(forms.ModelForm):
         ('paid', 'Pago'),
     ]
     
+    # Create choices with custom option
+    RESEARCH_AREA_CHOICES_WITH_CUSTOM = RESEARCH_AREA_CHOICES + [('custom', 'Outro (especifique abaixo)')]
+    
+    research_area_select = forms.ChoiceField(
+        choices=RESEARCH_AREA_CHOICES_WITH_CUSTOM,
+        required=True,
+        widget=forms.Select(attrs={"class": "form-control", "id": "research_area_select_media"}),
+        label="Área de Pesquisa"
+    )
+    
+    research_area_custom = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            "placeholder": "Digite sua área de pesquisa", 
+            "class": "form-control",
+            "id": "research_area_custom_media",
+            "style": "display: none;"
+        }),
+        label="Área de Pesquisa Personalizada"
+    )
+    
     payment_type = forms.ChoiceField(
         choices=PAYMENT_CHOICES,
         widget=forms.RadioSelect,
@@ -79,6 +136,17 @@ class MediaPostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
+        # Set initial values for the custom fields based on existing research_area
+        if self.instance and self.instance.research_area:
+            # Check if the research area matches one of our predefined choices
+            for choice_key, choice_label in RESEARCH_AREA_CHOICES:
+                if choice_key == self.instance.research_area or choice_label == self.instance.research_area:
+                    self.fields['research_area_select'].initial = choice_key
+                    break
+            else:
+                # If not found in predefined choices, set as custom
+                self.fields['research_area_select'].initial = 'custom'
+                self.fields['research_area_custom'].initial = self.instance.research_area
     
     # This field won't be rendered - we use JavaScript to create the actual file inputs
     # But we need it for form validation
@@ -98,9 +166,7 @@ class MediaPostForm(forms.ModelForm):
                 "class": "form-control", 
                 "rows": 4
             }),
-            "research_area": forms.Select(attrs={
-                "class": "form-control"
-            }),
+            "research_area": forms.HiddenInput(),  # Hidden field that will store the final value
         }
         
     def clean(self):

@@ -71,10 +71,13 @@
               </div>
 
               <div class="form-group">
-                <label for="{{ form.research_area.id_for_label }}"
+                <label for="{{ form.research_area_select.id_for_label }}"
                   >Área de Pesquisa:</label
                 >
-                {{ form.research_area }} {% if form.research_area.errors %}
+                {{ form.research_area_select }}
+                {{ form.research_area_custom }}
+                {{ form.research_area }}
+                {% if form.research_area.errors %}
                 <div class="field-errors">{{ form.research_area.errors }}</div>
                 {% endif %}
               </div>
@@ -188,7 +191,7 @@
       {% include 'components/convo_rightbar.html' %}
     </div>
 
-    <div class="footer"><p>Innovator 2025</p></div>
+    
     <script src="{% static 'js/artigos.js' %}"></script>
     <script src="{% static 'js/search.js' %}"></script>
     <script src="{% static 'js/home.js' %}"></script>
@@ -356,6 +359,51 @@
         if (cancelBtn && modal) {
           cancelBtn.addEventListener("click", function () {
             modal.style.display = "none";
+          });
+        }
+
+        // Handle research area custom input
+        function toggleCustomInput() {
+          var researchAreaSelect = document.getElementById('research_area_select');
+          var researchAreaCustom = document.getElementById('research_area_custom');
+          var hiddenResearchArea = document.getElementById('id_research_area');
+          
+          if (researchAreaSelect && researchAreaCustom && hiddenResearchArea) {
+            if (researchAreaSelect.value === 'custom') {
+              researchAreaCustom.style.display = 'block';
+              researchAreaCustom.required = true;
+              hiddenResearchArea.value = '';
+            } else {
+              researchAreaCustom.style.display = 'none';
+              researchAreaCustom.required = false;
+              researchAreaCustom.value = '';
+              hiddenResearchArea.value = researchAreaSelect.value;
+            }
+          }
+        }
+
+        // Initialize and add event listener
+        var researchAreaSelect = document.getElementById('research_area_select');
+        if (researchAreaSelect) {
+          researchAreaSelect.addEventListener('change', toggleCustomInput);
+          toggleCustomInput(); // Initialize on page load
+        }
+
+        // Handle form submission
+        var articleForm = document.querySelector('form');
+        if (articleForm) {
+          articleForm.addEventListener('submit', function(e) {
+            var researchAreaSelect = document.getElementById('research_area_select');
+            var researchAreaCustom = document.getElementById('research_area_custom');
+            var hiddenResearchArea = document.getElementById('id_research_area');
+            
+            if (researchAreaSelect && researchAreaCustom && hiddenResearchArea) {
+              if (researchAreaSelect.value === 'custom') {
+                hiddenResearchArea.value = researchAreaCustom.value.trim();
+              } else {
+                hiddenResearchArea.value = researchAreaSelect.value;
+              }
+            }
           });
         }
       });

@@ -876,7 +876,9 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="{{ form.research_area.id_for_label }}">Área de Pesquisa:</label>
+                  <label for="{{ form.research_area_select.id_for_label }}">Área de Pesquisa:</label>
+                  {{ form.research_area_select }}
+                  {{ form.research_area_custom }}
                   {{ form.research_area }}
                   {% if form.research_area.errors %}
                     <div class="field-errors">{{ form.research_area.errors }}</div>
@@ -1950,6 +1952,53 @@
         document.execCommand("copy");
         alert("Chave Pix copiada!");
       }
+
+      // Handle research area custom input for media posts
+      document.addEventListener("DOMContentLoaded", function () {
+        function toggleCustomInputMedia() {
+          var researchAreaSelect = document.getElementById('research_area_select_media');
+          var researchAreaCustom = document.getElementById('research_area_custom_media');
+          var hiddenResearchArea = document.getElementById('id_research_area');
+          
+          if (researchAreaSelect && researchAreaCustom && hiddenResearchArea) {
+            if (researchAreaSelect.value === 'custom') {
+              researchAreaCustom.style.display = 'block';
+              researchAreaCustom.required = true;
+              hiddenResearchArea.value = '';
+            } else {
+              researchAreaCustom.style.display = 'none';
+              researchAreaCustom.required = false;
+              researchAreaCustom.value = '';
+              hiddenResearchArea.value = researchAreaSelect.value;
+            }
+          }
+        }
+
+        // Initialize and add event listener
+        var researchAreaSelect = document.getElementById('research_area_select_media');
+        if (researchAreaSelect) {
+          researchAreaSelect.addEventListener('change', toggleCustomInputMedia);
+          toggleCustomInputMedia(); // Initialize on page load
+        }
+
+        // Handle form submission for media posts
+        var mediaForm = document.querySelector('#media-post-form');
+        if (mediaForm) {
+          mediaForm.addEventListener('submit', function(e) {
+            var researchAreaSelect = document.getElementById('research_area_select_media');
+            var researchAreaCustom = document.getElementById('research_area_custom_media');
+            var hiddenResearchArea = document.getElementById('id_research_area');
+            
+            if (researchAreaSelect && researchAreaCustom && hiddenResearchArea) {
+              if (researchAreaSelect.value === 'custom') {
+                hiddenResearchArea.value = researchAreaCustom.value.trim();
+              } else {
+                hiddenResearchArea.value = researchAreaSelect.value;
+              }
+            }
+          });
+        }
+      });
 
     </script>
   </body>
