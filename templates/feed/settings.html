@@ -166,7 +166,7 @@
         
         if (researchAreaSelect && researchAreaCustom) {
           function toggleCustomInput() {
-            if (researchAreaSelect.value === 'custom') {
+            if (researchAreaSelect.value === 'outro') {
               researchAreaCustom.style.display = 'block';
               researchAreaCustom.required = true;
             } else {
@@ -186,7 +186,7 @@
           var form = document.querySelector('form');
           if (form) {
             form.addEventListener('submit', function() {
-              if (researchAreaSelect.value === 'custom') {
+              if (researchAreaSelect.value === 'outro') {
                 hiddenResearchArea.value = researchAreaCustom.value;
               } else {
                 // Find the display name for the selected choice

@@ -3,13 +3,13 @@ from django.conf import settings
 import os
 
 
-class MediaPost(models.Model):
+class LegacyMediaPost(models.Model):
     MEDIA_TYPE_CHOICES = [
         ('image', 'Imagem'),
         ('video', 'Vídeo'),
     ]
     
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="media_posts")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="legacy_media_posts")
     title = models.CharField(max_length=200, verbose_name="Título")
     description = models.TextField(verbose_name="Descrição")
     media_file = models.FileField(upload_to='media_posts/', verbose_name="Arquivo de Mídia")
@@ -18,9 +18,10 @@ class MediaPost(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
+        abstract = True  # Make this abstract to avoid conflicts
         ordering = ['-created_at']
-        verbose_name = "Post de Mídia"
-        verbose_name_plural = "Posts de Mídia"
+        verbose_name = "Legacy Post de Mídia"
+        verbose_name_plural = "Legacy Posts de Mídia"
 
     def __str__(self):
         return f"{self.title} - {self.user.fullname}"

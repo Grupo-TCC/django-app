@@ -14,7 +14,8 @@ db.sqlite3
 db.sqlite3-journal
 local_settings.py
 staticfiles/
-media/uploads/
+media/
+!media/.gitkeep
 
 # Environment variables
 .env

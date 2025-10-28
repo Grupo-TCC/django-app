@@ -3,6 +3,8 @@ from django.urls import path
 from . import views
 from . import views_message_api
 from .delete_article_view import delete_article
+from .delete_media_view import delete_media_post
+from .delete_product_view import delete_product
 
 app_name = 'feed'
 
@@ -17,6 +19,8 @@ urlpatterns = [
     path("community/", views.community, name="community"),
     path("community/<int:community_id>/", views.community_detail, name="community_detail"),
     path("article/<int:article_id>/delete/", delete_article, name="delete_article"),
+    path("media/<int:media_id>/delete/", delete_media_post, name="delete_media_post"),
+    path("product/<int:product_id>/delete/", delete_product, name="delete_product"),
     # path("verificacao/submit/", views.submit_verificacao, name="submit_verificacao"),
     path("mensagens/", views.mensagens, name="mensagens"),
     path("mensagens/api/get_messages/", views_message_api.get_messages_api, name="get_messages_api"),

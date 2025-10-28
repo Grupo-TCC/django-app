@@ -3,11 +3,10 @@ from .models import User
 from feed.constants import RESEARCH_AREA_CHOICES
 
 class UserResearchInstitutionForm(forms.ModelForm):
-    # Create choices for user research areas with an option for custom input
-    RESEARCH_AREA_CHOICES_WITH_CUSTOM = RESEARCH_AREA_CHOICES + [('custom', 'Outro (especifique abaixo)')]
+    # Use existing choices that already include 'outro' option
     
     research_area_select = forms.ChoiceField(
-        choices=RESEARCH_AREA_CHOICES_WITH_CUSTOM,
+        choices=RESEARCH_AREA_CHOICES,
         required=False,
         widget=forms.Select(attrs={"class": "form-control", "id": "research_area_select"}),
         label="Área de Pesquisa"
@@ -44,8 +43,8 @@ class UserResearchInstitutionForm(forms.ModelForm):
                     self.fields['research_area_select'].initial = choice_key
                     break
             else:
-                # If not found in predefined choices, set as custom
-                self.fields['research_area_select'].initial = 'custom'
+                # If not found in predefined choices, set as outro and use custom field
+                self.fields['research_area_select'].initial = 'outro'
                 self.fields['research_area_custom'].initial = self.instance.research_area
     
     def clean(self):
@@ -53,7 +52,7 @@ class UserResearchInstitutionForm(forms.ModelForm):
         research_area_select = cleaned_data.get('research_area_select')
         research_area_custom = cleaned_data.get('research_area_custom')
         
-        if research_area_select == 'custom':
+        if research_area_select == 'outro':
             if not research_area_custom:
                 raise forms.ValidationError("Por favor, especifique sua área de pesquisa.")
             cleaned_data['research_area'] = research_area_custom

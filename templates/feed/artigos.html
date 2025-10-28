@@ -369,7 +369,7 @@
           var hiddenResearchArea = document.getElementById('id_research_area');
           
           if (researchAreaSelect && researchAreaCustom && hiddenResearchArea) {
-            if (researchAreaSelect.value === 'custom') {
+            if (researchAreaSelect.value === 'outro') {
               researchAreaCustom.style.display = 'block';
               researchAreaCustom.required = true;
               hiddenResearchArea.value = '';
@@ -398,7 +398,7 @@
             var hiddenResearchArea = document.getElementById('id_research_area');
             
             if (researchAreaSelect && researchAreaCustom && hiddenResearchArea) {
-              if (researchAreaSelect.value === 'custom') {
+              if (researchAreaSelect.value === 'outro') {
                 hiddenResearchArea.value = researchAreaCustom.value.trim();
               } else {
                 hiddenResearchArea.value = researchAreaSelect.value;

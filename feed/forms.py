@@ -10,11 +10,10 @@ from .article_models import Article
 
 
 class ArticleForm(forms.ModelForm):
-    # Create choices with custom option
-    RESEARCH_AREA_CHOICES_WITH_CUSTOM = RESEARCH_AREA_CHOICES + [('custom', 'Outro (especifique abaixo)')]
+    # Use existing choices that already include 'outro' option
     
     research_area_select = forms.ChoiceField(
-        choices=RESEARCH_AREA_CHOICES_WITH_CUSTOM,
+        choices=RESEARCH_AREA_CHOICES,
         required=True,
         widget=forms.Select(attrs={"class": "form-control", "id": "research_area_select"}),
         label="Área de Pesquisa"
@@ -60,8 +59,8 @@ class ArticleForm(forms.ModelForm):
                     self.fields['research_area_select'].initial = choice_key
                     break
             else:
-                # If not found in predefined choices, set as custom
-                self.fields['research_area_select'].initial = 'custom'
+                # If not found in predefined choices, set as outro and use custom field
+                self.fields['research_area_select'].initial = 'outro'
                 self.fields['research_area_custom'].initial = self.instance.research_area
 
     def clean_pdf(self):
@@ -71,6 +70,20 @@ class ArticleForm(forms.ModelForm):
                 raise forms.ValidationError('Apenas arquivos PDF são permitidos.')
         return pdf
     
+    def clean(self):
+        cleaned_data = super().clean()
+        research_area_select = cleaned_data.get('research_area_select')
+        research_area_custom = cleaned_data.get('research_area_custom')
+        
+        if research_area_select == 'outro':
+            if not research_area_custom or not research_area_custom.strip():
+                raise forms.ValidationError('Por favor, especifique sua área de pesquisa.')
+            self.cleaned_data['research_area'] = research_area_custom.strip()
+        elif research_area_select:
+            # Use the choice key directly for predefined options
+            self.cleaned_data['research_area'] = research_area_select
+        
+        return self.cleaned_data
 
 class CommunityForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -92,11 +105,10 @@ class MediaPostForm(forms.ModelForm):
         ('paid', 'Pago'),
     ]
     
-    # Create choices with custom option
-    RESEARCH_AREA_CHOICES_WITH_CUSTOM = RESEARCH_AREA_CHOICES + [('custom', 'Outro (especifique abaixo)')]
+    # Use existing choices that already include 'outro' option
     
     research_area_select = forms.ChoiceField(
-        choices=RESEARCH_AREA_CHOICES_WITH_CUSTOM,
+        choices=RESEARCH_AREA_CHOICES,
         required=True,
         widget=forms.Select(attrs={"class": "form-control", "id": "research_area_select_media"}),
         label="Área de Pesquisa"
@@ -144,8 +156,8 @@ class MediaPostForm(forms.ModelForm):
                     self.fields['research_area_select'].initial = choice_key
                     break
             else:
-                # If not found in predefined choices, set as custom
-                self.fields['research_area_select'].initial = 'custom'
+                # If not found in predefined choices, set as outro and use custom field
+                self.fields['research_area_select'].initial = 'outro'
                 self.fields['research_area_custom'].initial = self.instance.research_area
     
     # This field won't be rendered - we use JavaScript to create the actual file inputs
@@ -221,8 +233,20 @@ class MediaPostForm(forms.ModelForm):
         # Check total size (200MB limit for all files combined)
         if total_size > 200 * 1024 * 1024:
             raise forms.ValidationError("O tamanho total dos arquivos não pode exceder 200MB.")
+        
+        # Handle custom research area
+        research_area_select = cleaned_data.get('research_area_select')
+        research_area_custom = cleaned_data.get('research_area_custom')
+        
+        if research_area_select == 'outro':
+            if not research_area_custom or not research_area_custom.strip():
+                raise forms.ValidationError('Por favor, especifique sua área de pesquisa.')
+            self.cleaned_data['research_area'] = research_area_custom.strip()
+        elif research_area_select:
+            # Use the choice key directly for predefined options
+            self.cleaned_data['research_area'] = research_area_select
             
-        return cleaned_data
+        return self.cleaned_data
     
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -251,6 +275,58 @@ class MediaPostForm(forms.ModelForm):
 
 
 class ProductForm(forms.ModelForm):
+    # Use existing choices that already include 'outro' option
+    
+    research_area_select = forms.ChoiceField(
+        choices=RESEARCH_AREA_CHOICES,
+        required=True,
+        widget=forms.Select(attrs={"class": "form-control", "id": "research_area_select_product"}),
+        label="Área de Pesquisa"
+    )
+    
+    research_area_custom = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            "placeholder": "Digite sua área de pesquisa", 
+            "class": "form-control",
+            "id": "research_area_custom_product",
+            "style": "display: none;"
+        }),
+        label="Área de Pesquisa Personalizada"
+    )
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Set initial values for the custom fields based on existing area_pesquisa
+        if self.instance and self.instance.area_pesquisa:
+            # Check if the area_pesquisa matches one of our predefined choices
+            for choice_key, choice_label in RESEARCH_AREA_CHOICES:
+                if choice_key == self.instance.area_pesquisa or choice_label == self.instance.area_pesquisa:
+                    self.fields['research_area_select'].initial = choice_key
+                    break
+            else:
+                # If not found in predefined choices, set as outro and use custom field
+                self.fields['research_area_select'].initial = 'outro'
+                self.fields['research_area_custom'].initial = self.instance.area_pesquisa
+
+    def clean(self):
+        cleaned_data = super().clean()
+        research_area_select = cleaned_data.get('research_area_select')
+        research_area_custom = cleaned_data.get('research_area_custom')
+        
+        if research_area_select == 'outro':
+            if not research_area_custom or not research_area_custom.strip():
+                raise forms.ValidationError('Por favor, especifique sua área de pesquisa.')
+            cleaned_data['area_pesquisa'] = research_area_custom.strip()
+        elif research_area_select:
+            # Find the display name for the selected choice
+            for choice_key, choice_label in RESEARCH_AREA_CHOICES:
+                if choice_key == research_area_select:
+                    cleaned_data['area_pesquisa'] = choice_key
+                    break
+        
+        return cleaned_data
+    
     class Meta:
         model = Product
         fields = ['titulo', 'descricao', 'area_pesquisa', 'link']
@@ -264,9 +340,7 @@ class ProductForm(forms.ModelForm):
                 'class': 'form-control',
                 'rows': 4,
             }),
-            'area_pesquisa': forms.Select(attrs={
-                'class': 'form-control'
-            }),
+            'area_pesquisa': forms.HiddenInput(),  # Hide the actual model field
             'link': forms.URLInput(attrs={
                 'placeholder': 'https://exemplo.com/seu-produto',
                 'class': 'form-control'

@@ -265,6 +265,8 @@ def verificacao(request):
 # Accepts optional user_id for viewing other users' profiles
 
 def perfil(request, user_id=None):
+    from .models import Product
+    
     if user_id is not None:
         profile_user = get_object_or_404(User, pk=user_id)
     else:
@@ -279,11 +281,17 @@ def perfil(request, user_id=None):
         profile_user.save()
         return redirect('feed:perfil')
 
+    # Get all user content
     user_articles = Article.objects.filter(user=profile_user).order_by('-created_at')
+    user_translations = MediaPost.objects.filter(user=profile_user).order_by('-created_at')
+    user_products = Product.objects.filter(user=profile_user).order_by('-created_at')
+    
     following_users = [f.following for f in Follow.objects.filter(follower=profile_user).select_related('following')]
     joined_communities = Community.objects.filter(members=profile_user).order_by('name')
     return render(request, 'feed/perfil.html', {
         'user_articles': user_articles,
+        'user_translations': user_translations,
+        'user_products': user_products,
         'following_users': following_users,
         'joined_communities': joined_communities,
         'profile_user': profile_user,

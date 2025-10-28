@@ -84,13 +84,16 @@
       </div>
 
       <div class="post-container" style="margin-top:32px;">
-        <h2 style="color:#256d4a;">Seus Artigos</h2>
+        
+        
+        <!-- Articles Section -->
         {% if user_articles %}
+          <h3 style="color:#256d4a; margin-top:20px; margin-bottom:15px; font-size:1.2em;">📄 Artigos ({{ user_articles|length }})</h3>
           <ul style="list-style:none;padding:0;">
             {% for article in user_articles %}
               <li style="margin-bottom:18px; padding:16px; border:1px solid #e0e0e0; border-radius:8px; background:#fafafa; position:relative;">
                 <div style="font-size:1.1em; font-weight:600; color:#256d4a;">{{ article.title }}</div>
-                <div style="font-size:0.95em; color:#555; margin:4px 0 8px 0;">{{ article.research_area }}</div>
+                <div style="font-size:0.95em; color:#555; margin:4px 0 8px 0;">📚 {{ article.research_area }} • Qualis: {{ article.qualis_capes }}</div>
                 {% if article.description %}
                   <div class="article-description" style="font-size:0.97em; color:#333; margin-bottom:8px; position:relative;">
                     <span class="desc-text" style="display:inline;">
@@ -109,15 +112,99 @@
                 {% else %}
                 <span style="color: #888; font-style: italic;">PDF não disponível</span>
                 {% endif %}
+                <div style="font-size:0.9em; color:#888; margin-top:8px;">Publicado em {{ article.created_at|date:"d/m/Y" }}</div>
+                {% if profile_user == request.user %}
                 <form method="post" action="{% url 'feed:delete_article' article.id %}" style="position:absolute; top:12px; right:12px;">
                   {% csrf_token %}
                   <button type="submit" style="background:#fff; color:#d32f2f; border:1px solid #d32f2f; border-radius:4px; padding:2px 10px; font-size:13px; cursor:pointer;">Apagar</button>
                 </form>
+                {% endif %}
               </li>
             {% endfor %}
           </ul>
-        {% else %}
-          <p style="color:#888;">Você ainda não publicou nenhum artigo.</p>
+        {% endif %}
+
+        <!-- Translations Section -->
+        {% if user_translations %}
+          <h3 style="color:#256d4a; margin-top:25px; margin-bottom:15px; font-size:1.2em;">🎥 Traduções de Conhecimento ({{ user_translations|length }})</h3>
+          <ul style="list-style:none;padding:0;">
+            {% for translation in user_translations %}
+              <li style="margin-bottom:18px; padding:16px; border:1px solid #e0e0e0; border-radius:8px; background:#fff8dc; position:relative;">
+                {% if profile_user == request.user %}
+                <form method="post" action="{% url 'feed:delete_media_post' translation.id %}" style="position:absolute; top:12px; right:12px;">
+                  {% csrf_token %}
+                  <button type="submit" onclick="return confirm('Tem certeza de que deseja excluir esta tradução?')" style="background-color:#dc3545; color:white; border:none; border-radius:4px; padding:6px 10px; font-size:0.85em; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.1);">Apagar</button>
+                </form>
+                {% endif %}
+                <div style="font-size:1.1em; font-weight:600; color:#256d4a;">{{ translation.title }}</div>
+                <div style="font-size:0.95em; color:#555; margin:4px 0 8px 0;">📚 {{ translation.get_research_area_display }} • Tipo: {{ translation.get_media_types_display }}</div>
+                {% if translation.description %}
+                  <div class="translation-description" style="font-size:0.97em; color:#333; margin-bottom:8px; position:relative;">
+                    <span class="desc-text" style="display:inline;">
+                      {% if translation.description|length > 220 %}
+                        <span class="desc-short">{{ translation.description|slice:':220' }}...</span>
+                        <span class="desc-full" style="display:none;">{{ translation.description }}</span>
+                        <button class="desc-toggle" onclick="toggleDesc(this); return false;" style="background:none;border:none;color:#28a745;cursor:pointer;padding:0;">mais</button>
+                      {% else %}
+                        {{ translation.description }}
+                      {% endif %}
+                    </span>
+                  </div>
+                {% endif %}
+                <div style="font-size:0.95em; color:#28a745; margin-bottom:8px;">
+                  💰 {{ translation.get_payment_type_display }}{% if translation.payment_type == 'paid' and translation.price %} - R$ {{ translation.price }}{% endif %}
+                </div>
+                <div style="font-size:0.9em; color:#888; margin-top:8px;">Publicado em {{ translation.created_at|date:"d/m/Y" }}</div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <!-- Products Section -->
+        {% if user_products %}
+          <h3 style="color:#256d4a; margin-top:25px; margin-bottom:15px; font-size:1.2em;">🛍️ Produtos ({{ user_products|length }})</h3>
+          <ul style="list-style:none;padding:0;">
+            {% for product in user_products %}
+              <li style="margin-bottom:18px; padding:16px; border:1px solid #e0e0e0; border-radius:8px; background:#fff8dc; position:relative;">
+                {% if profile_user == request.user %}
+                <form method="post" action="{% url 'feed:delete_product' product.id %}" style="position:absolute; top:12px; right:12px;">
+                  {% csrf_token %}
+                  <button type="submit" onclick="return confirm('Tem certeza de que deseja excluir este produto?')" style="background-color:#dc3545; color:white; border:none; border-radius:4px; padding:6px 10px; font-size:0.85em; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.1);">Apagar</button>
+                </form>
+                {% endif %}
+                <div style="font-size:1.1em; font-weight:600; color:#256d4a;">{{ product.titulo }}</div>
+                <div style="font-size:0.95em; color:#555; margin:4px 0 8px 0;">📂 {{ product.get_area_pesquisa_display }}</div>
+                {% if product.descricao %}
+                  <div class="product-description" style="font-size:0.97em; color:#333; margin-bottom:8px; position:relative;">
+                    <span class="desc-text" style="display:inline;">
+                      {% if product.descricao|length > 220 %}
+                        <span class="desc-short">{{ product.descricao|slice:':220' }}...</span>
+                        <span class="desc-full" style="display:none;">{{ product.descricao }}</span>
+                        <button class="desc-toggle" onclick="toggleDesc(this); return false;" style="background:none;border:none;color:#28a745;cursor:pointer;padding:0;">mais</button>
+                      {% else %}
+                        {{ product.descricao }}
+                      {% endif %}
+                    </span>
+                  </div>
+                {% endif %}
+                {% if product.link %}
+                <a href="{{ product.link }}" target="_blank" style="color:#28a745; font-weight:500; text-decoration:underline;">Ver Produto</a>
+                {% endif %}
+                <div style="font-size:0.9em; color:#888; margin-top:8px;">Publicado em {{ product.created_at|date:"d/m/Y" }}</div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <!-- Empty state -->
+        {% if not user_articles and not user_translations and not user_products %}
+          <p style="color:#888;">
+            {% if profile_user == request.user %}
+              Você ainda não publicou nenhum conteúdo. Comece publicando artigos, traduções de conhecimento ou produtos!
+            {% else %}
+              Este usuário ainda não publicou nenhum conteúdo.
+            {% endif %}
+          </p>
         {% endif %}
       </div>
       <script>
@@ -162,7 +249,7 @@
     <!-- Right Sidebar invisível -->
     <div class="right-sidebar" style="visibility:hidden; opacity:0; pointer-events:none;"></div>
   </div>
-  <div class="footer"><p>Innovator 2025</p></div>
+  
   <!-- Modal para imagem inteira -->
   <div id="profile-img-modal" style="display:none; position:fixed; z-index:2147483647 !important; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.92); align-items:center; justify-content:center; flex-direction:column;">
     <img src="{{ profile_user.get_profile_picture_url }}" alt="Foto de perfil inteira" style="max-width:90vw; max-height:90vh; border-radius:10px; box-shadow:0 4px 24px rgba(0,0,0,0.25); display:block; margin:auto; position:relative; z-index:2147483648;">

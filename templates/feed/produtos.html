@@ -50,6 +50,7 @@
             <form
               method="POST"
               id="product-upload-form"
+              onsubmit="return handleProductFormSubmit(event)"
             >
               {% csrf_token %} 
               {% if form.non_field_errors %}
@@ -73,10 +74,15 @@
               </div>
 
               <div class="form-group">
-                <label for="{{ form.area_pesquisa.id_for_label }}">Área de Pesquisa:</label>
-                {{ form.area_pesquisa }} 
-                {% if form.area_pesquisa.errors %}
-                  <div class="field-errors">{{ form.area_pesquisa.errors }}</div>
+                <label for="{{ form.research_area_select.id_for_label }}">Área de Pesquisa:</label>
+                {{ form.research_area_select }} 
+                {{ form.research_area_custom }} 
+                {{ form.area_pesquisa }}
+                {% if form.research_area_select.errors %}
+                  <div class="field-errors">{{ form.research_area_select.errors }}</div>
+                {% endif %}
+                {% if form.research_area_custom.errors %}
+                  <div class="field-errors">{{ form.research_area_custom.errors }}</div>
                 {% endif %}
               </div>
 
@@ -182,6 +188,52 @@
           modal.style.display = 'none';
         }
       });
+
+      // Research area functionality (matching ProductForm custom IDs)
+      document.addEventListener('DOMContentLoaded', function() {
+        var researchAreaSelect = document.getElementById('research_area_select_product');
+        var researchAreaCustom = document.getElementById('research_area_custom_product');
+        var hiddenAreaPesquisa = document.getElementById('id_area_pesquisa');
+        
+        if (researchAreaSelect && researchAreaCustom) {
+          function toggleCustomInput() {
+            if (researchAreaSelect.value === 'outro') {
+              researchAreaCustom.style.display = 'block';
+              researchAreaCustom.required = true;
+            } else {
+              researchAreaCustom.style.display = 'none';
+              researchAreaCustom.required = false;
+              researchAreaCustom.value = '';
+            }
+          }
+          
+          // Initialize on page load
+          toggleCustomInput();
+          
+          // Handle changes
+          researchAreaSelect.addEventListener('change', toggleCustomInput);
+          
+          // Handle form submission to set the hidden field value
+          var form = document.getElementById('product-upload-form');
+          if (form) {
+            form.addEventListener('submit', function() {
+              if (researchAreaSelect.value === 'outro') {
+                hiddenAreaPesquisa.value = researchAreaCustom.value;
+              } else {
+                // Find the display name for the selected choice
+                var selectedOption = researchAreaSelect.options[researchAreaSelect.selectedIndex];
+                hiddenAreaPesquisa.value = selectedOption.value;
+              }
+            });
+          }
+        }
+      });
+
+      // Handle form submission
+      function handleProductFormSubmit(event) {
+        // The form submission logic is now handled in the addEventListener above
+        return true;
+      }
     </script>
 
   </body>
