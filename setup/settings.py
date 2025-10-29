@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'setup.middleware.InactivityLogoutMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -165,7 +166,17 @@ PASSWORD_RESET_TIMEOUT = 60 * 60 * 24 * 3  # 3 days
 LOGIN_REDIRECT_URL = "/feed/artigos/"
 LOGOUT_REDIRECT_URL = "/register/"
 
+# Session Configuration
+# Inactivity timeout: 30 minutes (in seconds)
+INACTIVITY_TIMEOUT_SECONDS = 30 * 60
 
+# Session cookie settings
+SESSION_COOKIE_AGE = 14 * 24 * 60 * 60  # 2 weeks (persistent across browser restarts)
+SESSION_SAVE_EVERY_REQUEST = False       # Don't extend session on every request
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Keep session when browser closes
+SESSION_COOKIE_HTTPONLY = True           # Prevent JavaScript access to session cookie
+SESSION_COOKIE_SECURE = False            # Set to True in production with HTTPS
+SESSION_COOKIE_SAMESITE = 'Lax'         # CSRF protection
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

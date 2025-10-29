@@ -256,5 +256,69 @@
   </div>
     <script src="{% static 'js/home.js' %}"></script>
 
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-consent" style="display:none; position:fixed; bottom:16px; left:16px; right:16px; background:#fff; border:1px solid #ddd; padding:16px; box-shadow:0 4px 12px rgba(0,0,0,0.15); z-index:10000; border-radius:8px; max-width:600px; margin:0 auto;">
+        <div style="display:flex; gap:16px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
+            <div style="flex:1; font-size:14px; color:#333; line-height:1.4; min-width:300px;">
+                <strong>🍪 Cookies e Privacidade</strong><br>
+                Usamos cookies para melhorar sua experiência no InnovaSUS. Ao continuar navegando, você concorda com nossa política de cookies.
+                <a href="https://www.kaspersky.com.br/resource-center/definitions/cookies" target="_blank" rel="noopener noreferrer" style="margin-left:8px; color:#256d4a; text-decoration:underline;">Saiba mais</a>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <button id="cookie-accept-btn" style="background:#256d4a; color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; font-size:14px; font-weight:500;">Aceitar</button>
+                <button id="cookie-decline-btn" style="background:#6c757d; color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; font-size:14px;">Recusar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Consent JavaScript -->
+    <script>
+    (function(){
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+        
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Lax";
+        }
+
+        // Check if user has already made a choice
+        const consent = getCookie('innovasus_cookie_consent');
+        if (!consent) {
+            const banner = document.getElementById('cookie-consent');
+            if (banner) {
+                banner.style.display = 'block';
+                
+                // Accept button handler
+                const acceptBtn = document.getElementById('cookie-accept-btn');
+                if (acceptBtn) {
+                    acceptBtn.addEventListener('click', function() {
+                        setCookie('innovasus_cookie_consent', 'accepted', 365);
+                        banner.style.display = 'none';
+                    });
+                }
+                
+                // Decline button handler
+                const declineBtn = document.getElementById('cookie-decline-btn');
+                if (declineBtn) {
+                    declineBtn.addEventListener('click', function() {
+                        setCookie('innovasus_cookie_consent', 'declined', 365);
+                        banner.style.display = 'none';
+                        // Optional: Disable non-essential cookies here
+                    });
+                }
+            }
+        }
+    })();
+    </script>
+
 </body>
 </html>

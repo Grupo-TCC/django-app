@@ -408,5 +408,60 @@
         }
       });
     </script>
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-consent" style="display:none; position:fixed; bottom:16px; left:16px; right:16px; background:#fff; border:1px solid #ddd; padding:16px; box-shadow:0 4px 12px rgba(0,0,0,0.15); z-index:10000; border-radius:8px; max-width:600px; margin:0 auto;">
+      <div style="display:flex; gap:16px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
+        <div style="flex:1; font-size:14px; color:#222; min-width:250px;">
+          🍪 Usamos cookies para melhorar sua experiência. Ao continuar, você concorda com o uso de cookies.
+          <a href="https://www.kaspersky.com.br/resource-center/definitions/cookies" target="_blank" rel="noopener noreferrer" style="margin-left:8px; text-decoration:underline; color:#256d4a;">Saiba mais</a>
+        </div>
+        <div style="display:flex; gap:8px; flex-shrink:0;">
+          <button id="cookie-accept-btn" style="background:#256d4a; color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; font-size:14px;">Aceitar</button>
+          <button id="cookie-decline-btn" style="background:#ccc; color:#333; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; font-size:14px;">Recusar</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    (function(){
+      function getCookie(name) {
+        const value = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+        return value ? decodeURIComponent(value.pop()) : '';
+      }
+      
+      function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        document.cookie = name + "=" + encodeURIComponent(value) + ";path=/;SameSite=Lax;expires=" + date.toUTCString();
+      }
+
+      // Check if user has already made a choice
+      const consent = getCookie('site_cookie_consent');
+      if (!consent) {
+        const banner = document.getElementById('cookie-consent');
+        if (banner) {
+          banner.style.display = 'block';
+          
+          const acceptBtn = document.getElementById('cookie-accept-btn');
+          const declineBtn = document.getElementById('cookie-decline-btn');
+          
+          if (acceptBtn) {
+            acceptBtn.addEventListener('click', function(){
+              setCookie('site_cookie_consent', 'accepted', 365);
+              banner.style.display = 'none';
+            });
+          }
+          
+          if (declineBtn) {
+            declineBtn.addEventListener('click', function(){
+              setCookie('site_cookie_consent', 'declined', 365);
+              banner.style.display = 'none';
+            });
+          }
+        }
+      }
+    })();
+    </script>
   </body>
 </html>
