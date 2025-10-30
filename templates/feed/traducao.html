@@ -2030,7 +2030,7 @@
       }
 
       // Check if user has already made a choice
-      const consent = getCookie('site_cookie_consent');
+      const consent = getCookie('innovasus_cookie_consent');
       if (!consent) {
         const banner = document.getElementById('cookie-consent');
         if (banner) {
@@ -2041,14 +2041,14 @@
           
           if (acceptBtn) {
             acceptBtn.addEventListener('click', function(){
-              setCookie('site_cookie_consent', 'accepted', 365);
+              setCookie('innovasus_cookie_consent', 'accepted', 365);
               banner.style.display = 'none';
             });
           }
           
           if (declineBtn) {
             declineBtn.addEventListener('click', function(){
-              setCookie('site_cookie_consent', 'declined', 365);
+              setCookie('innovasus_cookie_consent', 'declined', 365);
               banner.style.display = 'none';
             });
           }
