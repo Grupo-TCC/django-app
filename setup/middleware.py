@@ -27,11 +27,15 @@ class InactivityLogoutMiddleware:
             if last_activity:
                 elapsed = now_ts - int(last_activity)
                 if elapsed > self.timeout:
-                    # Add a message before logout
-                    messages.warning(
-                        request, 
-                        'Sua sessão expirou devido à inatividade. Faça login novamente.'
-                    )
+                    # Add a message before logout (if messages framework is available)
+                    try:
+                        messages.warning(
+                            request, 
+                            'Sua sessão expirou devido à inatividade. Faça login novamente.'
+                        )
+                    except Exception:
+                        # If messages framework is not available, continue without message
+                        pass
                     logout(request)
                     # Continue with the request - user will be redirected to login if needed
             
