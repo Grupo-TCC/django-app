@@ -47,6 +47,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'setup.middleware.InactivityLogoutMiddleware',  # Custom inactivity logout
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -198,3 +199,15 @@ LOGGING = {
         },
     },
 }
+
+# Session Configuration for Inactivity Logout
+# Inactivity timeout: 30 minutes (in seconds) for production
+INACTIVITY_TIMEOUT_SECONDS = 30 * 60
+
+# Session cookie settings
+SESSION_COOKIE_AGE = 14 * 24 * 60 * 60  # 2 weeks (persistent across browser restarts)
+SESSION_SAVE_EVERY_REQUEST = False       # Don't extend session on every request
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Keep session when browser closes
+SESSION_COOKIE_HTTPONLY = True           # Prevent JavaScript access to session cookie
+SESSION_COOKIE_SECURE = True             # Use HTTPS in production
+SESSION_COOKIE_SAMESITE = 'Lax'         # CSRF protection
