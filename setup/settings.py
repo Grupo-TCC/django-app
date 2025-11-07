@@ -142,13 +142,7 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600  # 100 * 1024 * 1024
 FILE_UPLOAD_MAX_MEMORY_SIZE = 104857600
 
 
-SESSION_COOKIE_AGE = 10000
-
-# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-
-SESSION_SAVE_EVERY_REQUEST = True
-
-# SESSION_COOKIE_SECURE =True
+# Duplicate session settings removed - see configuration below
 
 # Sending Email
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -167,8 +161,9 @@ LOGIN_REDIRECT_URL = "/feed/artigos/"
 LOGOUT_REDIRECT_URL = "/register/"
 
 # Session Configuration
-# Inactivity timeout: 30 minutes (in seconds)
-INACTIVITY_TIMEOUT_SECONDS = 30 * 60
+# Inactivity timeout: 2 minutes (in seconds) - for testing
+# Change to 30 * 60 (30 minutes) for production
+INACTIVITY_TIMEOUT_SECONDS = 2 * 60
 
 # Session cookie settings
 SESSION_COOKIE_AGE = 14 * 24 * 60 * 60  # 2 weeks (persistent across browser restarts)
@@ -187,3 +182,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_TRUSTED_ORIGINS = [
     'https://localhost:8000',
 ]
+
+# Logging configuration for debugging inactivity middleware
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'setup.middleware': {
+            'handlers': ['console'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'propagate': False,
+        },
+    },
+}
