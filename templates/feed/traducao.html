@@ -959,7 +959,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h3 class="modal-title">Solicitar Acesso</h3>
-              <button type="button" class="close-btn" id="close-access-modal">&times;</button>
+              {% comment %} <button type="button" class="close-btn" id="close-access-modal">&times;</button> {% endcomment %}
             </div>
             <div class="modal-body">
               <p>Para solicitar acesso a este conteúdo pago, envie o comprovante de pagamento:</p>
@@ -990,7 +990,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h3 class="modal-title">Pagamento</h3>
-              <button type="button" class="close-btn" id="close-pay-modal">&times;</button>
+              {% comment %} <button type="button" class="close-btn" id="close-pay-modal">&times;</button> {% endcomment %}
             </div>
             <div class="modal-body">
               <p><strong>Conteúdo:</strong> <span id="payment-content-title">Título do conteúdo</span></p>
@@ -1005,8 +1005,8 @@
               <p style="color: #666; font-size: 0.9em;">Após o pagamento, clique em "Pedir acesso" para enviar o comprovante e conseguir acessar o documento.</p>
             </div>
             <div class="form-actions">
-              <button type="button" class="btn btn-cancel" onclick="closePaymentModal()">Cancelar</button>
-              <button type="button" class="btn btn-submit" onclick="processPayment()">Pagar Agora</button>
+              <button type="button" class="btn btn-cancel" onclick="closePaymentModal()">Fechar</button>
+              
             </div>
           </div>
         </div>
@@ -1942,7 +1942,7 @@
         pixInput.select();
         pixInput.setSelectionRange(0, 99999);
         document.execCommand("copy");
-        alert("Chave Pix copiada!");
+        
       }
       
       function copyPixKey() {
@@ -1950,111 +1950,9 @@
         pixInput.select();
         pixInput.setSelectionRange(0, 99999);
         document.execCommand("copy");
-        alert("Chave Pix copiada!");
+        
       }
 
-      // Handle research area custom input for media posts
-      document.addEventListener("DOMContentLoaded", function () {
-        function toggleCustomInputMedia() {
-          var researchAreaSelect = document.getElementById('research_area_select_media');
-          var researchAreaCustom = document.getElementById('research_area_custom_media');
-          var hiddenResearchArea = document.getElementById('id_research_area');
-          
-          if (researchAreaSelect && researchAreaCustom && hiddenResearchArea) {
-            if (researchAreaSelect.value === 'outro') {
-              researchAreaCustom.style.display = 'block';
-              researchAreaCustom.required = true;
-              hiddenResearchArea.value = '';
-            } else {
-              researchAreaCustom.style.display = 'none';
-              researchAreaCustom.required = false;
-              researchAreaCustom.value = '';
-              hiddenResearchArea.value = researchAreaSelect.value;
-            }
-          }
-        }
-
-        // Initialize and add event listener
-        var researchAreaSelect = document.getElementById('research_area_select_media');
-        if (researchAreaSelect) {
-          researchAreaSelect.addEventListener('change', toggleCustomInputMedia);
-          toggleCustomInputMedia(); // Initialize on page load
-        }
-
-        // Handle form submission for media posts
-        var mediaForm = document.querySelector('#media-post-form');
-        if (mediaForm) {
-          mediaForm.addEventListener('submit', function(e) {
-            var researchAreaSelect = document.getElementById('research_area_select_media');
-            var researchAreaCustom = document.getElementById('research_area_custom_media');
-            var hiddenResearchArea = document.getElementById('id_research_area');
-            
-            if (researchAreaSelect && researchAreaCustom && hiddenResearchArea) {
-              if (researchAreaSelect.value === 'outro') {
-                hiddenResearchArea.value = researchAreaCustom.value.trim();
-              } else {
-                hiddenResearchArea.value = researchAreaSelect.value;
-              }
-            }
-          });
-        }
-      });
-
-    </script>
-
-    <!-- Cookie Consent Banner -->
-    <div id="cookie-consent" style="display:none; position:fixed; bottom:16px; left:16px; right:16px; background:#fff; border:1px solid #ddd; padding:16px; box-shadow:0 4px 12px rgba(0,0,0,0.15); z-index:10000; border-radius:8px; max-width:600px; margin:0 auto;">
-      <div style="display:flex; gap:16px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
-        <div style="flex:1; font-size:14px; color:#222; min-width:250px;">
-          🍪 Usamos cookies para melhorar sua experiência. Ao continuar, você concorda com o uso de cookies.
-          <a href="https://www.kaspersky.com.br/resource-center/definitions/cookies" target="_blank" rel="noopener noreferrer" style="margin-left:8px; text-decoration:underline; color:#256d4a;">Saiba mais</a>
-        </div>
-        <div style="display:flex; gap:8px; flex-shrink:0;">
-          <button id="cookie-accept-btn" style="background:#256d4a; color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; font-size:14px;">Aceitar</button>
-          <button id="cookie-decline-btn" style="background:#ccc; color:#333; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; font-size:14px;">Recusar</button>
-        </div>
-      </div>
-    </div>
-
-    <script>
-    (function(){
-      function getCookie(name) {
-        const value = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
-        return value ? decodeURIComponent(value.pop()) : '';
-      }
-      
-      function setCookie(name, value, days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        document.cookie = name + "=" + encodeURIComponent(value) + ";path=/;SameSite=Lax;expires=" + date.toUTCString();
-      }
-
-      // Check if user has already made a choice
-      const consent = getCookie('innovasus_cookie_consent');
-      if (!consent) {
-        const banner = document.getElementById('cookie-consent');
-        if (banner) {
-          banner.style.display = 'block';
-          
-          const acceptBtn = document.getElementById('cookie-accept-btn');
-          const declineBtn = document.getElementById('cookie-decline-btn');
-          
-          if (acceptBtn) {
-            acceptBtn.addEventListener('click', function(){
-              setCookie('innovasus_cookie_consent', 'accepted', 365);
-              banner.style.display = 'none';
-            });
-          }
-          
-          if (declineBtn) {
-            declineBtn.addEventListener('click', function(){
-              setCookie('innovasus_cookie_consent', 'declined', 365);
-              banner.style.display = 'none';
-            });
-          }
-        }
-      }
-    })();
     </script>
   </body>
 </html>
